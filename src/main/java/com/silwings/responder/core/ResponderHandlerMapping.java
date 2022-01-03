@@ -159,17 +159,8 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
         return mapping.getMatchingCondition(ResponderBodyUtils.getBody(request));
     }
 
-    /**
-     * description: getMappingComparator
-     * version: 1.0
-     * date: 2021/1/1 17:24
-     * author: Silwings
-     *
-     * @param request
-     * @return java.util.Comparator<com.silwings.mymvc.core.MyMvcInfo>
-     */
     @Override
-    protected Comparator<ResponderMappingInfo> getMappingComparator(HttpServletRequest request) {
+    protected Comparator<ResponderMappingInfo> getMappingComparator(final HttpServletRequest request) {
         return ((info1, info2) ->
                 info1.compareTo(info1, ResponderBodyUtils.getBody(request)));
     }

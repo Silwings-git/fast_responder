@@ -35,7 +35,6 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
         return null != parameter && AnnotatedElementUtils.hasAnnotation(parameter.getMethod(), ResponderMapping.class);
     }
 
-
     @Override
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer, final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         // 获取HttpServletRequest对象,用于获取之前通过setAttribute()设置到请求信息中的请求体实例

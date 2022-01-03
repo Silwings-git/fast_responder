@@ -33,7 +33,7 @@ public class ResponderMappingInfo {
 
     /**
      * description: 比较两个ResponderMappingInfo优先级
-     * 在当前环境中,ResponderMappingInfo始终取实际请求时创建的,所有固定返回1即可
+     * 在当前环境中,只有一个处理方法对ResponderBody进行处理,所有该compareTo可以直接返回固定值1
      * version: 1.0
      * date: 2022/1/3 22:29
      * author: Silwings
