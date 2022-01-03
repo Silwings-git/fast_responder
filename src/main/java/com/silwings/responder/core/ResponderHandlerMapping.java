@@ -8,7 +8,7 @@ import com.silwings.responder.core.chain.ResponderBody;
 import com.silwings.responder.core.chain.ResponderMappingInfo;
 import com.silwings.responder.core.factory.RequestContextFactory;
 import com.silwings.responder.interfaces.RequestConfigRepository;
-import com.silwings.responder.utils.VsMvcUtils;
+import com.silwings.responder.utils.ResponderBodyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * @ClassName MyMvcHandlerMapping
  * @Description 自定义处理器映射
- * @Author 崔益翔
+ * @Author Silwings
  * @Date 2021/1/1 17:01
  * @Version V1.0
  **/
@@ -65,7 +65,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
             final ResponderBody responderBody = new ResponderBody(requestContext);
 
-            VsMvcUtils.setMyMvcBody(request, responderBody);
+            ResponderBodyUtils.setBody(request, responderBody);
 
         }
 
@@ -110,7 +110,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * {@link ResponderHandler}注解,如果添加了才视为处理器bean,查找全部方法
      * version: 1.0
      * date: 2021/1/1 17:02
-     * author: 崔益翔
+     * author: Silwings
      *
      * @param beanType
      * @return boolean true表示是处理器bean,框架会遍历该bean中的全部方法
@@ -128,7 +128,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * description: 根据方法创建映射信息
      * version: 1.0
      * date: 2021/1/1 17:09
-     * author: 崔益翔
+     * author: Silwings
      *
      * @param method
      * @param handlerType
@@ -148,7 +148,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * description: 通过映射信息根据请求获取映射匹配结果
      * version: 1.0
      * date: 2021/1/1 17:15
-     * author: 崔益翔
+     * author: Silwings
      *
      * @param mapping
      * @param request
@@ -156,14 +156,14 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      */
     @Override
     protected ResponderMappingInfo getMatchingMapping(ResponderMappingInfo mapping, HttpServletRequest request) {
-        return mapping.getMatchingCondition(VsMvcUtils.getMyMvcInfo(request));
+        return mapping.getMatchingCondition(ResponderBodyUtils.getBody(request));
     }
 
     /**
      * description: getMappingComparator
      * version: 1.0
      * date: 2021/1/1 17:24
-     * author: 崔益翔
+     * author: Silwings
      *
      * @param request
      * @return java.util.Comparator<com.silwings.mymvc.core.MyMvcInfo>
@@ -171,7 +171,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
     @Override
     protected Comparator<ResponderMappingInfo> getMappingComparator(HttpServletRequest request) {
         return ((info1, info2) ->
-                info1.compareTo(info1, VsMvcUtils.getMyMvcInfo(request)));
+                info1.compareTo(info1, ResponderBodyUtils.getBody(request)));
     }
 
     @Override

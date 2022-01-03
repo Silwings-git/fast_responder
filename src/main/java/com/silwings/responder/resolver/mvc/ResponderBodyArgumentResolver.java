@@ -2,7 +2,7 @@ package com.silwings.responder.resolver.mvc;
 
 import com.silwings.responder.annotation.ResponderMapping;
 import com.silwings.responder.core.chain.ResponderBody;
-import com.silwings.responder.utils.VsMvcUtils;
+import com.silwings.responder.utils.ResponderBodyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
@@ -15,7 +15,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 /**
  * @ClassName ResponderBodyArgumentResolver
@@ -44,7 +43,7 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
 
         // 获取对应方法的入参类型,用来判断需要的参数是否是HttpServletRequest中存储的请求体实例
         Class<?> parameterType = parameter.getParameterType();
-        final ResponderBody responderBody = VsMvcUtils.getMyMvcInfo(nativeRequest);
+        final ResponderBody responderBody = ResponderBodyUtils.getBody(nativeRequest);
         if (ResponderBody.class.equals(parameterType)) {
             return responderBody;
         }
