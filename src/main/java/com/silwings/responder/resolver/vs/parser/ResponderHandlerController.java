@@ -30,10 +30,4 @@ public class ResponderHandlerController {
         return this.responderBodyHandlerManager.handle(responderBody);
     }
 
-    public String test() {
-
-        return true ? true ? true ? true ? true ? true ? true ? "s" : "s" : "s" : "s" : "s" : "s" : "s" : "s";
-
-    }
-
 }
