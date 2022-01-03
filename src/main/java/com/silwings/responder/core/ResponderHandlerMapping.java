@@ -48,7 +48,6 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
     @Autowired
     private AntPathMatcher antPathMatcher;
 
-
     @Override
     protected HandlerMethod getHandlerInternal(final HttpServletRequest request) throws Exception {
 

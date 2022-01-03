@@ -37,4 +37,17 @@ public class RequestContext {
         this.restParams = restParams;
         this.body = body;
     }
+
+    public Object getParamByName(final String paramName) {
+
+        if (this.params.containsKey(paramName)) {
+            return this.params.get(paramName);
+        }
+
+        if (this.restParams.containsKey(paramName)) {
+            return this.restParams.get(paramName);
+        }
+
+        return null;
+    }
 }

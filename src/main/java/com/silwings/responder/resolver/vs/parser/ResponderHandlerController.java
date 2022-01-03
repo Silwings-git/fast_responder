@@ -1,5 +1,6 @@
 package com.silwings.responder.resolver.vs.parser;
 
+import com.alibaba.fastjson.JSON;
 import com.silwings.responder.annotation.ResponderHandler;
 import com.silwings.responder.annotation.ResponderMapping;
 import com.silwings.responder.core.chain.ResponderBody;
@@ -25,7 +26,15 @@ public class ResponderHandlerController {
 
     @ResponderMapping
     public ResponderBody handle(final ResponderBody responderBody) {
-        return this.responderBodyHandlerManager.handle(responderBody);
+
+        System.out.println("=====================================");
+
+        System.out.println(JSON.toJSONString(responderBody));
+
+        System.out.println("=====================================");
+
+        return responderBody;
+//        return this.responderBodyHandlerManager.handle(responderBody);
     }
 
 }
