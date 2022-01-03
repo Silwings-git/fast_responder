@@ -2,13 +2,9 @@ package com.silwings.responder.configuration;
 
 import com.silwings.responder.callback.CallBackHandler;
 import com.silwings.responder.callback.CallBackManager;
-import com.silwings.responder.core.chain.CallBackResponderHandlerChain;
-import com.silwings.responder.core.chain.LogicResponderHandlerChain;
-import com.silwings.responder.core.chain.ParamResponderHandlerChain;
 import com.silwings.responder.core.chain.ResponderBody;
 import com.silwings.responder.core.chain.ResponderBodyHandlerManager;
 import com.silwings.responder.core.chain.ResponderHandlerChain;
-import com.silwings.responder.core.chain.ResultResponderHandlerChain;
 import com.silwings.responder.core.factory.RequestContextFactory;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.resolver.mvc.ResponderBodyArgumentResolver;
@@ -53,10 +49,7 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     public ResponderBodyHandlerManager<ResponderHandlerChain<ResponderBody>> vsMvcHandlerManager(CallBackManager callBackManager) {
         final ResponderBodyHandlerManager<ResponderHandlerChain<ResponderBody>> responderBodyHandlerManager = new ResponderBodyHandlerManager<>();
         // 顺序不能打乱
-        responderBodyHandlerManager.addHandler(new ParamResponderHandlerChain());
-        responderBodyHandlerManager.addHandler(new LogicResponderHandlerChain());
-        responderBodyHandlerManager.addHandler(new CallBackResponderHandlerChain(callBackManager));
-        responderBodyHandlerManager.addHandler(new ResultResponderHandlerChain());
+
 
         return responderBodyHandlerManager;
     }
