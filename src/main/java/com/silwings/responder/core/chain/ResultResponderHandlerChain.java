@@ -1,7 +1,5 @@
 package com.silwings.responder.core.chain;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @ClassName ResultResponderHandlerChain
  * @Description ResultResponderHandlerChain
@@ -18,7 +16,7 @@ public class ResultResponderHandlerChain implements ResponderHandlerChain<Respon
     @Override
     public ResponderBody handle(ResponderBody responderBody) {
         if (null == responderBody) {
-            return new ResponderBody();
+            return new ResponderBody(null);
         }
 //        if (responderBody.hasException()) {
 //            responderBody.setHandlerResult(responderBody.getException().getMessage());

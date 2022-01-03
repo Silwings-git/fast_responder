@@ -1,27 +1,30 @@
 package com.silwings.responder.core;
 
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.silwings.responder.annotation.ResponderHandler;
 import com.silwings.responder.annotation.ResponderMapping;
 import com.silwings.responder.core.bean.RequestConfigInfo;
-import com.silwings.responder.core.chain.ResponderMappingInfo;
+import com.silwings.responder.core.bean.RequestContext;
 import com.silwings.responder.core.chain.ResponderBody;
-import com.silwings.db.db_editor.service.RequestConfigService;
+import com.silwings.responder.core.chain.ResponderMappingInfo;
+import com.silwings.responder.core.factory.RequestContextFactory;
+import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.utils.VsMvcUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,36 +38,70 @@ import java.util.Set;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<ResponderMappingInfo> {
-    private RequestConfigService requestConfigService;
 
-    public ResponderHandlerMapping(RequestConfigService requestConfigService) {
-        this.requestConfigService = requestConfigService;
-    }
+    @Autowired
+    private RequestContextFactory requestContextFactory;
 
-    private FastJsonHttpMessageConverter jsonbHttpMessageConverter = new FastJsonHttpMessageConverter();
+    @Autowired
+    private RequestConfigRepository requestConfigRepository;
+
+    @Autowired
+    private AntPathMatcher antPathMatcher;
+
 
     @Override
     protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
-        // 获取请求的路径
-        final String lookupPath = this.getUrlPathHelper().getLookupPathForRequest(request);
-        final RequestConfigInfo urlConfig = this.requestConfigService.findConfigByUrl(lookupPath);
-        RequestContextFactory
-        // 必须先确保数据库存在该url对应的配置才能读取流,否则会导致后续的处理器无法正常使用(因为流没了)
-        if (null != urlConfig) {
-            // 通过消息转换器读取请求体为WxRequestBody类型实例
-            final HashMap<String, ? super Object> body = (HashMap) jsonbHttpMessageConverter.read(HashMap.class, new ServletServerHttpRequest(request));
 
-            if (null != body) {
-//                final ResponderBody responderBody = new ResponderBody(body, urlConfig);
-                final ResponderBody responderBody = new ResponderBody();
-                // 在这里从数据库获取类型信息并录入类型信息到请求体映射中用于后面的比较
-                VsMvcUtils.setMyMvcBody(request, responderBody);
-            }
+        final RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
+
+        final String requestUrl = this.getUrlPathHelper().getLookupPathForRequest(request);
+
+        final RequestConfigInfo requestConfig = this.getConfig(requestMethod, requestUrl);
+
+        // 必须先确保数据库存在该url对应的配置才能读取流,否则会导致后续的处理器无法正常使用
+        if (null != requestConfig) {
+
+            final RequestContext requestContext = this.requestContextFactory.createRequestContext(requestUrl, requestConfig, request);
+
+            final ResponderBody responderBody = new ResponderBody(requestContext);
+
+            VsMvcUtils.setMyMvcBody(request, responderBody);
+
         }
 
         // 前置判断以及请求体解析执行完成，交给父类的获取处理器方法逻辑执行查找匹配逻辑
         // 父类遍历全部事件映射信息，找到与事件请求体属性匹配的事件处理器
         return super.getHandlerInternal(request);
+    }
+
+    /**
+     * description: 通过请求方式和请求地址获取配置信息
+     * version: 1.0
+     * date: 2022/1/3 19:33
+     * author: Silwings
+     *
+     * @param requestMethod 请求方式
+     * @param url           请求地址
+     * @return com.silwings.responder.core.bean.RequestConfigInfo 自定义配置信息
+     */
+    private RequestConfigInfo getConfig(final RequestMethod requestMethod, final String url) {
+
+        RequestConfigInfo requestConfigInfo = this.requestConfigRepository.findByKeyUrl(url);
+
+        if (null == requestConfigInfo) {
+
+            List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(requestMethod);
+
+            for (RequestConfigInfo configInfo : restFullConfigList) {
+                if (configInfo.matchUrl(url, this.antPathMatcher)) {
+                    requestConfigInfo = configInfo;
+                    break;
+                }
+            }
+
+        }
+
+        return requestConfigInfo;
     }
 
     /**

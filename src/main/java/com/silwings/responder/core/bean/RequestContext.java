@@ -20,16 +20,21 @@ public class RequestContext {
     /**
      * url参数
      */
-    private Map<String,String> param;
+    private Map<String, String[]> params;
 
     /**
      * rest参数
      */
-    private Map<String, String> restParam;
+    private Map<String, String> restParams;
 
     /**
      * 请求体
      */
     private JSONObject body;
 
+    public RequestContext(final Map<String, String[]> params, final Map<String, String> restParams, final JSONObject body) {
+        this.params = params;
+        this.restParams = restParams;
+        this.body = body;
+    }
 }

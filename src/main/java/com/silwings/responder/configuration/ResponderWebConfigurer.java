@@ -5,13 +5,17 @@ import com.silwings.responder.callback.CallBackManager;
 import com.silwings.responder.core.chain.CallBackResponderHandlerChain;
 import com.silwings.responder.core.chain.LogicResponderHandlerChain;
 import com.silwings.responder.core.chain.ParamResponderHandlerChain;
+import com.silwings.responder.core.chain.ResponderBody;
 import com.silwings.responder.core.chain.ResponderBodyHandlerManager;
 import com.silwings.responder.core.chain.ResponderHandlerChain;
 import com.silwings.responder.core.chain.ResultResponderHandlerChain;
-import com.silwings.responder.core.chain.ResponderBody;
+import com.silwings.responder.core.factory.RequestContextFactory;
+import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.resolver.mvc.ResponderBodyArgumentResolver;
+import com.silwings.test.TestRequestConfigRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -59,7 +63,22 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-        handlers.add( new ResponderReturnValueHandler());
+        handlers.add(new ResponderReturnValueHandler());
+    }
+
+    @Bean
+    public AntPathMatcher antPathMatcher() {
+        return new AntPathMatcher();
+    }
+
+    @Bean
+    public RequestContextFactory requestContextFactory() {
+        return new RequestContextFactory(antPathMatcher());
+    }
+
+    @Bean
+    public RequestConfigRepository requestConfigRepository() {
+        return new TestRequestConfigRepository();
     }
 
 }

@@ -14,4 +14,7 @@ public class ResponderBody {
 
     private RequestContext requestContext;
 
+    public ResponderBody(RequestContext requestContext) {
+        this.requestContext = requestContext;
+    }
 }

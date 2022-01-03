@@ -11,8 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version V1.0
  **/
 @SpringBootApplication
-public class VsApplication {
+public class FastResponderApplication {
     public static void main(String[] args) {
-        SpringApplication.run(VsApplication.class, args);
+        SpringApplication.run(FastResponderApplication.class, args);
     }
 }
