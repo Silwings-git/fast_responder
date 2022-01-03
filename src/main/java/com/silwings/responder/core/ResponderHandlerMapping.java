@@ -50,7 +50,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
 
     @Override
-    protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+    protected HandlerMethod getHandlerInternal(final HttpServletRequest request) throws Exception {
 
         final RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
 
@@ -112,14 +112,14 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * date: 2021/1/1 17:02
      * author: Silwings
      *
-     * @param beanType
+     * @param beanType 当前检测到的类
      * @return boolean true表示是处理器bean,框架会遍历该bean中的全部方法
      */
     @Override
-    protected boolean isHandler(Class<?> beanType) {
+    protected boolean isHandler(final Class<?> beanType) {
         boolean isHandler = AnnotatedElementUtils.hasAnnotation(beanType, ResponderHandler.class);
         if (isHandler) {
-            log.info("virtual processor initialization success: {}", beanType.getName());
+            log.info("Responder processor initialization success: {}", beanType.getName());
         }
         return isHandler;
     }
@@ -130,18 +130,19 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * date: 2021/1/1 17:09
      * author: Silwings
      *
-     * @param method
+     * @param method 带有{@link org.springframework.stereotype.Controller}注解的类的方法
      * @param handlerType
-     * @return com.silwings.mymvc.core.MyMvcInfo
+     * @return ResponderMappingInfo method的映射信息
      */
     @Override
-    protected ResponderMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+    protected ResponderMappingInfo getMappingForMethod(final Method method,final Class<?> handlerType) {
         final ResponderMapping mergedAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponderMapping.class);
         if (null == mergedAnnotation) {
             return null;
         }
-//        return new ResponderMappingInfo(mergedAnnotation.type());
-        return null;
+
+        // 这里只需要返回一个空对象即可,用于给spring mvc创建映射信息.在实际请求到来时会通过getMatchingCondition创建对应请求的ResponderMappingInfo
+        return new ResponderMappingInfo();
     }
 
     /**
@@ -150,12 +151,12 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * date: 2021/1/1 17:15
      * author: Silwings
      *
-     * @param mapping
-     * @param request
-     * @return com.silwings.mymvc.core.MyMvcInfo
+     * @param mapping 项目初始化时构建的带{@link org.springframework.stereotype.Controller}注解的类的处理器方法的映射信息
+     * @param request 请求
+     * @return ResponderMappingInfo 根据request创建出的映射信息,用于实际处理业务
      */
     @Override
-    protected ResponderMappingInfo getMatchingMapping(ResponderMappingInfo mapping, HttpServletRequest request) {
+    protected ResponderMappingInfo getMatchingMapping(final ResponderMappingInfo mapping,final HttpServletRequest request) {
         return mapping.getMatchingCondition(ResponderBodyUtils.getBody(request));
     }
 
@@ -184,18 +185,4 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
         return new HashSet<>();
     }
 
-
-    /**
-     * {@code @Order}定义带注释的组件的排序顺序。
-     * <p> {@ link #value}是可选的，代表{@link Ordered}接口中定义的订单值。较低的值具有较高的优先级。
-     * 默认值为{@code Ordered.LOWEST_PRECEDENCE}，表示最低优先级（输给任何其他指定的订单值）。
-     * <p> <b>注意：</ b>从Spring 4.0开始，Spring中的许多类型的组件都支持基于注释的排序，
-     * 即使是考虑到目标组件的顺序值的集合注入（从它们的目标类或通过其{@code @Bean}方法）。
-     * 尽管此类顺序值可能会影响注入点的优先级，但请注意，它们不会影响单例启动顺序，
-     * 这是由依赖关系和{@code @DependsOn}声明（影响运行时确定的依赖图）确定的正交关注点。
-     * <p>从Spring 4.1开始，在订购场景中，标准{@link javax.annotation.Priority}批注可以用作该批注的替代品。
-     * 请注意，当必须选择单个元素时，{@ code @Priority}可能具有其他语义（请参见{@link AnnotationAwareOrderComparator＃getPriority}）。
-     * <p>或者，也可以通过{@link Ordered}接口在每个实例的基础上确定顺序值，从而允许配置确定的实例值，而不是附加到特定类的硬编码值。
-     * <p>请咨询{@link org.springframework.core.OrderComparator OrderComparator}的Javadoc，以获取有关非排序对象的排序语义的详细信息。
-     */
 }

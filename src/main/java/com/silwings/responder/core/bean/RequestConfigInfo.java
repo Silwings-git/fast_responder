@@ -55,10 +55,8 @@ public class RequestConfigInfo {
      */
     private List<Result> results;
 
-
     public boolean matchUrl(final String url, final PathMatcher pathMatcher) {
         return pathMatcher.match(this.keyUrl, url);
     }
-
 
 }
