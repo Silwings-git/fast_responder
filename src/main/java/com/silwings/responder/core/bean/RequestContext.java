@@ -1,10 +1,8 @@
 package com.silwings.responder.core.bean;
 
-import com.alibaba.fastjson.JSONObject;
+import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 /**
  * @ClassName RequestContext
@@ -18,36 +16,18 @@ import java.util.Map;
 public class RequestContext {
 
     /**
-     * url参数
+     * 请求的全部参数信息
      */
-    private Map<String, String[]> params;
+    private RequestParamsAndBody requestParamsAndBody;
 
     /**
-     * rest参数
+     * 请求配置信息
      */
-    private Map<String, String> restParams;
+    private RequestConfigInfo requestConfigInfo;
 
-    /**
-     * 请求体
-     */
-    private JSONObject body;
-
-    public RequestContext(final Map<String, String[]> params, final Map<String, String> restParams, final JSONObject body) {
-        this.params = params;
-        this.restParams = restParams;
-        this.body = body;
+    public RequestContext(final RequestParamsAndBody requestParamsAndBody, final RequestConfigInfo requestConfigInfo) {
+        this.requestParamsAndBody = ConvertUtils.toObj(requestParamsAndBody, RequestParamsAndBody.EMPTY_OBJ);
+        this.requestConfigInfo = requestConfigInfo;
     }
 
-    public Object getParamByName(final String paramName) {
-
-        if (this.params.containsKey(paramName)) {
-            return this.params.get(paramName);
-        }
-
-        if (this.restParams.containsKey(paramName)) {
-            return this.restParams.get(paramName);
-        }
-
-        return null;
-    }
 }

@@ -6,10 +6,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName HttpTask
@@ -35,7 +33,7 @@ public class HttpTask implements ConditionAble {
     /**
      * 任务执行条件
      */
-    private List<String> condition;
+    private List<String> conditions;
 
     /**
      * 任务内容
@@ -43,13 +41,13 @@ public class HttpTask implements ConditionAble {
     private HttpTaskContent content;
 
     @Override
-    public List<Condition> findConditions() {
+    public Condition findConditions() {
 
-        if (CollectionUtils.isEmpty(this.condition)) {
-            return Collections.emptyList();
+        if (CollectionUtils.isEmpty(this.conditions)) {
+            return Condition.TRUE_CONDITION;
         }
 
-        return this.condition.stream().map(Condition::from).collect(Collectors.toList());
+        return Condition.from(this.conditions);
     }
 
     @Setter

@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.silwings.responder.core.bean.RequestConfigInfo;
 import com.silwings.responder.core.bean.RequestContext;
+import com.silwings.responder.core.bean.RequestParamsAndBody;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -30,16 +32,7 @@ public class RequestContextFactory {
         this.jsonbHttpMessageConverter = new FastJsonHttpMessageConverter();
     }
 
-
-//    public RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, Map<String, ? super Object> requestBody) {
-//
-//        // TODO_Silwings: 2022/1/3 requestBody可能为null
-//
-//        return new RequestContext();
-//
-//    }
-
-    public RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, final HttpServletRequest request) throws Exception {
+    public RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, final HttpServletRequest request) throws IOException {
 
         final String[] urlArray = url.split(QUESTION_MARK);
 
@@ -56,7 +49,9 @@ public class RequestContextFactory {
         // 请求体
         final JSONObject requestBody = (JSONObject) this.jsonbHttpMessageConverter.read(JSONObject.class, new ServletServerHttpRequest(request));
 
-        return new RequestContext(params, restParams, requestBody);
+        final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, restParams, requestBody);
+
+        return new RequestContext(paramsAndBody, requestConfigInfo);
     }
 
 }

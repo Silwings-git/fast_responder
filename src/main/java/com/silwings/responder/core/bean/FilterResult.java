@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName FilterResult
- * @Description TODO_Silwings
+ * @Description 过滤返回值
  * @Author Silwings
  * @Date 2022/1/3 18:43
  * @Version V1.0
@@ -30,12 +28,12 @@ public class FilterResult implements ConditionAble{
     private List<String> conditions;
 
     @Override
-    public List<Condition> findConditions() {
+    public Condition findConditions() {
         if (CollectionUtils.isEmpty(this.conditions)){
-            return Collections.emptyList();
+            return Condition.TRUE_CONDITION;
         }
 
-        return this.conditions.stream().map(Condition::from).collect(Collectors.toList());
+        return Condition.from(conditions);
     }
 
 }

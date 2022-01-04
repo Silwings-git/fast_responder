@@ -1,7 +1,5 @@
 package com.silwings.responder.core.bean;
 
-import java.util.List;
-
 /**
  * @ClassName ConditionAble
  * @Description ConditionAble
@@ -11,6 +9,6 @@ import java.util.List;
  **/
 public interface ConditionAble {
 
-    List<Condition> findConditions();
+    Condition findConditions();
 
 }

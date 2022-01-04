@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @ClassName TestRequestConfigRepository
- * @Description TODO_Silwings
+ * @Description 测试用
  * @Author Silwings
  * @Date 2022/1/3 21:34
  * @Version V1.0
@@ -38,7 +38,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"name\":\"我的回调任务\",\n" +
                 "            \"delayTime\":10,\n" +
                 "            \"conditions\":[\n" +
-                "                \"\"\n" +
+                "           \"${uid} == 1\"" +
                 "            ],\n" +
                 "            \"content\":{\n" +
                 "                \"requestMethod\":\"POST\",\n" +
