@@ -2,6 +2,7 @@ package com.silwings.responder.core;
 
 import com.silwings.responder.annotation.ResponderHandler;
 import com.silwings.responder.annotation.ResponderMapping;
+import com.silwings.responder.commons.exception.ExceptionThreadLocal;
 import com.silwings.responder.core.bean.RequestConfigInfo;
 import com.silwings.responder.core.bean.RequestContext;
 import com.silwings.responder.core.chain.ResponderBody;
@@ -50,6 +51,9 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
     @Override
     protected HandlerMethod getHandlerInternal(final HttpServletRequest request) throws Exception {
+
+        // TODO_Silwings: 2022/1/6 临时写这里,回头加到拦截器里面去
+        ExceptionThreadLocal.remove();
 
         final RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
 

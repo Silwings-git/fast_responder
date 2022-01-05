@@ -2,12 +2,12 @@ package com.silwings.responder.configuration;
 
 import com.silwings.responder.callback.CallBackHandler;
 import com.silwings.responder.callback.CallBackManager;
-import com.silwings.responder.core.chain.ResponderBody;
 import com.silwings.responder.core.chain.ResponderBodyHandlerManager;
-import com.silwings.responder.core.chain.ResponderHandlerChain;
 import com.silwings.responder.core.factory.RequestContextFactory;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.resolver.mvc.ResponderBodyArgumentResolver;
+import com.silwings.responder.task.HttpTaskFactory;
+import com.silwings.responder.task.HttpTaskManager;
 import com.silwings.test.TestRequestConfigRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,15 +45,6 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
         return callBackManager;
     }
 
-    @Bean
-    public ResponderBodyHandlerManager<ResponderHandlerChain<ResponderBody>> vsMvcHandlerManager(CallBackManager callBackManager) {
-        final ResponderBodyHandlerManager<ResponderHandlerChain<ResponderBody>> responderBodyHandlerManager = new ResponderBodyHandlerManager<>();
-        // 顺序不能打乱
-
-
-        return responderBodyHandlerManager;
-    }
-
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
         handlers.add(new ResponderReturnValueHandler());
@@ -70,8 +61,24 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     }
 
     @Bean
+    public HttpTaskFactory httpTaskFactory() {
+        return new HttpTaskFactory();
+    }
+
+    @Bean
     public RequestConfigRepository requestConfigRepository() {
         return new TestRequestConfigRepository();
     }
+
+    @Bean
+    public HttpTaskManager httpTaskManager() {
+        return new HttpTaskManager();
+    }
+
+    @Bean
+    public ResponderBodyHandlerManager responderBodyHandlerManager() {
+        return new ResponderBodyHandlerManager(httpTaskFactory(), httpTaskManager());
+    }
+
 
 }

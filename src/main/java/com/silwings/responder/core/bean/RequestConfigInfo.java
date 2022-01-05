@@ -43,7 +43,7 @@ public class RequestConfigInfo {
     /**
      * 请求的任务集
      */
-    private List<HttpTask> tasks;
+    private List<HttpTaskInfo> tasks;
 
     /**
      * 返回值过滤

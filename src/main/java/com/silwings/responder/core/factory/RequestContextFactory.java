@@ -40,16 +40,16 @@ public class RequestContextFactory {
         final Map<String, String[]> params = request.getParameterMap();
 
         // rest参数
-        Map<String, String> restParams = Collections.emptyMap();
+        Map<String, String> pathParams = Collections.emptyMap();
         if (this.antPathMatcher.match(requestConfigInfo.getKeyUrl(), urlArray[0])) {
             // 必须使用经过?分割后的url数据,否者可能将?后的参数错误解析到path参数中
-            restParams = this.antPathMatcher.extractUriTemplateVariables(requestConfigInfo.getKeyUrl(), urlArray[0]);
+            pathParams = this.antPathMatcher.extractUriTemplateVariables(requestConfigInfo.getKeyUrl(), urlArray[0]);
         }
 
         // 请求体
         final JSONObject requestBody = (JSONObject) this.jsonbHttpMessageConverter.read(JSONObject.class, new ServletServerHttpRequest(request));
 
-        final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, restParams, requestBody);
+        final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, pathParams, requestBody);
 
         return new RequestContext(paramsAndBody, requestConfigInfo);
     }

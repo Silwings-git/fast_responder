@@ -1,24 +1,26 @@
 package com.silwings.responder.core.bean;
 
 import com.alibaba.fastjson.JSONObject;
+import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName HttpTask
- * @Description HttpTask
+ * @ClassName HttpTaskInfo
+ * @Description HttpTaskInfo
  * @Author Silwings
  * @Date 2022/1/3 18:02
  * @Version V1.0
  **/
 @Setter
 @Getter
-public class HttpTask implements ConditionAble {
+public class HttpTaskInfo implements ConditionAble {
 
     /**
      * 任务名称
@@ -26,7 +28,7 @@ public class HttpTask implements ConditionAble {
     private String name;
 
     /**
-     * 延迟时间(ms)
+     * 延迟时间(s)
      */
     private Long delayTime;
 
@@ -41,7 +43,7 @@ public class HttpTask implements ConditionAble {
     private HttpTaskContent content;
 
     @Override
-    public Condition findConditions() {
+    public Condition findCondition() {
 
         if (CollectionUtils.isEmpty(this.conditions)) {
             return Condition.TRUE_CONDITION;
@@ -67,17 +69,20 @@ public class HttpTask implements ConditionAble {
         /**
          * 请求参数
          */
-        private Map<String,String> params;
-
-        /**
-         * restFull参数
-         */
-        private Map<String,String> restParams;
+        private Map<String,String[]> params;
 
         /**
          * 请求体
          */
         private JSONObject body;
+
+        public Map<String, String[]> getParams() {
+            return ConvertUtils.toObj(this.params, Collections.emptyMap());
+        }
+
+        public JSONObject getBody() {
+            return ConvertUtils.toObj(this.body, new JSONObject());
+        }
 
     }
 

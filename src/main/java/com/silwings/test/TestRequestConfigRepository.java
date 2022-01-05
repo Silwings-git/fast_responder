@@ -30,7 +30,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
     private static String getStr() {
         return "{\n" +
                 "    \"name\":\"示例配置01\",\n" +
-                "    \"keyUrl\":\"/silwings/{uid}\",\n" +
+                "    \"keyUrl\":\"/silwings\",\n" +
                 "    \"requestMethod\":\"GET\",\n" +
                 "    \"urlType\":\"REST_FULL\",\n" +
                 "    \"tasks\":[\n" +
@@ -38,26 +38,29 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"name\":\"我的回调任务\",\n" +
                 "            \"delayTime\":10,\n" +
                 "            \"conditions\":[\n" +
-                "           \"${uid} == 1\"" +
                 "            ],\n" +
                 "            \"content\":{\n" +
                 "                \"requestMethod\":\"POST\",\n" +
-                "                \"requestUrl\":\"http://127.0.0.1:8899/payment/{id}/notify\",\n" +
+                "                \"requestUrl\":\"http://127.0.0.1:8899/payment/${id}/notify\",\n" +
                 "                \"params\":{\n" +
-                "                    \"age\":\"18\"\n" +
+                "                    \"age\":[\n" +
+                "                        \"18\",\n" +
+                "                        \"20\"\n" +
+                "                     \n" +
+                "                    ]\n" +
                 "                },\n" +
                 "                \"restParams\":{\n" +
                 "                    \"id\":\"20\"\n" +
                 "                },\n" +
                 "                \"body\":{\n" +
                 "                    \"paymentCallback\":{\n" +
-                "                        \"param01\":\"${orderId}\",\n" +
+                "                        \"param01\":\"${detail.order.id}\",\n" +
                 "                        \"param02\":{\n" +
                 "                            \"orderId\":\"111\"\n" +
                 "                        }\n" +
                 "                    },\n" +
                 "                    \"paymentCode\":\"UUID()\",\n" +
-                "                    \"orderId\":\"${orderId}\"\n" +
+                "                    \"order\":\"${detail.order}\"\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }\n" +

@@ -28,7 +28,7 @@ public class FilterResult implements ConditionAble{
     private List<String> conditions;
 
     @Override
-    public Condition findConditions() {
+    public Condition findCondition() {
         if (CollectionUtils.isEmpty(this.conditions)){
             return Condition.TRUE_CONDITION;
         }

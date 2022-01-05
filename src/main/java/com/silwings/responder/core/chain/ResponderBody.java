@@ -1,7 +1,7 @@
 package com.silwings.responder.core.chain;
 
 
-import com.silwings.responder.core.bean.HttpTask;
+import com.silwings.responder.core.bean.HttpTaskInfo;
 import com.silwings.responder.core.bean.RequestContext;
 import com.silwings.responder.core.interfaces.abstracts.AbstractLogError;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class ResponderBody extends AbstractLogError {
         this.requestContext = requestContext;
     }
 
-    public List<HttpTask> getTasks() {
+    public List<HttpTaskInfo> getTasks() {
         return this.requestContext.getRequestConfigInfo().getTasks();
     }
 

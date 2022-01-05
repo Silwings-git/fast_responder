@@ -43,18 +43,12 @@ public class Condition {
         return new Condition(conditionStrList);
     }
 
-    public boolean calculate(final RequestParamsAndBody requestParamsAndBody) {
+    public boolean meet(final RequestParamsAndBody requestParamsAndBody) {
 
         for (Expression expression : this.expressions) {
-            final ResponderReplaceOperator paramOperator = ResponderReplaceOperator.valueOfOperator(expression.getParam());
-            if (null != paramOperator) {
-                expression.updateRealParam(paramOperator.replace(expression.getParam(), requestParamsAndBody));
-            }
 
-            final ResponderReplaceOperator valueOperator = ResponderReplaceOperator.valueOfOperator(expression.getValue());
-            if (null != valueOperator) {
-                expression.updateRealValue(paramOperator.replace(expression.getValue(), requestParamsAndBody));
-            }
+            expression.updateRealParam(ResponderReplaceOperator.replace(expression.getParam(), requestParamsAndBody));
+            expression.updateRealValue(ResponderReplaceOperator.replace(expression.getValue(), requestParamsAndBody));
 
             if (!expression.calculate()) {
                 return false;
@@ -157,7 +151,7 @@ public class Condition {
         private String symbol;
         private BiPredicate<String, String> function;
 
-        ConditionSymbol(final String symbol,final BiPredicate<String,String> function) {
+        ConditionSymbol(final String symbol, final BiPredicate<String, String> function) {
             this.symbol = symbol;
             this.function = function;
         }

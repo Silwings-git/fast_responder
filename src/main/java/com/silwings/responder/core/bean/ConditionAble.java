@@ -9,6 +9,6 @@ package com.silwings.responder.core.bean;
  **/
 public interface ConditionAble {
 
-    Condition findConditions();
+    Condition findCondition();
 
 }

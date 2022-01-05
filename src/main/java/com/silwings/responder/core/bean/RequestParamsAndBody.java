@@ -32,16 +32,16 @@ public class RequestParamsAndBody extends AbstractLogError {
     /**
      * rest参数
      */
-    private Map<String, String> restParams;
+    private Map<String, String> pathParams;
 
     /**
      * 请求体
      */
     private JSONObject body;
 
-    public RequestParamsAndBody(final Map<String, String[]> params, final Map<String, String> restParams, final JSONObject body) {
+    public RequestParamsAndBody(final Map<String, String[]> params, final Map<String, String> pathParams, final JSONObject body) {
         this.params = params;
-        this.restParams = restParams;
+        this.pathParams = pathParams;
         this.body = body;
     }
 
@@ -65,8 +65,8 @@ public class RequestParamsAndBody extends AbstractLogError {
             return this.getParams().get(paramName);
         }
 
-        if (this.getRestParams().containsKey(paramName)) {
-            return this.getRestParams().get(paramName);
+        if (this.getPathParams().containsKey(paramName)) {
+            return this.getPathParams().get(paramName);
         }
 
         // 尝试从请求体中获取参数
@@ -75,7 +75,7 @@ public class RequestParamsAndBody extends AbstractLogError {
         }
 
         Object result = null;
-        final String[] paramArray = paramName.split(".");
+        final String[] paramArray = paramName.split("\\.");
         if (paramArray.length == 1) {
             result = this.getBody().get(paramArray[0]);
         }

@@ -22,7 +22,7 @@ public class ResultResponderHandlerChain implements ResponderHandlerChain<Respon
 //            responderBody.setHandlerResult(responderBody.getException().getMessage());
 //        } else {
 //            final String logicResult = responderBody.getLogicResult();
-//            if (StringUtils.isNotBlank(logicResult)) {
+//            if (ResponderStringUtils.isNotBlank(logicResult)) {
 //                responderBody.setHandlerResult(responderBody.getResult(logicResult));
 //            } else {
 //                responderBody.setHandlerResult(responderBody.getDefaultResult());
