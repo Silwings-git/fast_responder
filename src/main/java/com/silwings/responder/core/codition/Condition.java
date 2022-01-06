@@ -2,8 +2,10 @@ package com.silwings.responder.core.codition;
 
 import com.silwings.responder.core.RequestParamsAndBody;
 import com.silwings.responder.core.operator.ResponderReplaceOperator;
+import com.silwings.responder.utils.ConvertUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  * @Date 2022/1/3 18:12
  * @Version V1.0
  **/
+@Slf4j
 public class Condition {
 
     public static final Condition TRUE_CONDITION = new Condition(Expression.TRUE);
@@ -52,6 +55,7 @@ public class Condition {
             expression.updateRealValue(ResponderReplaceOperator.replace(expression.getValue(), requestParamsAndBody));
 
             if (!expression.calculate()) {
+                log.info("条件表达式: {} 不满足条件. 表达式状态: {} .实际比对信息: {}", expression.originalExpression, expression.valid ? "正常" : "异常", expression.realExpression());
                 return false;
             }
         }
@@ -66,6 +70,11 @@ public class Condition {
         private static final Expression TRUE = new Expression("1", "1", ConditionSymbol.EQUAL);
 
         private final boolean valid;
+
+        /**
+         * 原始表达式
+         */
+        private String originalExpression;
 
         /**
          * 形式参数
@@ -96,7 +105,7 @@ public class Condition {
             this.conditionSymbol = null;
         }
 
-        public Expression(final String param, final String value, final ConditionSymbol conditionSymbol) {
+        private Expression(final String param, final String value, final ConditionSymbol conditionSymbol) {
             this.valid = true;
             this.param = param;
             this.value = value;
@@ -122,7 +131,10 @@ public class Condition {
                 return Expression.INVALID_EXPRESSION;
             }
 
-            return new Expression(conditionArray[0], conditionArray[2], conditionSymbol);
+            final Expression expression = new Expression(conditionArray[0], conditionArray[2], conditionSymbol);
+            expression.originalExpression = conditionStr;
+
+            return expression;
         }
 
         public void updateRealParam(final Object realParam) {
@@ -134,9 +146,21 @@ public class Condition {
         }
 
         public boolean calculate() {
+            if (null == this.realParam || null == this.conditionSymbol || null == this.realValue) {
+                return false;
+            }
 
-            return this.valid && this.conditionSymbol.apply(this.realParam.toString(), this.realValue.toString());
+            return this.valid && this.conditionSymbol.apply(ConvertUtils.toStringOrJsonString(this.realParam),
+                    ConvertUtils.toStringOrJsonString(this.realValue));
         }
+
+        public String realExpression() {
+            if (null == this.realParam || null == this.conditionSymbol || null == this.realValue) {
+                return "";
+            }
+            return ConvertUtils.toStringOrJsonString(this.realParam) + " " + this.conditionSymbol.symbol + " " + ConvertUtils.toStringOrJsonString(this.realValue);
+        }
+
     }
 
     private enum ConditionSymbol {

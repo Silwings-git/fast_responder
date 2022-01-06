@@ -3,6 +3,7 @@ package com.silwings.responder.core.operator;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.silwings.responder.core.RequestParamsAndBody;
+import com.silwings.responder.utils.ConvertUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Array;
@@ -56,7 +57,7 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
 
         for (ResponderReplaceOperator value : values()) {
             if (value.applyFunction.test(arg)) {
-                result = value.handleFunction.apply(result instanceof String ? (String) result : JSON.toJSONString(result), requestParamsAndBody);
+                result = value.handleFunction.apply(ConvertUtils.toStringOrJsonString(result), requestParamsAndBody);
             }
         }
 
@@ -83,6 +84,7 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
 
         final HashMap<Object, Object> hashMap = new HashMap<>();
 
+        // 如果input可以转换为一个json,按照对象的类型进行处理
         if (JSON.isValidObject(input)) {
             final Map<String, Object> map = JSON.parseObject(input, new TypeReference<Map<String, Object>>() {
             });
@@ -105,6 +107,7 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
                 final String group = matcher.group();
                 final Object param = paramsAndBody.getParam(group.substring(2, group.length() - 1));
 
+                // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
                 if (input.length() > group.length()) {
                     input = input.replace(group, getReplacement(param));
                 } else {

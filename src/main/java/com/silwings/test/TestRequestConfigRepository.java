@@ -69,7 +69,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "        {\n" +
                 "            \"resultName\":\"resA\",\n" +
                 "            \"conditions\":[\n" +
-                "                \"1 == ${id}\"\n" +
+                "                \"[\\\"1\\\",\\\"id002\\\"] == ${id}\"\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +

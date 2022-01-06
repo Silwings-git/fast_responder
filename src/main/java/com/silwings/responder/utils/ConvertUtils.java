@@ -1,5 +1,7 @@
 package com.silwings.responder.utils;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * @ClassName RequestContext
  * @Description 请求上下文
@@ -17,4 +19,12 @@ public class ConvertUtils {
         return null == obj ? defaultValue : obj;
     }
 
+    public static String toStringOrJsonString(final Object obj) {
+
+        if (null == obj) {
+            return null;
+        }
+
+        return obj instanceof String ? (String) obj : JSON.toJSONString(obj);
+    }
 }
