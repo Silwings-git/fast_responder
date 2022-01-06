@@ -1,11 +1,11 @@
 package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.silwings.responder.core.bean.HttpTaskInfo;
 import com.silwings.responder.core.bean.RequestParamsAndBody;
 import com.silwings.responder.core.operator.ResponderReplaceOperator;
 import com.silwings.responder.utils.BeanCopyUtils;
-import com.silwings.responder.utils.ResponderStringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +50,8 @@ public class HttpTaskFactory {
             final String[] paramValueArray = params.get(paramName);
             final String[] realParamValueArray = new String[paramValueArray.length];
             Arrays.stream(paramValueArray)
-                    .map(value -> ResponderStringUtils.toString(ResponderReplaceOperator.replace(value, requestParamsAndBody)))
+                    .map(value -> ResponderReplaceOperator.replace(value, requestParamsAndBody))
+                    .map(value -> value instanceof String ? (String) value : JSON.toJSONString(value))
                     .collect(Collectors.toList())
                     .toArray(realParamValueArray);
 
@@ -59,8 +60,8 @@ public class HttpTaskFactory {
 
         // 实际请求体
         final String bodyStr = taskContent.getBody().toJSONString();
-        final String realBodyStr = ResponderReplaceOperator.replace(bodyStr, requestParamsAndBody).toString();
-        final Map map = JSON.parseObject(realBodyStr, Map.class);
+        final Object realBodyStr = ResponderReplaceOperator.replace(bodyStr, requestParamsAndBody);
+        final JSONObject realBody = JSON.parseObject(JSON.toJSONString(realBodyStr));
 
         final HttpTask task = new HttpTask();
         task
@@ -68,8 +69,9 @@ public class HttpTaskFactory {
                 .setRequestUrl(realRequestUrl)
                 .setRequestMethod(taskContent.getRequestMethod())
                 .setParams(realParams)
-                .setBody(null)
-                .setDelayTime(taskInfo.getDelayTime());
+                .setBody(realBody)
+                .setDelayTime(taskInfo.getDelayTime())
+                .setRunTime(System.currentTimeMillis() + taskInfo.getDelayTime());
 
         return task;
     }

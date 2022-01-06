@@ -1,6 +1,5 @@
 package com.silwings.responder.configuration;
 
-import com.alibaba.fastjson.JSON;
 import com.silwings.responder.annotation.ResponderMapping;
 import com.silwings.responder.core.chain.ResponderBody;
 import org.springframework.core.MethodParameter;
@@ -33,7 +32,7 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
         try (ServletServerHttpResponse servletServerHttpResponse = new ServletServerHttpResponse(response);
              OutputStream outputStream = servletServerHttpResponse.getBody()) {
 //            final Object handleResult = body.getHandleResult();
-//            outputStream.write(handleResult instanceof String ? handleResult.toString().getBytes() : JSON.toJSONString(handleResult).getBytes());
+//            outputStream.write(handleResult instanceof String ? handleResult.toJSONString().getBytes() : JSON.toJSONString(handleResult).getBytes());
         }
     }
 }

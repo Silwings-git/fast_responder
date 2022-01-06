@@ -51,18 +51,23 @@ public class HttpTask implements Delayed {
     private JSONObject body;
 
     /**
+     * 执行时间(ms)
+     */
+    private Long runTime;
+
+    /**
      * 延迟时间(s)
      */
     private Long delayTime;
 
     @Override
     public long getDelay(final TimeUnit unit) {
-        return unit.convert(delayTime, TimeUnit.SECONDS);
+        return runTime - System.currentTimeMillis();
     }
 
     @Override
     public int compareTo(final Delayed task) {
-        return Long.compare(this.delayTime,task.getDelay(TimeUnit.SECONDS));
+        return Long.compare(this.getDelay(TimeUnit.MILLISECONDS),task.getDelay(TimeUnit.MILLISECONDS));
     }
 
 }
