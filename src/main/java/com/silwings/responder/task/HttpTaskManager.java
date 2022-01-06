@@ -1,7 +1,6 @@
 package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSON;
-import com.silwings.responder.commons.exception.ExceptionThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.DelayQueue;
@@ -20,8 +19,6 @@ public class HttpTaskManager {
 
     public void add(final HttpTask httpTask) {
         log.info("HttpTaskManager#add: {}", JSON.toJSONString(httpTask));
-
-        ExceptionThreadLocal.get().forEach(e -> log.error("错误信息:", e));
         this.queue.add(httpTask);
     }
 

@@ -2,8 +2,7 @@ package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.silwings.responder.core.bean.HttpTaskInfo;
-import com.silwings.responder.core.bean.RequestParamsAndBody;
+import com.silwings.responder.core.RequestParamsAndBody;
 import com.silwings.responder.core.operator.ResponderReplaceOperator;
 import com.silwings.responder.utils.BeanCopyUtils;
 

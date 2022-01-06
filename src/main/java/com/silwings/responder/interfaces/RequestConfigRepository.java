@@ -1,6 +1,6 @@
 package com.silwings.responder.interfaces;
 
-import com.silwings.responder.core.bean.RequestConfigInfo;
+import com.silwings.responder.core.config.RequestConfigInfo;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;

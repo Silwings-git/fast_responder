@@ -1,7 +1,7 @@
 package com.silwings.test;
 
 import com.alibaba.fastjson.JSON;
-import com.silwings.responder.core.bean.RequestConfigInfo;
+import com.silwings.responder.core.config.RequestConfigInfo;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 import org.springframework.web.bind.annotation.RequestMethod;
 

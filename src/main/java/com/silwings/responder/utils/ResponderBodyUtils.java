@@ -1,7 +1,7 @@
 package com.silwings.responder.utils;
 
 
-import com.silwings.responder.core.chain.ResponderContext;
+import com.silwings.responder.core.ResponderContext;
 
 import javax.servlet.http.HttpServletRequest;
 

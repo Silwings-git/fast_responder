@@ -1,14 +1,10 @@
 package com.silwings.responder.core;
 
-import com.silwings.responder.annotation.ResponderHandler;
-import com.silwings.responder.annotation.ResponderMapping;
-import com.silwings.responder.commons.exception.ExceptionThreadLocal;
-import com.silwings.responder.core.bean.RequestConfigInfo;
-import com.silwings.responder.core.bean.RequestContext;
-import com.silwings.responder.core.chain.ResponderContext;
-import com.silwings.responder.core.chain.ResponderMappingInfo;
-import com.silwings.responder.core.factory.RequestContextFactory;
+import com.silwings.responder.core.config.RequestConfigInfo;
 import com.silwings.responder.interfaces.RequestConfigRepository;
+import com.silwings.responder.mvc.ResponderHandler;
+import com.silwings.responder.mvc.ResponderMapping;
+import com.silwings.responder.mvc.ResponderMappingInfo;
 import com.silwings.responder.utils.ResponderBodyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +48,6 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
     @Override
     protected HandlerMethod getHandlerInternal(final HttpServletRequest request) throws Exception {
 
-        // TODO_Silwings: 2022/1/6 临时写这里,回头加到拦截器里面去
-        ExceptionThreadLocal.remove();
-
         final RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
 
         final String requestUrl = this.getUrlPathHelper().getLookupPathForRequest(request);
@@ -85,7 +78,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      *
      * @param requestMethod 请求方式
      * @param url           请求地址
-     * @return com.silwings.responder.core.bean.RequestConfigInfo 自定义配置信息
+     * @return com.silwings.responder.core.config.RequestConfigInfo 自定义配置信息
      */
     private RequestConfigInfo getConfig(final RequestMethod requestMethod, final String url) {
 
