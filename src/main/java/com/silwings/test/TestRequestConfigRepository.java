@@ -76,10 +76,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "    \"results\":[\n" +
                 "        {\n" +
                 "            \"resultName\":\"default\",\n" +
-                "            \"body\":{\n" +
-                "                \"value\":\"CB{orderId}\",\n" +
-                "                \"key\":\"CB{paymentCode}\"\n" +
-                "            }\n" +
+                "            \"msg\":\"hello word\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"resultName\":\"resA\",\n" +
