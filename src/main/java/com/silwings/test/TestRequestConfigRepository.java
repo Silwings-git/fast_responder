@@ -38,6 +38,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"name\":\"我的回调任务\",\n" +
                 "            \"delayTime\":10,\n" +
                 "            \"conditions\":[\n" +
+                "\n" +
                 "            ],\n" +
                 "            \"content\":{\n" +
                 "                \"requestMethod\":\"POST\",\n" +
@@ -46,21 +47,18 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "                    \"age\":[\n" +
                 "                        \"18\",\n" +
                 "                        \"20\"\n" +
-                "                     \n" +
                 "                    ]\n" +
-                "                },\n" +
-                "                \"restParams\":{\n" +
-                "                    \"id\":\"20\"\n" +
                 "                },\n" +
                 "                \"body\":{\n" +
                 "                    \"paymentCallback\":{\n" +
-                "                        \"param01\":\"${detail.order.id}\",\n" +
+                "                        \"param01\":\"${orderId}\",\n" +
                 "                        \"param02\":{\n" +
                 "                            \"orderId\":\"111\"\n" +
                 "                        }\n" +
                 "                    },\n" +
                 "                    \"paymentCode\":\"UUID()\",\n" +
-                "                    \"order\":\"${detail.order}\"\n" +
+                "                    \"orderId\":\"${detail.order.id}\",\n" +
+                "                    \"orderIdA\":\"${detail}\"\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }\n" +
