@@ -15,20 +15,20 @@ import lombok.Setter;
 @Getter
 public class ResponderMappingInfo {
 
-    private ResponderBody responderBody;
+    private ResponderContext responderContext;
 
     public ResponderMappingInfo() {
     }
 
-    public ResponderMappingInfo(ResponderBody responderBody) {
-        this.responderBody = responderBody;
+    public ResponderMappingInfo(ResponderContext responderContext) {
+        this.responderContext = responderContext;
     }
 
     /**
      * 处理方法的处理类型
      */
-    public ResponderMappingInfo getMatchingCondition(final ResponderBody responderBody) {
-        return new ResponderMappingInfo(responderBody);
+    public ResponderMappingInfo getMatchingCondition(final ResponderContext responderContext) {
+        return new ResponderMappingInfo(responderContext);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ResponderMappingInfo {
      * date: 2022/1/3 22:29
      * author: Silwings
      */
-    public int compareTo(final ResponderMappingInfo info, final ResponderBody body) {
+    public int compareTo(final ResponderMappingInfo info, final ResponderContext body) {
         return 1;
     }
 

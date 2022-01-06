@@ -1,7 +1,7 @@
 package com.silwings.responder.utils;
 
 
-import com.silwings.responder.core.chain.ResponderBody;
+import com.silwings.responder.core.chain.ResponderContext;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,15 +14,15 @@ import javax.servlet.http.HttpServletRequest;
  **/
 public class ResponderBodyUtils {
 
-    private static final String RESPONDER_BODY = "ResponderBody";
+    private static final String RESPONDER_BODY = "ResponderContext";
 
-    public static void setBody(final HttpServletRequest request, final ResponderBody responderBody) {
+    public static void setBody(final HttpServletRequest request, final ResponderContext responderContext) {
         if (null != request) {
-            request.setAttribute(RESPONDER_BODY, responderBody);
+            request.setAttribute(RESPONDER_BODY, responderContext);
         }
     }
 
-    public static ResponderBody getBody(final HttpServletRequest request) {
-        return (ResponderBody) request.getAttribute(RESPONDER_BODY);
+    public static ResponderContext getBody(final HttpServletRequest request) {
+        return (ResponderContext) request.getAttribute(RESPONDER_BODY);
     }
 }

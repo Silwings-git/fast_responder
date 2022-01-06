@@ -1,6 +1,5 @@
 package com.silwings.responder.core.chain;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,18 +10,18 @@ import lombok.extern.slf4j.Slf4j;
  * @Version V1.0
  **/
 @Slf4j
-public class ParamResponderHandlerChain implements ResponderHandlerChain<ResponderBody> {
+public class ParamResponderHandlerChain implements ResponderHandlerChain<ResponderContext> {
 
     @Override
-    public boolean supportsParameter(ResponderBody responderBody) {
+    public boolean supportsParameter(ResponderContext responderContext) {
         return true;
     }
 
     @Override
-    public ResponderBody handle(ResponderBody responderBody) {
+    public ResponderContext handle(ResponderContext responderContext) {
 
         log.info("====================================分=====割=====线====================================");
 
-        return responderBody;
+        return responderContext;
     }
 }

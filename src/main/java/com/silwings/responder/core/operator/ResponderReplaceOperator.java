@@ -36,6 +36,16 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
         this.handleFunction = handleFunction;
     }
 
+    /**
+     * description: 将指定字符串适用操作符
+     * version: 1.0
+     * date: 2022/1/6 22:25
+     * author: Silwings
+     *
+     * @param arg                  待适用操作符的参数
+     * @param requestParamsAndBody 请求参数信息
+     * @return java.lang.Object 替换后的对象.类型要么是String,要么是一个可转换为JSON格式的对象
+     */
     public static Object replace(final String arg, final RequestParamsAndBody requestParamsAndBody) {
 
         if (StringUtils.isBlank(arg)) {

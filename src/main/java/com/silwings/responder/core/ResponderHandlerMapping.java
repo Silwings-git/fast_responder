@@ -5,7 +5,7 @@ import com.silwings.responder.annotation.ResponderMapping;
 import com.silwings.responder.commons.exception.ExceptionThreadLocal;
 import com.silwings.responder.core.bean.RequestConfigInfo;
 import com.silwings.responder.core.bean.RequestContext;
-import com.silwings.responder.core.chain.ResponderBody;
+import com.silwings.responder.core.chain.ResponderContext;
 import com.silwings.responder.core.chain.ResponderMappingInfo;
 import com.silwings.responder.core.factory.RequestContextFactory;
 import com.silwings.responder.interfaces.RequestConfigRepository;
@@ -66,9 +66,9 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
             final RequestContext requestContext = this.requestContextFactory.createRequestContext(requestUrl, requestConfig, request);
 
-            final ResponderBody responderBody = new ResponderBody(requestContext);
+            final ResponderContext responderContext = new ResponderContext(requestContext);
 
-            ResponderBodyUtils.setBody(request, responderBody);
+            ResponderBodyUtils.setBody(request, responderContext);
 
         }
 

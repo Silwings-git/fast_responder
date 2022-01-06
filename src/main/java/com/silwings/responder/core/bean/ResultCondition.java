@@ -7,7 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.List;
 
 /**
- * @ClassName FilterResult
+ * @ClassName ResultCondition
  * @Description 过滤返回值
  * @Author Silwings
  * @Date 2022/1/3 18:43
@@ -15,7 +15,7 @@ import java.util.List;
  **/
 @Setter
 @Getter
-public class FilterResult implements ConditionAble{
+public class ResultCondition implements ConditionAble{
 
     /**
      * 返回值名称

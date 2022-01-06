@@ -62,7 +62,7 @@ public class HttpTask implements Delayed {
 
     @Override
     public long getDelay(final TimeUnit unit) {
-        return unit.convert(runTime - System.currentTimeMillis(),TimeUnit.MILLISECONDS);
+        return unit.convert(this.runTime - System.currentTimeMillis(),TimeUnit.MILLISECONDS);
     }
 
     @Override

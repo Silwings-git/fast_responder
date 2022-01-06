@@ -7,28 +7,28 @@ package com.silwings.responder.core.chain;
  * @Date 2021/8/7 14:41
  * @Version V1.0
  **/
-public class ResultResponderHandlerChain implements ResponderHandlerChain<ResponderBody> {
+public class ResultResponderHandlerChain implements ResponderHandlerChain<ResponderContext> {
     @Override
-    public boolean supportsParameter(ResponderBody responderBody) {
+    public boolean supportsParameter(ResponderContext responderContext) {
         return true;
     }
 
     @Override
-    public ResponderBody handle(ResponderBody responderBody) {
-        if (null == responderBody) {
-            return new ResponderBody(null);
+    public ResponderContext handle(ResponderContext responderContext) {
+        if (null == responderContext) {
+            return new ResponderContext(null);
         }
-//        if (responderBody.hasException()) {
-//            responderBody.setHandlerResult(responderBody.getException().getMessage());
+//        if (responderContext.hasException()) {
+//            responderContext.setHandlerResult(responderContext.getException().getMessage());
 //        } else {
-//            final String logicResult = responderBody.getLogicResult();
+//            final String logicResult = responderContext.getLogicResult();
 //            if (ResponderStringUtils.isNotBlank(logicResult)) {
-//                responderBody.setHandlerResult(responderBody.getResult(logicResult));
+//                responderContext.setHandlerResult(responderContext.getResult(logicResult));
 //            } else {
-//                responderBody.setHandlerResult(responderBody.getDefaultResult());
+//                responderContext.setHandlerResult(responderContext.getDefaultResult());
 //            }
 //        }
 
-        return responderBody;
+        return responderContext;
     }
 }

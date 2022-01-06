@@ -49,6 +49,9 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "                        \"20\"\n" +
                 "                    ]\n" +
                 "                },\n" +
+                "                \"restParams\":{\n" +
+                "                    \"id\":\"20\"\n" +
+                "                },\n" +
                 "                \"body\":{\n" +
                 "                    \"paymentCallback\":{\n" +
                 "                        \"param01\":\"${orderId}\",\n" +
@@ -57,17 +60,16 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "                        }\n" +
                 "                    },\n" +
                 "                    \"paymentCode\":\"UUID()\",\n" +
-                "                    \"orderId\":\"${detail.order.id}\",\n" +
-                "                    \"orderIdA\":\"${detail}\"\n" +
+                "                    \"orderId\":\"${orderId}\"\n" +
                 "                }\n" +
                 "            }\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"filterResult\":[\n" +
+                "    \"resultConditions\":[\n" +
                 "        {\n" +
-                "            \"resultName\":\"defailt\",\n" +
+                "            \"resultName\":\"resA\",\n" +
                 "            \"conditions\":[\n" +
-                "                \"\"\n" +
+                "                \"1 == ${id}\"\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
@@ -77,6 +79,13 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"body\":{\n" +
                 "                \"value\":\"CB{orderId}\",\n" +
                 "                \"key\":\"CB{paymentCode}\"\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"resultName\":\"resA\",\n" +
+                "            \"body\":{\n" +
+                "                \"value\":\"${id}\",\n" +
+                "                \"key\":33\n" +
                 "            }\n" +
                 "        }\n" +
                 "    ]\n" +

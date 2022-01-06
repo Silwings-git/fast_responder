@@ -4,9 +4,11 @@ package com.silwings.responder.core.bean;
 import com.silwings.responder.commons.enums.UrlType;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +50,7 @@ public class RequestConfigInfo {
     /**
      * 返回值过滤
      */
-    private List<FilterResult> filterResult;
+    private List<ResultCondition> resultConditions;
 
     /**
      * 可用返回值
@@ -59,4 +61,16 @@ public class RequestConfigInfo {
         return pathMatcher.match(this.keyUrl, url);
     }
 
+    public List<HttpTaskInfo> getTasks() {
+        return CollectionUtils.isEmpty(this.tasks) ? Collections.emptyList() : this.tasks;
+    }
+
+    public List<ResultCondition> getResultConditions() {
+        return CollectionUtils.isEmpty(this.resultConditions) ? Collections.emptyList() : this.resultConditions;
+    }
+
+    public List<Result> getResults() {
+        return CollectionUtils.isEmpty(this.results) ? Collections.emptyList() : this.results;
+
+    }
 }

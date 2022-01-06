@@ -25,4 +25,9 @@ public class Result {
      */
     private JSONObject body;
 
+    /**
+     * 返回信息(仅当body不存在时尝试取该字段)
+     */
+    private String msg;
+
 }

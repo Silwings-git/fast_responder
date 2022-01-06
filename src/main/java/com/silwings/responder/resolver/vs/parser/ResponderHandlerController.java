@@ -2,8 +2,8 @@ package com.silwings.responder.resolver.vs.parser;
 
 import com.silwings.responder.annotation.ResponderHandler;
 import com.silwings.responder.annotation.ResponderMapping;
-import com.silwings.responder.core.chain.ResponderBody;
 import com.silwings.responder.core.chain.ResponderBodyHandlerManager;
+import com.silwings.responder.core.chain.ResponderContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,10 +24,8 @@ public class ResponderHandlerController {
     }
 
     @ResponderMapping
-    public ResponderBody handle(final ResponderBody responderBody) {
-        // TODO_Silwings: 2022/1/3 handler的处理逻辑
-        // 1.task和result的handler不需要借助容器,直接使用硬编码调用即可
-        return this.responderBodyHandlerManager.handle(responderBody);
+    public ResponderContext handle(final ResponderContext responderContext) {
+        return this.responderBodyHandlerManager.handle(responderContext);
     }
 
 }
