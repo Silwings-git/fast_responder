@@ -31,7 +31,7 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return null != parameter && AnnotatedElementUtils.hasAnnotation(parameter.getMethod(), ResponderMapping.class);
+        return null != parameter && null != parameter.getMethod() && AnnotatedElementUtils.hasAnnotation(parameter.getMethod(), ResponderMapping.class);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
     /**
      * description: 根据参数名获取请求体中的对应值
      *
-     * @param parameterName 参数名
+     * @param parameterName    参数名
      * @param responderContext 请求体转换出来的实例
      * @return java.lang.Object 参数名在请求体实例中的值
      */

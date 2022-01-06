@@ -33,6 +33,9 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
         }
 
         final HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+        if (null == response) {
+            return;
+        }
 
         try (ServletServerHttpResponse servletServerHttpResponse = new ServletServerHttpResponse(response);
              OutputStream outputStream = servletServerHttpResponse.getBody()) {
@@ -40,7 +43,7 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
             if (null != result.getBody()) {
                 response.addHeader("Content-Type", "application/json;charset=UTF-8");
                 outputStream.write(result.getBody().toJSONString().getBytes());
-            }else {
+            } else {
                 outputStream.write(result.getMsg().getBytes());
             }
         }

@@ -20,10 +20,9 @@ import java.util.regex.Matcher;
  * @Date 2022/1/4 23:33
  * @Version V1.0
  **/
-public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
+public enum ResponderReplaceOperator {
 
-
-    SEARCH_REPLACE("${}", arg -> SEARCH_REPLACE_PATTERN.matcher(arg).find(), ResponderReplaceOperator::searchReplaceHandle),
+    SEARCH_REPLACE("${}", arg -> ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg).find(), ResponderReplaceOperator::searchReplaceHandle),
     DO_NOTHING("", s -> false, (str, paramsAndBody) -> str),
     ;
 
@@ -101,7 +100,7 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
             return hashMap;
 
         } else {
-            Matcher matcher = SEARCH_REPLACE_PATTERN.matcher(input);
+            Matcher matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(input);
 
             while (matcher.find()) {
                 final String group = matcher.group();
@@ -114,7 +113,7 @@ public enum ResponderReplaceOperator implements ReplaceOperatorPattern {
                     return param;
                 }
 
-                matcher = SEARCH_REPLACE_PATTERN.matcher(input);
+                matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(input);
             }
 
             return input;

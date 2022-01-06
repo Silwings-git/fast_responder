@@ -43,10 +43,12 @@ public class HttpTaskFactory {
         // 实际请求参数
         final Map<String, String[]> params = taskContent.getParams();
         final HashMap<String, String[]> realParams = new HashMap<>();
-        for (String paramName : params.keySet()) {
-            final String realParamName = ResponderReplaceOperator.replace(paramName, requestParamsAndBody).toString();
 
-            final String[] paramValueArray = params.get(paramName);
+        for (Map.Entry<String, String[]> paramEntry : params.entrySet()) {
+
+            final String realParamName = ResponderReplaceOperator.replace(paramEntry.getKey(), requestParamsAndBody).toString();
+
+            final String[] paramValueArray = paramEntry.getValue();
             final String[] realParamValueArray = new String[paramValueArray.length];
             Arrays.stream(paramValueArray)
                     .map(value -> ResponderReplaceOperator.replace(value, requestParamsAndBody))
