@@ -199,7 +199,7 @@ public enum ResponderReplaceOperator {
 
             String replaceValue;
 
-            final String range = group.replace("-RDInt(", "").replace(")", "");
+            final String range = group.replace("-RDInt(", "").replace(")-", "");
             if (0 == range.length()) {
 
                 replaceValue = Integer.toString(ThreadLocalRandom.current().nextInt());
@@ -237,7 +237,7 @@ public enum ResponderReplaceOperator {
 
             String replaceValue;
 
-            final String range = group.replace("-RDLong(", "").replace(")", "");
+            final String range = group.replace("-RDLong(", "").replace(")-", "");
             if (0 == range.length()) {
 
                 replaceValue = Long.toString(ThreadLocalRandom.current().nextLong());
@@ -265,7 +265,7 @@ public enum ResponderReplaceOperator {
     }
 
     private static Object randomDouble(final String arg, final RequestParamsAndBody paramsAndBody) {
-        Matcher matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg);
+        Matcher matcher = ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(arg);
 
         String input = arg;
 
@@ -274,7 +274,7 @@ public enum ResponderReplaceOperator {
 
             String replaceValue;
 
-            final String range = group.replace("-RDLong(", "").replace(")", "");
+            final String range = group.replace("-RDDouble(", "").replace(")-", "");
             if (0 == range.length()) {
 
                 replaceValue = Double.toString(ThreadLocalRandom.current().nextDouble());
@@ -294,7 +294,7 @@ public enum ResponderReplaceOperator {
                 return replaceValue;
             }
 
-            matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(input);
+            matcher = ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(input);
         }
 
         return input;

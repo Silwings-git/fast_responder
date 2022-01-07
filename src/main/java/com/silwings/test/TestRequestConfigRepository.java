@@ -33,7 +33,6 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "    \"name\":\"示例配置01\",\n" +
                 "    \"keyUrl\":\"/silwings\",\n" +
                 "    \"requestMethod\":\"GET\",\n" +
-                "    \"urlType\":\"REST_FULL\",\n" +
                 "    \"tasks\":[\n" +
                 "        {\n" +
                 "            \"name\":\"我的回调任务\",\n" +
@@ -75,6 +74,12 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"conditions\":[\n" +
                 "                \"[\\\"1\\\",\\\"id002\\\"] == ${id}\"\n" +
                 "            ]\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"resultName\":\"resB\",\n" +
+                "            \"conditions\":[\n" +
+                "\n" +
+                "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
                 "    \"results\":[\n" +
@@ -87,6 +92,23 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "            \"body\":{\n" +
                 "                \"value\":\"${id}\",\n" +
                 "                \"key\":33\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"resultName\":\"resB\",\n" +
+                "            \"body\":{\n" +
+                "                \"v1\":\"-RDBoolean()-\",\n" +
+                "                \"v2\":\"-RDInt()-\",\n" +
+                "                \"v3\":\"-RDInt(10)-\",\n" +
+                "                \"v4\":\"-RDInt(10,12)-\",\n" +
+                "                \"v5\":\"-RDLong()-\",\n" +
+                "                \"v6\":\"-RDLong(10)-\",\n" +
+                "                \"v7\":\"-RDLong(-10,12)-\",\n" +
+                "                \"v8\":\"-RDDouble()-\",\n" +
+                "                \"v9\":\"-RDDouble(10)-\",\n" +
+                "                \"v10\":\"-RDDouble(-10,12)-\",\n" +
+                "                \"v11\":\"-RDDouble(10.555)-\",\n" +
+                "                \"v12\":\"-RDDouble(-10.0,10.2)-\"\n" +
                 "            }\n" +
                 "        }\n" +
                 "    ]\n" +

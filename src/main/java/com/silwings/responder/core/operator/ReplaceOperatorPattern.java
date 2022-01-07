@@ -13,8 +13,8 @@ public class ReplaceOperatorPattern {
 
     static final Pattern SEARCH_REPLACE_PATTERN = Pattern.compile("\\$\\{[\\S]+?}");
     static final Pattern RANDOM_BOOLEAN_PATTERN = Pattern.compile("-RDBoolean\\(\\)-");
-    static final Pattern RANDOM_INT_PATTERN = Pattern.compile("(((-RDInt\\()([^0][1-9]{0,9})(\\)-)|(-RDInt\\()([^0][1-9]{0,9})(,)([^0][1-9]{0,9})(\\)-))|(-RDInt\\(\\)-))");
-    static final Pattern RANDOM_LONG_PATTERN = Pattern.compile("(((-RDLong\\()([^0][1-9]{0,18})(\\)-)|(-RDLong\\()([^0][1-9]{0,18})(,)([^0][1-9]{0,18})(\\)-))|(-RDLong\\(\\)-))");
-    static final Pattern RANDOM_DOUBLE_PATTERN = Pattern.compile("(((-RDDouble\\()[^0][0-9]*(\\.?[0-9]+)?(\\)-)|(-RDDouble\\()([^0][0-9]*(\\.?[0-9]+)?)(,)([^0][0-9]*(\\.?[0-9]+)?)(\\)-))|(-RDDouble\\(\\)-))");
+    static final Pattern RANDOM_INT_PATTERN = Pattern.compile("(((-RDInt\\()([^0][0-9]{0,9})(\\)-)|(-RDInt\\()(-?[^0][0-9]{0,9})(,)([^0][0-9]{0,9})(\\)-))|(-RDInt\\(\\)-))");
+    static final Pattern RANDOM_LONG_PATTERN = Pattern.compile("(((-RDLong\\()([^0][0-9]{0,18})(\\)-)|(-RDLong\\()(-?[^0][0-9]{0,18})(,)([^0][0-9]{0,18})(\\)-))|(-RDLong\\(\\)-))");
+    static final Pattern RANDOM_DOUBLE_PATTERN = Pattern.compile("(((-RDDouble\\()[^0][0-9]*(\\.?[0-9]+)?(\\)-)|(-RDDouble\\()(-?[^0][0-9]*(\\.?[0-9]+)?)(,)([^0][0-9]*(\\.?[0-9]+)?)(\\)-))|(-RDDouble\\(\\)-))");
 
 }
