@@ -13,7 +13,8 @@ import java.util.List;
  * @Version V1.0
  **/
 public interface RequestConfigRepository {
-    RequestConfigInfo findByKeyUrl(String keyUrl);
 
     List<RequestConfigInfo> queryRestConfigByMethod(RequestMethod requestMethod);
+
+    List<RequestConfigInfo> queryByKeyUrl(String url);
 }

@@ -1,7 +1,6 @@
 package com.silwings.responder.core.config;
 
 
-import com.silwings.responder.commons.enums.UrlType;
 import com.silwings.responder.core.result.Result;
 import com.silwings.responder.core.result.ResultCondition;
 import com.silwings.responder.task.HttpTaskInfo;
@@ -41,11 +40,6 @@ public class RequestConfigInfo {
     private RequestMethod requestMethod;
 
     /**
-     * url的类型
-     */
-    private UrlType urlType;
-
-    /**
      * 请求的任务集
      */
     private List<HttpTaskInfo> tasks;
@@ -74,6 +68,5 @@ public class RequestConfigInfo {
 
     public List<Result> getResults() {
         return CollectionUtils.isEmpty(this.results) ? Collections.emptyList() : this.results;
-
     }
 }

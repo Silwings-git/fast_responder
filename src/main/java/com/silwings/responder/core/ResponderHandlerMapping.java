@@ -82,22 +82,29 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      */
     private RequestConfigInfo getConfig(final RequestMethod requestMethod, final String url) {
 
-        RequestConfigInfo requestConfigInfo = this.requestConfigRepository.findByKeyUrl(url);
+        RequestConfigInfo adaptedConfig = null;
 
-        if (null == requestConfigInfo) {
+        // 同一个url可能对应不同请求方式
+        final List<RequestConfigInfo> configByUrl = this.requestConfigRepository.queryByKeyUrl(url);
+        for (RequestConfigInfo configInfo : configByUrl) {
+            if (requestMethod.equals(configInfo.getRequestMethod())) {
+                adaptedConfig = configInfo;
+            }
+        }
 
-            List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(requestMethod);
+        if (null == adaptedConfig) {
+
+            final List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(requestMethod);
 
             for (RequestConfigInfo configInfo : restFullConfigList) {
                 if (configInfo.matchUrl(url, this.antPathMatcher)) {
-                    requestConfigInfo = configInfo;
+                    adaptedConfig = configInfo;
                     break;
                 }
             }
-
         }
 
-        return requestConfigInfo;
+        return adaptedConfig;
     }
 
     /**
@@ -126,12 +133,12 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * date: 2021/1/1 17:09
      * author: Silwings
      *
-     * @param method 带有{@link org.springframework.stereotype.Controller}注解的类的方法
+     * @param method      带有{@link org.springframework.stereotype.Controller}注解的类的方法
      * @param handlerType
      * @return ResponderMappingInfo method的映射信息
      */
     @Override
-    protected ResponderMappingInfo getMappingForMethod(final Method method,final Class<?> handlerType) {
+    protected ResponderMappingInfo getMappingForMethod(final Method method, final Class<?> handlerType) {
         final ResponderMapping mergedAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponderMapping.class);
         if (null == mergedAnnotation) {
             return null;
@@ -152,7 +159,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * @return ResponderMappingInfo 根据request创建出的映射信息,用于实际处理业务
      */
     @Override
-    protected ResponderMappingInfo getMatchingMapping(final ResponderMappingInfo mapping,final HttpServletRequest request) {
+    protected ResponderMappingInfo getMatchingMapping(final ResponderMappingInfo mapping, final HttpServletRequest request) {
         return mapping.getMatchingCondition(ResponderContextUtils.getBody(request));
     }
 

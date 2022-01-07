@@ -18,13 +18,14 @@ import java.util.List;
 public class TestRequestConfigRepository implements RequestConfigRepository {
 
     @Override
-    public RequestConfigInfo findByKeyUrl(String keyUrl) {
-        return JSON.parseObject(getStr(), RequestConfigInfo.class);
+    public List<RequestConfigInfo> queryRestConfigByMethod(RequestMethod requestMethod) {
+        return Collections.emptyList();
     }
 
     @Override
-    public List<RequestConfigInfo> queryRestConfigByMethod(RequestMethod requestMethod) {
-        return Collections.emptyList();
+    public List<RequestConfigInfo> queryByKeyUrl(String url) {
+        return Collections.singletonList(JSON.parseObject(getStr(), RequestConfigInfo.class));
+
     }
 
     private static String getStr() {
@@ -36,15 +37,20 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "    \"tasks\":[\n" +
                 "        {\n" +
                 "            \"name\":\"我的回调任务\",\n" +
-                "            \"delayTime\":10000,\n" +
+                "            \"delayTime\":10,\n" +
                 "            \"conditions\":[\n" +
                 "\n" +
                 "            ],\n" +
                 "            \"content\":{\n" +
                 "                \"requestMethod\":\"POST\",\n" +
                 "                \"requestUrl\":\"http://localhost:8081/getUser\",\n" +
+                "                \"headers\":{\n" +
+                "                    \"abc\":\"1122v\"\n" +
+                "                },\n" +
                 "                \"params\":{\n" +
-                "                    \"id\":[10],\n" +
+                "                    \"id\":[\n" +
+                "                        10\n" +
+                "                    ],\n" +
                 "                    \"whh\":[\n" +
                 "                        \"白井\",\n" +
                 "                        \"黑子\"\n" +
