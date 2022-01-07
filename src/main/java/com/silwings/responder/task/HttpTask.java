@@ -1,13 +1,14 @@
 package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.AccessLevel;
+import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2022/1/5 22:09
  * @Version V1.0
  **/
-@Setter(AccessLevel.PROTECTED)
+@Setter
 @Getter
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -41,6 +42,11 @@ public class HttpTask implements Delayed {
     private RequestMethod requestMethod;
 
     /**
+     * 请求头
+     */
+    private Map<String,String> headers;
+
+    /**
      * url参数
      */
     private Map<String, String[]> params;
@@ -56,7 +62,7 @@ public class HttpTask implements Delayed {
     private Long runTime;
 
     /**
-     * 延迟时间(s)
+     * 延迟时间(ms)
      */
     private Long delayTime;
 
@@ -68,6 +74,18 @@ public class HttpTask implements Delayed {
     @Override
     public int compareTo(final Delayed task) {
         return Long.compare(this.getDelay(TimeUnit.MILLISECONDS),task.getDelay(TimeUnit.MILLISECONDS));
+    }
+
+    public Map<String, String> getHeaders() {
+        return ConvertUtils.toObj(this.headers, Collections.emptyMap());
+    }
+
+    public Map<String, String[]> getParams() {
+        return ConvertUtils.toObj(this.params, Collections.emptyMap());
+    }
+
+    public JSONObject getBody() {
+        return ConvertUtils.toObj(this.body, new JSONObject());
     }
 
 }

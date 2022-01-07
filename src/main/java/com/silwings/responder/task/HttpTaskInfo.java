@@ -30,7 +30,7 @@ public class HttpTaskInfo implements ConditionAble {
     private String name;
 
     /**
-     * 延迟时间(s)
+     * 延迟时间(ms)
      */
     private Long delayTime;
 
@@ -67,6 +67,11 @@ public class HttpTaskInfo implements ConditionAble {
          * 请求地址
          */
         private String requestUrl;
+
+        /**
+         * 请求头
+         */
+        private Map<String,String> headers;
 
         /**
          * 请求参数

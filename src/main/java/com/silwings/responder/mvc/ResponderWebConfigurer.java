@@ -3,15 +3,13 @@ package com.silwings.responder.mvc;
 import com.silwings.responder.core.RequestContextFactory;
 import com.silwings.responder.core.ResponderFlowManager;
 import com.silwings.responder.interfaces.RequestConfigRepository;
+import com.silwings.responder.task.HttpHandler;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
-import com.silwings.responder.task.callback.CallBackHandler;
-import com.silwings.responder.task.callback.CallBackManager;
 import com.silwings.test.TestRequestConfigRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,18 +28,6 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ResponderMappingArgumentResolver());
-    }
-
-    @Bean
-    public CallBackManager callBackManager() {
-        final CallBackManager callBackManager = new CallBackManager();
-        // 启动后台回调线程
-        final Thread thread = new Thread(new CallBackHandler(callBackManager, new RestTemplate()));
-        thread.setDaemon(true);
-        thread.setName("callback-task");
-        thread.start();
-
-        return callBackManager;
     }
 
     @Override
@@ -79,5 +65,16 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
         return new ResponderFlowManager(httpTaskFactory(), httpTaskManager());
     }
 
+    @Bean
+    public HttpHandler httpHandler() {
+        final HttpHandler httpHandler = new HttpHandler(httpTaskManager());
+        // 启动后台回调线程
+        final Thread thread = new Thread(httpHandler);
+        thread.setDaemon(true);
+        thread.setName("http-task");
+        thread.start();
+
+        return httpHandler;
+    }
 
 }

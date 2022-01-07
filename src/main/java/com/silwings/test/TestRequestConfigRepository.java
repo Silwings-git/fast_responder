@@ -36,21 +36,19 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "    \"tasks\":[\n" +
                 "        {\n" +
                 "            \"name\":\"我的回调任务\",\n" +
-                "            \"delayTime\":10,\n" +
+                "            \"delayTime\":10000,\n" +
                 "            \"conditions\":[\n" +
                 "\n" +
                 "            ],\n" +
                 "            \"content\":{\n" +
                 "                \"requestMethod\":\"POST\",\n" +
-                "                \"requestUrl\":\"http://127.0.0.1:8899/payment/${id}/notify\",\n" +
+                "                \"requestUrl\":\"http://localhost:8081/getUser\",\n" +
                 "                \"params\":{\n" +
-                "                    \"age\":[\n" +
-                "                        \"18\",\n" +
-                "                        \"20\"\n" +
+                "                    \"id\":[10],\n" +
+                "                    \"whh\":[\n" +
+                "                        \"白井\",\n" +
+                "                        \"黑子\"\n" +
                 "                    ]\n" +
-                "                },\n" +
-                "                \"restParams\":{\n" +
-                "                    \"id\":\"20\"\n" +
                 "                },\n" +
                 "                \"body\":{\n" +
                 "                    \"paymentCallback\":{\n" +
