@@ -6,13 +6,13 @@ import com.silwings.responder.core.ResponderContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @ClassName ResponderBodyUtils
- * @Description ResponderBodyUtils
+ * @ClassName ResponderContextUtils
+ * @Description ResponderContextUtils
  * @Author Silwings
  * @Date 2021/1/1 17:21
  * @Version V1.0
  **/
-public class ResponderBodyUtils {
+public class ResponderContextUtils {
 
     private static final String RESPONDER_BODY = "ResponderContext";
 

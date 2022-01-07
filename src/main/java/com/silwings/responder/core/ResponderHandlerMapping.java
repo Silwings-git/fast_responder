@@ -5,7 +5,7 @@ import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.mvc.ResponderHandler;
 import com.silwings.responder.mvc.ResponderMapping;
 import com.silwings.responder.mvc.ResponderMappingInfo;
-import com.silwings.responder.utils.ResponderBodyUtils;
+import com.silwings.responder.utils.ResponderContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
@@ -61,7 +61,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
             final ResponderContext responderContext = new ResponderContext(requestContext);
 
-            ResponderBodyUtils.setBody(request, responderContext);
+            ResponderContextUtils.setBody(request, responderContext);
 
         }
 
@@ -153,13 +153,13 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      */
     @Override
     protected ResponderMappingInfo getMatchingMapping(final ResponderMappingInfo mapping,final HttpServletRequest request) {
-        return mapping.getMatchingCondition(ResponderBodyUtils.getBody(request));
+        return mapping.getMatchingCondition(ResponderContextUtils.getBody(request));
     }
 
     @Override
     protected Comparator<ResponderMappingInfo> getMappingComparator(final HttpServletRequest request) {
         return ((info1, info2) ->
-                info1.compareTo(info1, ResponderBodyUtils.getBody(request)));
+                info1.compareTo(info1, ResponderContextUtils.getBody(request)));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.silwings.responder.mvc;
 
 import com.silwings.responder.core.ResponderContext;
-import com.silwings.responder.utils.ResponderBodyUtils;
+import com.silwings.responder.utils.ResponderContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
@@ -16,17 +16,17 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * @ClassName ResponderBodyArgumentResolver
+ * @ClassName ResponderMappingArgumentResolver
  * @Description 参数解析器
  * @Author Silwings
  * @Date 2021/8/6 23:39
  * @Version V1.0
  **/
 @Slf4j
-public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResolver {
+public class ResponderMappingArgumentResolver implements HandlerMethodArgumentResolver {
 
-    public ResponderBodyArgumentResolver() {
-        log.info("ResponderBodyArgumentResolver initialization.");
+    public ResponderMappingArgumentResolver() {
+        log.info("ResponderMappingArgumentResolver initialization.");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
         // 获取对应方法的入参类型,用来判断需要的参数是否是HttpServletRequest中存储的请求体实例
         final Class<?> parameterType = parameter.getParameterType();
 
-        final ResponderContext responderContext = ResponderBodyUtils.getBody(nativeRequest);
+        final ResponderContext responderContext = ResponderContextUtils.getBody(nativeRequest);
 
         if (ResponderContext.class.equals(parameterType)) {
             return responderContext;
@@ -69,7 +69,7 @@ public class ResponderBodyArgumentResolver implements HandlerMethodArgumentResol
             try {
                 return propertyDescriptor.getReadMethod().invoke(responderContext);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                log.error("ResponderBodyArgumentResolver.getParameter 执行异常.", e);
+                log.error("ResponderMappingArgumentResolver.getParameter 执行异常.", e);
             }
         }
 

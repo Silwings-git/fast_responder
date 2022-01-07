@@ -15,19 +15,19 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 /**
- * @ClassName ResponderBodyHandlerManager
- * @Description ResponderBodyHandlerManager
+ * @ClassName ResponderFlowManager
+ * @Description 应答器流程管理器
  * @Author Silwings
  * @Date 2021/8/7 14:54
  * @Version V1.0
  **/
 @Slf4j
-public class ResponderBodyHandlerManager {
+public class ResponderFlowManager {
 
     private HttpTaskFactory httpTaskFactory;
     private HttpTaskManager httpTaskManager;
 
-    public ResponderBodyHandlerManager(final HttpTaskFactory httpTaskFactory, final HttpTaskManager httpTaskManager) {
+    public ResponderFlowManager(final HttpTaskFactory httpTaskFactory, final HttpTaskManager httpTaskManager) {
         this.httpTaskFactory = httpTaskFactory;
         this.httpTaskManager = httpTaskManager;
     }

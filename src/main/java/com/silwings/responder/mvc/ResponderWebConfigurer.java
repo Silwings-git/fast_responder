@@ -1,7 +1,7 @@
 package com.silwings.responder.mvc;
 
 import com.silwings.responder.core.RequestContextFactory;
-import com.silwings.responder.core.ResponderBodyHandlerManager;
+import com.silwings.responder.core.ResponderFlowManager;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
@@ -29,7 +29,7 @@ import java.util.List;
 public class ResponderWebConfigurer implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new ResponderBodyArgumentResolver());
+        resolvers.add(new ResponderMappingArgumentResolver());
     }
 
     @Bean
@@ -75,8 +75,8 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     }
 
     @Bean
-    public ResponderBodyHandlerManager responderBodyHandlerManager() {
-        return new ResponderBodyHandlerManager(httpTaskFactory(), httpTaskManager());
+    public ResponderFlowManager responderBodyHandlerManager() {
+        return new ResponderFlowManager(httpTaskFactory(), httpTaskManager());
     }
 
 

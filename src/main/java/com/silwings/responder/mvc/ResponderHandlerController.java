@@ -1,7 +1,7 @@
 package com.silwings.responder.mvc;
 
-import com.silwings.responder.core.ResponderBodyHandlerManager;
 import com.silwings.responder.core.ResponderContext;
+import com.silwings.responder.core.ResponderFlowManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,15 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 @ResponderHandler
 public class ResponderHandlerController {
 
-    private ResponderBodyHandlerManager responderBodyHandlerManager;
+    private ResponderFlowManager responderFlowManager;
 
-    public ResponderHandlerController(ResponderBodyHandlerManager responderBodyHandlerManager) {
-        this.responderBodyHandlerManager = responderBodyHandlerManager;
+    public ResponderHandlerController(ResponderFlowManager responderFlowManager) {
+        this.responderFlowManager = responderFlowManager;
     }
 
     @ResponderMapping
     public ResponderContext handle(final ResponderContext responderContext) {
-        return this.responderBodyHandlerManager.handle(responderContext);
+        return this.responderFlowManager.handle(responderContext);
     }
 
 }
