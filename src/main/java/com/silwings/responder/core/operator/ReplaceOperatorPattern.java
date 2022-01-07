@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
  **/
 public class ReplaceOperatorPattern {
 
-    public static final Pattern SEARCH_REPLACE_PATTERN = Pattern.compile("\\$\\{[\\S]+?}");
+    static final Pattern SEARCH_REPLACE_PATTERN = Pattern.compile("\\$\\{[\\S]+?}");
+    static final Pattern RANDOM_INT_PATTERN = Pattern.compile("-RDInt-");
+    static final Pattern RANDOM_BOOLEAN_PATTERN = Pattern.compile("-RDBoolean-");
+    static final Pattern RANDOM_DOUBLE_PATTERN = Pattern.compile("-RDDouble-");
+    static final Pattern RANDOM_LONG_PATTERN = Pattern.compile("-RDLong-");
 
 }
