@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName ResponderReplaceOperator
@@ -31,17 +32,18 @@ public enum ResponderReplaceOperator {
     SEARCH_REPLACE("${}", arg -> ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::searchReplaceHandle),
 
-    RANDOM_NUMBER("-RDInt-", arg -> ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(arg).find(),
-            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Integer.toString(ThreadLocalRandom.current().nextInt()))),
+    RANDOM_BOOLEAN("-RDBoolean()-", arg -> ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(arg).find(),
+            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Boolean.toString(ThreadLocalRandom.current().nextBoolean()), ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN)),
 
-    RANDOM_BOOLEAN("-RDBoolean-", arg -> ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(arg).find(),
-            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Boolean.toString(ThreadLocalRandom.current().nextBoolean()))),
+    RANDOM_INT_BOUND("-RDInt()-", arg -> ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::randomInt),
 
-    RANDOM_DOUBLE("-RDDouble-", arg -> ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(arg).find(),
-            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Double.toString(ThreadLocalRandom.current().nextDouble()))),
+    RANDOM_LONG("-RDLong()-", arg -> ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::randomLong),
 
-    RANDOM_LONG("-RDDouble-", arg -> ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg).find(),
-            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Long.toString(ThreadLocalRandom.current().nextLong()))),
+    RANDOM_DOUBLE("-RDDouble()-", arg -> ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::randomDouble),
+
 
     /**
      * 什么都不做.返回入参
@@ -109,10 +111,10 @@ public enum ResponderReplaceOperator {
             });
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 final String key = entry.getKey();
-                final Object realKey = ResponderReplaceOperator.searchReplaceHandle(key, paramsAndBody);
+                final Object realKey = searchReplaceHandle(key, paramsAndBody);
 
                 final Object value = entry.getValue();
-                final Object realValue = ResponderReplaceOperator.searchReplaceHandle(value.toString(), paramsAndBody);
+                final Object realValue = searchReplaceHandle(value.toString(), paramsAndBody);
 
                 hashMap.put(realKey, realValue);
             }
@@ -164,14 +166,9 @@ public enum ResponderReplaceOperator {
         return JSON.toJSONString(param);
     }
 
-    private static Object randomInt(final String arg, final RequestParamsAndBody paramsAndBody) {
-        return ResponderReplaceOperator.randomEverything(arg, Integer.toString(ThreadLocalRandom.current().nextInt()));
-    }
+    private static Object randomEverything(final String arg, final String replaceValue, final Pattern pattern) {
 
-
-    private static Object randomEverything(final String arg, final String replaceValue) {
-
-        Matcher matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg);
+        Matcher matcher = pattern.matcher(arg);
 
         String input = arg;
 
@@ -185,11 +182,153 @@ public enum ResponderReplaceOperator {
                 return replaceValue;
             }
 
-            matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(input);
+            matcher = pattern.matcher(input);
+        }
+
+        return input;
+    }
+
+    private static Object randomInt(final String arg, final RequestParamsAndBody paramsAndBody) {
+
+        Matcher matcher = ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            String replaceValue;
+
+            final String range = group.replace("-RDInt(", "").replace(")", "");
+            if (0 == range.length()) {
+
+                replaceValue = Integer.toString(ThreadLocalRandom.current().nextInt());
+            } else if (range.contains(",")) {
+
+                final String[] split = range.split(",");
+                replaceValue = Integer.toString(ThreadLocalRandom.current().nextInt(formatInt(split[0]), formatInt(split[1])));
+            } else {
+
+                replaceValue = Integer.toString(ThreadLocalRandom.current().nextInt(formatInt(range)));
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(input);
+        }
+
+        return input;
+    }
+
+
+    private static Object randomLong(final String arg, final RequestParamsAndBody paramsAndBody) {
+
+        Matcher matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            String replaceValue;
+
+            final String range = group.replace("-RDLong(", "").replace(")", "");
+            if (0 == range.length()) {
+
+                replaceValue = Long.toString(ThreadLocalRandom.current().nextLong());
+            } else if (range.contains(",")) {
+
+                final String[] split = range.split(",");
+                replaceValue = Long.toString(ThreadLocalRandom.current().nextLong(formatLong(split[0]), formatLong(split[1])));
+            } else {
+
+                replaceValue = Long.toString(ThreadLocalRandom.current().nextLong(formatLong(range)));
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(input);
         }
 
         return input;
 
+    }
+
+    private static Object randomDouble(final String arg, final RequestParamsAndBody paramsAndBody) {
+        Matcher matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            String replaceValue;
+
+            final String range = group.replace("-RDLong(", "").replace(")", "");
+            if (0 == range.length()) {
+
+                replaceValue = Double.toString(ThreadLocalRandom.current().nextDouble());
+            } else if (range.contains(",")) {
+
+                final String[] split = range.split(",");
+                replaceValue = Double.toString(ThreadLocalRandom.current().nextDouble(formatDouble(split[0]), formatDouble(split[1])));
+            } else {
+
+                replaceValue = Double.toString(ThreadLocalRandom.current().nextDouble(formatDouble(range)));
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(input);
+        }
+
+        return input;
+    }
+
+    private static double formatDouble(String str) {
+        try {
+
+            return Double.valueOf(str);
+        } catch (NumberFormatException e) {
+
+            return Double.MAX_VALUE;
+        }
+    }
+
+
+    private static long formatLong(String str) {
+        try {
+
+            return Long.valueOf(str);
+        } catch (NumberFormatException e) {
+
+            return Long.MAX_VALUE;
+        }
+    }
+
+    private static int formatInt(final String str) {
+        try {
+
+            return Integer.valueOf(str);
+        } catch (NumberFormatException e) {
+
+            return Integer.MAX_VALUE;
+        }
     }
 
 }
