@@ -9,22 +9,46 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 
 /**
  * @ClassName ResponderReplaceOperator
- * @Description ResponderReplaceOperator
+ * @Description 操作符
+ * 1.查找替换
+ * 2.随机数
  * @Author Silwings
  * @Date 2022/1/4 23:33
  * @Version V1.0
  **/
 public enum ResponderReplaceOperator {
 
-    SEARCH_REPLACE("${}", arg -> ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg).find(), ResponderReplaceOperator::searchReplaceHandle),
+    /**
+     * 查询替换.从请求参数中寻找并替换标准处的字符串
+     */
+    SEARCH_REPLACE("${}", arg -> ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::searchReplaceHandle),
+
+    RANDOM_NUMBER("-RDInt-", arg -> ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(arg).find(),
+            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Integer.toString(ThreadLocalRandom.current().nextInt()))),
+
+    RANDOM_BOOLEAN("-RDBoolean-", arg -> ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(arg).find(),
+            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Boolean.toString(ThreadLocalRandom.current().nextBoolean()))),
+
+    RANDOM_DOUBLE("-RDDouble-", arg -> ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(arg).find(),
+            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Double.toString(ThreadLocalRandom.current().nextDouble()))),
+
+    RANDOM_LONG("-RDDouble-", arg -> ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg).find(),
+            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Long.toString(ThreadLocalRandom.current().nextLong()))),
+
+    /**
+     * 什么都不做.返回入参
+     */
     DO_NOTHING("", s -> false, (str, paramsAndBody) -> str),
     ;
+
 
     private String operator;
     private Predicate<String> applyFunction;
@@ -74,10 +98,6 @@ public enum ResponderReplaceOperator {
      * @return java.lang.Object 替换后的新值
      */
     private static Object searchReplaceHandle(final String arg, final RequestParamsAndBody paramsAndBody) {
-
-        if (StringUtils.isBlank(arg)) {
-            return arg;
-        }
 
         String input = arg;
 
@@ -142,6 +162,34 @@ public enum ResponderReplaceOperator {
         }
 
         return JSON.toJSONString(param);
+    }
+
+    private static Object randomInt(final String arg, final RequestParamsAndBody paramsAndBody) {
+        return ResponderReplaceOperator.randomEverything(arg, Integer.toString(ThreadLocalRandom.current().nextInt()));
+    }
+
+
+    private static Object randomEverything(final String arg, final String replaceValue) {
+
+        Matcher matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(input);
+        }
+
+        return input;
+
     }
 
 }
