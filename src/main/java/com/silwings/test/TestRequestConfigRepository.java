@@ -103,12 +103,16 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "                \"v4\":\"-RDInt(10,12)-\",\n" +
                 "                \"v5\":\"-RDLong()-\",\n" +
                 "                \"v6\":\"-RDLong(10)-\",\n" +
-                "                \"v7\":\"-RDLong(-10,12)-\",\n" +
+                "                \"v7\":\"-RDLong(10,12)-\",\n" +
                 "                \"v8\":\"-RDDouble()-\",\n" +
                 "                \"v9\":\"-RDDouble(10)-\",\n" +
-                "                \"v10\":\"-RDDouble(-10,12)-\",\n" +
+                "                \"v10\":\"-RDDouble(10,11)-\",\n" +
                 "                \"v11\":\"-RDDouble(10.555)-\",\n" +
-                "                \"v12\":\"-RDDouble(-10.0,10.2)-\"\n" +
+                "                \"v12\":\"-RDDouble(10.1,10.2)-\",\n" +
+                "                \"v13\":\"-UUID()-\",\n" +
+                "                \"v14\":\"-UUID(1)-\",\n" +
+                "                \"v15\":\"-UUID(32)-\",\n" +
+                "                \"v16\":\"-UUID(64)-\"\n" +
                 "            }\n" +
                 "        }\n" +
                 "    ]\n" +

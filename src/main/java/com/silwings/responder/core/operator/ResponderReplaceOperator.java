@@ -9,11 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @ClassName ResponderReplaceOperator
@@ -32,17 +32,35 @@ public enum ResponderReplaceOperator {
     SEARCH_REPLACE("${}", arg -> ReplaceOperatorPattern.SEARCH_REPLACE_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::searchReplaceHandle),
 
+    /**
+     * 随机boolean值
+     */
     RANDOM_BOOLEAN("-RDBoolean()-", arg -> ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(arg).find(),
-            (arg, paramsAndBody) -> ResponderReplaceOperator.randomEverything(arg, Boolean.toString(ThreadLocalRandom.current().nextBoolean()), ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN)),
+            ResponderReplaceOperator::randomBoolean),
 
+    /**
+     * 随机int值,可指定范围
+     */
     RANDOM_INT_BOUND("-RDInt()-", arg -> ReplaceOperatorPattern.RANDOM_INT_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::randomInt),
 
+    /**
+     * 随机long值,可指定范围
+     */
     RANDOM_LONG("-RDLong()-", arg -> ReplaceOperatorPattern.RANDOM_LONG_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::randomLong),
 
+    /**
+     * 随机double值,可指定范围
+     */
     RANDOM_DOUBLE("-RDDouble()-", arg -> ReplaceOperatorPattern.RANDOM_DOUBLE_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::randomDouble),
+
+    /**
+     * 随机uuid值,可指定长度
+     */
+    UUID_REPLACE("-UUID()-", arg -> ReplaceOperatorPattern.UUID_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::uuid),
 
 
     /**
@@ -166,14 +184,17 @@ public enum ResponderReplaceOperator {
         return JSON.toJSONString(param);
     }
 
-    private static Object randomEverything(final String arg, final String replaceValue, final Pattern pattern) {
 
-        Matcher matcher = pattern.matcher(arg);
+    private static Object randomBoolean(final String arg, final RequestParamsAndBody paramsAndBody) {
+
+        Matcher matcher = ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(arg);
 
         String input = arg;
 
         while (matcher.find()) {
             final String group = matcher.group();
+
+            final String replaceValue = Boolean.toString(ThreadLocalRandom.current().nextBoolean());
 
             // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
             if (input.length() > group.length()) {
@@ -182,7 +203,7 @@ public enum ResponderReplaceOperator {
                 return replaceValue;
             }
 
-            matcher = pattern.matcher(input);
+            matcher = ReplaceOperatorPattern.RANDOM_BOOLEAN_PATTERN.matcher(input);
         }
 
         return input;
@@ -329,6 +350,49 @@ public enum ResponderReplaceOperator {
 
             return Integer.MAX_VALUE;
         }
+    }
+
+
+    private static Object uuid(final String arg, final RequestParamsAndBody paramsAndBody) {
+
+        Matcher matcher = ReplaceOperatorPattern.UUID_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            String replaceValue = UUID.randomUUID().toString();
+
+            final String uuidLengthStr = group.replace("-UUID(", "").replace(")-", "");
+            int uuidLength = 32;
+            try {
+                uuidLength = Integer.valueOf(uuidLengthStr);
+            } catch (NumberFormatException e) {
+                // no codes
+            }
+
+            if (uuidLength <= 32) {
+                replaceValue = replaceValue.substring(0, uuidLength);
+            } else {
+                final StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < (uuidLength / 32) + 1; i++) {
+                    builder.append(replaceValue);
+                }
+                replaceValue = builder.substring(0, uuidLength);
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.UUID_PATTERN.matcher(input);
+        }
+
+        return input;
     }
 
 }
