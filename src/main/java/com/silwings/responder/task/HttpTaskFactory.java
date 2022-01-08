@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.silwings.responder.core.RequestParamsAndBody;
 import com.silwings.responder.core.operator.ResponderReplaceOperator;
 import com.silwings.responder.utils.BeanCopyUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * @Date 2022/1/6 0:35
  * @Version V1.0
  **/
+@Slf4j
 public class HttpTaskFactory {
 
     /**
@@ -61,8 +63,19 @@ public class HttpTaskFactory {
 
         // 实际请求体
         final String bodyStr = taskContent.getBody().toJSONString();
-        final Object realBodyStr = ResponderReplaceOperator.replace(bodyStr, requestParamsAndBody);
-        final JSONObject realBody = JSON.parseObject(JSON.toJSONString(realBodyStr));
+        final Object realBodyObj = ResponderReplaceOperator.replace(bodyStr, requestParamsAndBody);
+        JSONObject realBody = new JSONObject();
+        if (realBodyObj instanceof String) {
+
+            if (JSON.isValidObject((String) realBodyObj)) {
+                realBody = JSON.parseObject((String) realBodyObj);
+            }else {
+                log.error("HttpTask {} 的实际 Body 无法转换为JSON格式,已丢弃. 实际Body: {}", taskInfo.getName(), realBodyObj);
+            }
+        } else {
+
+            realBody = JSON.parseObject(JSON.toJSONString(realBodyObj));
+        }
 
         final HttpTask task = new HttpTask();
         task

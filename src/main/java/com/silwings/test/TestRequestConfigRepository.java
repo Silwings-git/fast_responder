@@ -110,7 +110,7 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
                 "                \"v11\":\"-RDDouble(10.555)-\",\n" +
                 "                \"v12\":\"-RDDouble(10.1,10.2)-\",\n" +
                 "                \"v13\":\"-UUID()-\",\n" +
-                "                \"v14\":\"-UUID(1)-\",\n" +
+                "                \"v14\":\"-UUID(1)-你好啊,现在是-UUID(2)-点钟\",\n" +
                 "                \"v15\":\"-UUID(32)-\",\n" +
                 "                \"v16\":\"-UUID(64)-\"\n" +
                 "            }\n" +

@@ -18,8 +18,6 @@ import java.util.regex.Matcher;
 /**
  * @ClassName ResponderReplaceOperator
  * @Description 操作符
- * 1.查找替换
- * 2.随机数
  * @Author Silwings
  * @Date 2022/1/4 23:33
  * @Version V1.0
@@ -62,11 +60,10 @@ public enum ResponderReplaceOperator {
     UUID_REPLACE("-UUID()-", arg -> ReplaceOperatorPattern.UUID_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::uuid),
 
-
     /**
-     * 什么都不做.返回入参
+     * 什么都不做.返回入参(该操作符意在筛选不到任何操作符时默认返回,这样不需要进行空判)
      */
-    DO_NOTHING("", s -> false, (str, paramsAndBody) -> str),
+    DO_NOTHING("", s -> true, (str, paramsAndBody) -> str),
     ;
 
 
