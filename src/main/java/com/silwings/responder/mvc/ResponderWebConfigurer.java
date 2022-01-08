@@ -2,11 +2,9 @@ package com.silwings.responder.mvc;
 
 import com.silwings.responder.core.RequestContextFactory;
 import com.silwings.responder.core.ResponderFlowManager;
-import com.silwings.responder.interfaces.RequestConfigRepository;
 import com.silwings.responder.task.HttpHandler;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
-import com.silwings.test.TestRequestConfigRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
@@ -48,11 +46,6 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     @Bean
     public HttpTaskFactory httpTaskFactory() {
         return new HttpTaskFactory();
-    }
-
-    @Bean
-    public RequestConfigRepository requestConfigRepository() {
-        return new TestRequestConfigRepository();
     }
 
     @Bean
