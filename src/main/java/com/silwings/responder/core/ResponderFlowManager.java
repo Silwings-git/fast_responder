@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.silwings.responder.core.codition.Condition;
 import com.silwings.responder.core.operator.ResponderReplaceOperator;
 import com.silwings.responder.core.result.Result;
-import com.silwings.responder.core.result.ResultCondition;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskInfo;
 import com.silwings.responder.task.HttpTaskManager;
@@ -46,7 +45,7 @@ public class ResponderFlowManager {
 
         this.performTask(responderContext.getTasks(), responderContext.getRequestParamsAndBody());
 
-        Result result = this.filterResult(responderContext.getResultConditions(), responderContext.getRequestParamsAndBody(), responderContext.getResults());
+        Result result = this.filterResult(responderContext.getResults(), responderContext.getRequestParamsAndBody());
 
         result = this.replaceOperatorResult(result, responderContext.getRequestParamsAndBody());
 
@@ -88,73 +87,26 @@ public class ResponderFlowManager {
      * date: 2022/1/6 22:37
      * author: Silwings
      *
-     * @param resultConditions     返回值条件集
+     * @param results              可选返回值集
      * @param requestParamsAndBody 请求参数
-     * @param results              可选返回值
-     * @return com.silwings.responder.core.result.Result 符合筛选条件或default的返回值,如果未设置default,可能返回null
+     * @return com.silwings.responder.core.result.CheckResult 符合筛选条件的result,如果找不到返回null
      */
-    private Result filterResult(final List<ResultCondition> resultConditions, final RequestParamsAndBody requestParamsAndBody, final List<Result> results) {
+    private Result filterResult(final List<Result> results, final RequestParamsAndBody requestParamsAndBody) {
 
-        if (CollectionUtils.isEmpty(resultConditions)) {
-            return this.getDefaultResult(results);
-        }
-
-        for (ResultCondition resultCondition : resultConditions) {
-
-            final Condition condition = resultCondition.findCondition();
-
-            if (condition.meet(requestParamsAndBody)) {
-
-                final Result resultByName = this.getResultByName(resultCondition.getResultName(), results);
-
-                if (null != resultByName) {
-                    return resultByName;
-                }
-
-            }
-
-        }
-
-        return this.getDefaultResult(results);
-    }
-
-    /**
-     * description: 获取默认返回值.(名称为default)
-     * version: 1.0
-     * date: 2022/1/6 21:52
-     * author: Silwings
-     *
-     * @param results 可选返回值集
-     * @return com.silwings.responder.core.result.Result 默认返回值.如果没有返回null
-     */
-    private Result getDefaultResult(final List<Result> results) {
-        return this.getResultByName("default", results);
-    }
-
-    /**
-     * description: 根据返回对象名获取返回对象实例
-     * version: 1.0
-     * date: 2022/1/6 21:55
-     * author: Silwings
-     *
-     * @param resultName 返回对象名称
-     * @param results    可选返回值集
-     * @return com.silwings.responder.core.result.Result 和resultName匹配的返回值对象.如果找不到返回null
-     */
-    private Result getResultByName(final String resultName, final List<Result> results) {
-        if (StringUtils.isBlank(resultName) || CollectionUtils.isEmpty(results)) {
+        if (CollectionUtils.isEmpty(results)) {
             return null;
         }
 
         for (Result result : results) {
-            if (resultName.equals(result.getResultName())) {
+            final Condition condition = result.findCondition();
+
+            if (condition.meet(requestParamsAndBody)) {
                 return result;
             }
         }
 
         return null;
     }
-
 
     /**
      * description: 给返回值应用操作符
@@ -164,7 +116,7 @@ public class ResponderFlowManager {
      *
      * @param result               返回值
      * @param requestParamsAndBody 请求参数集
-     * @return com.silwings.responder.core.result.Result 新的返回值实例
+     * @return com.silwings.responder.core.result.CheckResult 新的返回值实例
      */
     private Result replaceOperatorResult(final Result result, final RequestParamsAndBody requestParamsAndBody) {
 

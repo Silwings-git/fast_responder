@@ -2,7 +2,6 @@ package com.silwings.responder.core.config;
 
 
 import com.silwings.responder.core.result.Result;
-import com.silwings.responder.core.result.ResultCondition;
 import com.silwings.responder.task.HttpTaskInfo;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,11 +44,6 @@ public class RequestConfigInfo {
     private List<HttpTaskInfo> tasks;
 
     /**
-     * 返回值过滤
-     */
-    private List<ResultCondition> resultConditions;
-
-    /**
      * 可用返回值
      */
     private List<Result> results;
@@ -60,10 +54,6 @@ public class RequestConfigInfo {
 
     public List<HttpTaskInfo> getTasks() {
         return CollectionUtils.isEmpty(this.tasks) ? Collections.emptyList() : this.tasks;
-    }
-
-    public List<ResultCondition> getResultConditions() {
-        return CollectionUtils.isEmpty(this.resultConditions) ? Collections.emptyList() : this.resultConditions;
     }
 
     public List<Result> getResults() {

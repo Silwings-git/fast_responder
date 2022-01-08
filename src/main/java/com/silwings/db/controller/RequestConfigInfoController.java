@@ -50,6 +50,8 @@ public class RequestConfigInfoController {
 
         final RequestConfigInfoDto insertInfo = new RequestConfigInfoDto();
         insertInfo
+                .setName(param.getName())
+                .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
                 .setRequestMethod(param.getRequestMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
@@ -103,6 +105,8 @@ public class RequestConfigInfoController {
         final RequestConfigInfoDto updateInfo = new RequestConfigInfoDto();
         updateInfo
                 .setId(id)
+                .setName(param.getName())
+                .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
                 .setRequestMethod(param.getRequestMethod().toString())
                 .setDataJson(JSON.toJSONString(param))

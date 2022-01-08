@@ -2,7 +2,6 @@ package com.silwings.responder.core;
 
 
 import com.silwings.responder.core.result.Result;
-import com.silwings.responder.core.result.ResultCondition;
 import com.silwings.responder.task.HttpTaskInfo;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +37,6 @@ public class ResponderContext {
 
     RequestParamsAndBody getRequestParamsAndBody() {
         return this.requestContext.getRequestParamsAndBody();
-    }
-
-    List<ResultCondition> getResultConditions() {
-        return this.requestContext.getRequestConfigInfo().getResultConditions();
     }
 
     List<Result> getResults() {

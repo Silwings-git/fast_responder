@@ -1,11 +1,16 @@
 package com.silwings.responder.core.result;
 
 import com.alibaba.fastjson.JSONObject;
+import com.silwings.responder.core.codition.Condition;
+import com.silwings.responder.core.codition.ContainCondition;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
 
 /**
- * @ClassName Result
+ * @ClassName CheckResult
  * @Description 响应
  * @Author Silwings
  * @Date 2022/1/3 18:55
@@ -13,7 +18,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class Result {
+public class Result implements ContainCondition {
 
     /**
      * 返回值名称
@@ -29,5 +34,19 @@ public class Result {
      * 返回信息(仅当body不存在时尝试取该字段)
      */
     private String msg;
+
+    /**
+     * 条件
+     */
+    private List<String> conditions;
+
+    @Override
+    public Condition findCondition() {
+        if (CollectionUtils.isEmpty(this.conditions)){
+            return Condition.TRUE_CONDITION;
+        }
+
+        return Condition.from(conditions);
+    }
 
 }

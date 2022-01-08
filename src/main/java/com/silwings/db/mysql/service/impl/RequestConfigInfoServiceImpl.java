@@ -181,9 +181,9 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
             throw new DbException("配置信息不存在");
         }
 
-        final RequestConfigInfos.Result result = RequestConfigInfos.checkRequestConfigInfo(configInfo.getDataJson());
-        if (!result.isWhole()) {
-            throw new DbException("配置信息检查不通过. " + result.getMsg());
+        final RequestConfigInfos.CheckResult checkResult = RequestConfigInfos.checkRequestConfigInfo(configInfo.getDataJson());
+        if (!checkResult.isWhole()) {
+            throw new DbException("配置信息检查不通过. " + checkResult.getMsg());
         }
 
         final RequestConfigInfoDto enableParam = new RequestConfigInfoDto();
