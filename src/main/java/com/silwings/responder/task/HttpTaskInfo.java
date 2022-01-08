@@ -83,7 +83,7 @@ public class HttpTaskInfo implements ConditionAble {
          */
         private JSONObject body;
 
-        public Map<String, String[]> getParams() {
+        Map<String, String[]> getParams() {
             return ConvertUtils.toObj(this.params, Collections.emptyMap());
         }
 
@@ -93,7 +93,7 @@ public class HttpTaskInfo implements ConditionAble {
 
     }
 
-    public Long getDelayTime() {
+    Long getDelayTime() {
         return null == this.delayTime ? 0L : this.delayTime;
     }
 

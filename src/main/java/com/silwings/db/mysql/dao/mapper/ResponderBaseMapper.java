@@ -13,5 +13,5 @@ import tk.mybatis.mapper.common.RowBoundsMapper;
  * @Date 2022/1/8 15:05
  * @Version V1.0
  **/
-public interface ResponderBaseMapper<T> extends BaseMapper<T>, MySqlMapper<T>, ConditionMapper<T>, IdsMapper<T>, RowBoundsMapper<T> {
+interface ResponderBaseMapper<T> extends BaseMapper<T>, MySqlMapper<T>, ConditionMapper<T>, IdsMapper<T>, RowBoundsMapper<T> {
 }

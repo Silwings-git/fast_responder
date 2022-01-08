@@ -116,7 +116,7 @@ public class Condition {
             this.conditionSymbol = conditionSymbol;
         }
 
-        public static Expression of(final String conditionStr) {
+        static Expression of(final String conditionStr) {
 
             final String trimCondition = conditionStr.trim();
 
@@ -137,15 +137,15 @@ public class Condition {
             return expression;
         }
 
-        public void updateRealParam(final Object realParam) {
+        void updateRealParam(final Object realParam) {
             this.realParam = realParam;
         }
 
-        public void updateRealValue(final Object realValue) {
+        void updateRealValue(final Object realValue) {
             this.realValue = realValue;
         }
 
-        public boolean calculate() {
+        boolean calculate() {
             if (null == this.realParam || null == this.conditionSymbol || null == this.realValue) {
                 return false;
             }
@@ -154,7 +154,7 @@ public class Condition {
                     ConvertUtils.toStringOrJsonString(this.realValue));
         }
 
-        public String realExpression() {
+        String realExpression() {
             if (null == this.realParam || null == this.conditionSymbol || null == this.realValue) {
                 return "";
             }

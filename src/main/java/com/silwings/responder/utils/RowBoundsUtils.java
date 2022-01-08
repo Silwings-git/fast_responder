@@ -12,8 +12,8 @@ import org.apache.ibatis.session.RowBounds;
  **/
 public class RowBoundsUtils {
 
-    public static final int DEFAULT_PAGE_SIZE = 5;
-    public static final int MAX_SIZE = 1000;
+    private static final int DEFAULT_PAGE_SIZE = 5;
+    private static final int MAX_SIZE = 1000;
 
     public static RowBounds build(final PageParam pageParam) {
 

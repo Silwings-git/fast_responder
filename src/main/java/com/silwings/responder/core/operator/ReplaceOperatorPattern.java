@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @Date 2022/1/4 23:34
  * @Version V1.0
  **/
-public class ReplaceOperatorPattern {
+class ReplaceOperatorPattern {
 
     static final Pattern SEARCH_REPLACE_PATTERN = Pattern.compile("\\$\\{[\\S]+?}");
     static final Pattern RANDOM_BOOLEAN_PATTERN = Pattern.compile("-RDBoolean\\(\\)-");

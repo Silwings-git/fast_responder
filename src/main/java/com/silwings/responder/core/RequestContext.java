@@ -14,7 +14,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class RequestContext {
+class RequestContext {
 
     /**
      * 请求的全部参数信息
@@ -26,7 +26,7 @@ public class RequestContext {
      */
     private RequestConfigInfo requestConfigInfo;
 
-    public RequestContext(final RequestParamsAndBody requestParamsAndBody, final RequestConfigInfo requestConfigInfo) {
+    RequestContext(final RequestParamsAndBody requestParamsAndBody, final RequestConfigInfo requestConfigInfo) {
         this.requestParamsAndBody = ConvertUtils.toObj(requestParamsAndBody, RequestParamsAndBody.EMPTY_OBJ);
         this.requestConfigInfo = requestConfigInfo;
     }

@@ -12,12 +12,19 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 
+/**
+ * @ClassName ResponderMappingInfo
+ * @Description 请求映射信息
+ * @Author Silwings
+ * @Date 2022/1/3 18:55
+ * @Version V1.0
+ **/
 public class ResponderReturnValueHandler implements HandlerMethodReturnValueHandler {
 
     // 是否支持该返回值
     @Override
-    public boolean supportsReturnType(MethodParameter returnType) {
-        // 仅支持标记了 @ResponderMapping 注解的事件方法，且返回值类型需要是VsMvcBody或其子类
+    public boolean supportsReturnType(final MethodParameter returnType) {
+        // 仅支持标记了 @ResponderMapping 注解的事件方法，且返回值类型需要是ResponderContext或其子类
         return returnType.hasMethodAnnotation(ResponderMapping.class) && ResponderContext.class.isAssignableFrom(returnType.getParameterType());
     }
 

@@ -25,7 +25,7 @@ public class ResponderResult<T> {
 
     private String msg;
 
-    public ResponderResult(final String code, final T data, final String msg) {
+    private ResponderResult(final String code, final T data, final String msg) {
         this.code = code;
         this.data = data;
         this.msg = msg;

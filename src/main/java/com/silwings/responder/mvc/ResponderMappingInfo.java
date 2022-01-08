@@ -21,7 +21,7 @@ public class ResponderMappingInfo {
     public ResponderMappingInfo() {
     }
 
-    public ResponderMappingInfo(ResponderContext responderContext) {
+    private ResponderMappingInfo(ResponderContext responderContext) {
         this.responderContext = responderContext;
     }
 

@@ -24,11 +24,11 @@ public class ResponderContext {
 
     private Result result;
 
-    public ResponderContext(RequestContext requestContext) {
+    ResponderContext(RequestContext requestContext) {
         this.requestContext = requestContext;
     }
 
-    public List<HttpTaskInfo> getTasks() {
+    List<HttpTaskInfo> getTasks() {
         return this.requestContext.getRequestConfigInfo().getTasks();
     }
 
@@ -36,15 +36,15 @@ public class ResponderContext {
         return this.requestContext.getRequestParamsAndBody().getParam(parameterName);
     }
 
-    public RequestParamsAndBody getRequestParamsAndBody() {
+    RequestParamsAndBody getRequestParamsAndBody() {
         return this.requestContext.getRequestParamsAndBody();
     }
 
-    public List<ResultCondition> getResultConditions() {
+    List<ResultCondition> getResultConditions() {
         return this.requestContext.getRequestConfigInfo().getResultConditions();
     }
 
-    public List<Result> getResults() {
+    List<Result> getResults() {
         return this.requestContext.getRequestConfigInfo().getResults();
     }
 

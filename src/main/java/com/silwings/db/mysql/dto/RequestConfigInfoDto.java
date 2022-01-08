@@ -1,4 +1,4 @@
-package com.silwings.db.mysql.bean.dto;
+package com.silwings.db.mysql.dto;
 
 import com.silwings.db.controller.bean.param.PageParam;
 import lombok.Getter;

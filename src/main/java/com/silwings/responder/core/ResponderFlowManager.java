@@ -39,8 +39,8 @@ public class ResponderFlowManager {
      * date: 2022/1/6 22:40
      * author: Silwings
      *
-     * @param responderContext
-     * @return com.silwings.responder.core.ResponderContext
+     * @param responderContext 请求上下文
+     * @return com.silwings.responder.core.ResponderContext 请求上下文
      */
     public ResponderContext handle(final ResponderContext responderContext) {
 
@@ -127,7 +127,7 @@ public class ResponderFlowManager {
      * @param results 可选返回值集
      * @return com.silwings.responder.core.result.Result 默认返回值.如果没有返回null
      */
-    public Result getDefaultResult(final List<Result> results) {
+    private Result getDefaultResult(final List<Result> results) {
         return this.getResultByName("default", results);
     }
 
@@ -141,7 +141,7 @@ public class ResponderFlowManager {
      * @param results    可选返回值集
      * @return com.silwings.responder.core.result.Result 和resultName匹配的返回值对象.如果找不到返回null
      */
-    public Result getResultByName(final String resultName, final List<Result> results) {
+    private Result getResultByName(final String resultName, final List<Result> results) {
         if (StringUtils.isBlank(resultName) || CollectionUtils.isEmpty(results)) {
             return null;
         }

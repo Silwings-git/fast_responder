@@ -11,7 +11,7 @@ import com.silwings.db.controller.bean.result.RequestConfigInfoResult;
 import com.silwings.db.controller.bean.result.ResponderPageResult;
 import com.silwings.db.controller.bean.result.ResponderResult;
 import com.silwings.db.controller.execption.DbException;
-import com.silwings.db.mysql.bean.dto.RequestConfigInfoDto;
+import com.silwings.db.mysql.dto.RequestConfigInfoDto;
 import com.silwings.db.mysql.enums.EnableStatus;
 import com.silwings.db.mysql.service.RequestConfigInfoService;
 import com.silwings.responder.utils.BeanCopyUtils;

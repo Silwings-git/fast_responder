@@ -30,7 +30,7 @@ public class RequestContextFactory {
         this.jsonbHttpMessageConverter = new FastJsonHttpMessageConverter();
     }
 
-    public RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, final HttpServletRequest request) throws IOException {
+    RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, final HttpServletRequest request) throws IOException {
 
         final String[] urlArray = url.split(QUESTION_MARK);
 

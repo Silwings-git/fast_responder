@@ -28,7 +28,7 @@ public class ResponderPageResult<T> {
 
     private String msg;
 
-    public ResponderPageResult(String code, PageData<T> data, String msg) {
+    private ResponderPageResult(String code, PageData<T> data, String msg) {
         this.code = code;
         this.data = data;
         this.msg = msg;

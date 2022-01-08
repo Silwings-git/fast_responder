@@ -26,12 +26,12 @@ import java.util.List;
 @Configuration
 public class ResponderWebConfigurer implements WebMvcConfigurer {
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+    public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ResponderMappingArgumentResolver());
     }
 
     @Override
-    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+    public void addReturnValueHandlers(final List<HandlerMethodReturnValueHandler> handlers) {
         handlers.add(new ResponderReturnValueHandler());
     }
 

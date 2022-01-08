@@ -132,11 +132,11 @@ public class RequestConfigInfos {
         private boolean whole = true;
         private String msg;
 
-        public static Result ok() {
+        static Result ok() {
             return new Result();
         }
 
-        public static Result fail(final String msg) {
+        static Result fail(final String msg) {
             return new Result(false, msg);
         }
     }

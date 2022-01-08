@@ -17,7 +17,7 @@ public class ResponderHandlerController {
 
     private ResponderFlowManager responderFlowManager;
 
-    public ResponderHandlerController(ResponderFlowManager responderFlowManager) {
+    public ResponderHandlerController(final ResponderFlowManager responderFlowManager) {
         this.responderFlowManager = responderFlowManager;
     }
 

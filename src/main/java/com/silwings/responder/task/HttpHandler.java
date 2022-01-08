@@ -31,7 +31,6 @@ public class HttpHandler implements Runnable {
         this.restTemplate = new RestTemplate();
     }
 
-
     @Override
     public void run() {
 

@@ -22,7 +22,7 @@ public class HttpTaskManager {
         this.queue.add(httpTask);
     }
 
-    public HttpTask take() {
+    HttpTask take() {
         try {
             return this.queue.take();
         } catch (InterruptedException e) {

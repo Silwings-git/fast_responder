@@ -76,11 +76,11 @@ public class HttpTask implements Delayed {
         return Long.compare(this.getDelay(TimeUnit.MILLISECONDS),task.getDelay(TimeUnit.MILLISECONDS));
     }
 
-    public Map<String, String> getHeaders() {
+    Map<String, String> getHeaders() {
         return ConvertUtils.toObj(this.headers, Collections.emptyMap());
     }
 
-    public Map<String, String[]> getParams() {
+    Map<String, String[]> getParams() {
         return ConvertUtils.toObj(this.params, Collections.emptyMap());
     }
 

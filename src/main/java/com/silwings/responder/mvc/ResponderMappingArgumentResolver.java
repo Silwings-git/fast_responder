@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 @Slf4j
 public class ResponderMappingArgumentResolver implements HandlerMethodArgumentResolver {
 
-    public ResponderMappingArgumentResolver() {
+    ResponderMappingArgumentResolver() {
         log.info("ResponderMappingArgumentResolver initialization.");
     }
 

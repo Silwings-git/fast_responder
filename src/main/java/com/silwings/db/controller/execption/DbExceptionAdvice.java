@@ -6,6 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * @ClassName DbExceptionAdvice
+ * @Description DbExceptionAdvice
+ * @Author Silwings
+ * @Date 2021/8/8 13:28
+ * @Version V1.0
+ **/
 @Slf4j
 @ControllerAdvice
 public class DbExceptionAdvice {

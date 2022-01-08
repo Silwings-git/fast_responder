@@ -24,6 +24,8 @@ import java.util.regex.Matcher;
  **/
 public enum ResponderReplaceOperator {
 
+    // TODO_Silwings: 2022/1/8 时间操作符
+
     /**
      * 查询替换.从请求参数中寻找并替换标准处的字符串
      */

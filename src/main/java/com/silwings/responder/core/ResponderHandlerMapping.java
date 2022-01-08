@@ -134,7 +134,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * author: Silwings
      *
      * @param method      带有{@link org.springframework.stereotype.Controller}注解的类的方法
-     * @param handlerType
+     * @param handlerType 处理类类型
      * @return ResponderMappingInfo method的映射信息
      */
     @Override

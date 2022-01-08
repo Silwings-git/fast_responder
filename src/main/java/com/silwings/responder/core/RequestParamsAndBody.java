@@ -38,7 +38,7 @@ public class RequestParamsAndBody {
      */
     private JSONObject body;
 
-    public RequestParamsAndBody(final Map<String, String[]> params, final Map<String, String> pathParams, final JSONObject body) {
+    RequestParamsAndBody(final Map<String, String[]> params, final Map<String, String> pathParams, final JSONObject body) {
         this.params = params;
         this.pathParams = pathParams;
         this.body = body;
