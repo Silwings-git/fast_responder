@@ -1,8 +1,8 @@
 package com.silwings.db.mysql.service;
 
 import com.silwings.db.controller.bean.result.PageData;
+import com.silwings.db.enums.EnableStatus;
 import com.silwings.db.mysql.dto.RequestConfigInfoDto;
-import com.silwings.db.mysql.enums.EnableStatus;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 
 /**

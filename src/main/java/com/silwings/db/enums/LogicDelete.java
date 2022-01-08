@@ -1,4 +1,4 @@
-package com.silwings.db.mysql.enums;
+package com.silwings.db.enums;
 
 /**
  * @ClassName LogicDelete
