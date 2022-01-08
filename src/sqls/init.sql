@@ -1,7 +1,7 @@
 -- 注意! MySql版本应不低于8.0
 CREATE TABLE `request_config_info` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-  `class_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
+  `category_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
   `name` varchar(255) NOT NULL COMMENT '配置名称',
   `key_url` varchar(255) DEFAULT NULL COMMENT '关键地址(要模拟的接口地址)',
   `request_method` varchar(8) DEFAULT NULL COMMENT '请求方式.GET,POST,PUT,DELETE等',

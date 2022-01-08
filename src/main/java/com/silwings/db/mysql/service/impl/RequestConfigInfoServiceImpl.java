@@ -128,7 +128,7 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
         final Example example = new Example(RequestConfigInfoEntity.class);
         example.createCriteria()
                 .andEqualTo(RequestConfigInfoEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
-                .andEqualTo(RequestConfigInfoEntity.C_CLASS_NAME, ConvertUtils.toObj(queryInfo.getClassName()))
+                .andEqualTo(RequestConfigInfoEntity.C_CATEGORY_NAME, ConvertUtils.toObj(queryInfo.getCategoryName()))
                 .andEqualTo(RequestConfigInfoEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
                 .andEqualTo(RequestConfigInfoEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
                 .andEqualTo(RequestConfigInfoEntity.C_REQUEST_METHOD, ConvertUtils.toObj(queryInfo.getRequestMethod()))

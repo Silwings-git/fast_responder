@@ -20,7 +20,7 @@ public class QueryRequestConfigInfoResult extends PageParam{
     /**
      * 分类名称
      */
-    private String className;
+    private String categoryName;
 
     /**
      * 配置的自定义名称
