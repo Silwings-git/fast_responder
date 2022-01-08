@@ -29,6 +29,9 @@ public class ResponderMappingInfo {
      * 处理方法的处理类型
      */
     public ResponderMappingInfo getMatchingCondition(final ResponderContext responderContext) {
+        if (null == responderContext) {
+            return null;
+        }
         return new ResponderMappingInfo(responderContext);
     }
 

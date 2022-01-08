@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class BeanCopyUtils {
 
     /**
-     * description: java bean 实例复制
+     * description: java result 实例复制
      * version: 1.0
      * date: 2022/1/5 22:57
      * author: Silwings

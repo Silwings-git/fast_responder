@@ -64,7 +64,7 @@ public class Condition {
     }
 
     @Getter(AccessLevel.PRIVATE)
-    private static class Expression {
+    public static class Expression {
 
         private static final Expression INVALID_EXPRESSION = new Expression();
         private static final Expression TRUE = new Expression("1", "1", ConditionSymbol.EQUAL);
@@ -161,6 +161,9 @@ public class Condition {
             return ConvertUtils.toStringOrJsonString(this.realParam) + " " + this.conditionSymbol.symbol + " " + ConvertUtils.toStringOrJsonString(this.realValue);
         }
 
+        public boolean isValid() {
+            return this.valid;
+        }
     }
 
     private enum ConditionSymbol {
@@ -206,4 +209,7 @@ public class Condition {
 
     }
 
+    public List<Expression> getExpressions() {
+        return CollectionUtils.isEmpty(this.expressions) ? Collections.emptyList() : this.expressions;
+    }
 }

@@ -93,4 +93,11 @@ public class HttpTaskInfo implements ConditionAble {
 
     }
 
+    public Long getDelayTime() {
+        return null == this.delayTime ? 0L : this.delayTime;
+    }
+
+    public List<String> getConditions() {
+        return CollectionUtils.isEmpty(this.conditions) ? Collections.emptyList() : this.conditions;
+    }
 }

@@ -15,6 +15,11 @@ public class ConvertUtils {
         // No codes.
     }
 
+    public static <T> T toObj(final T obj) {
+
+        return ConvertUtils.toObj(obj, null);
+    }
+
     public static <T> T toObj(final T obj, final T defaultValue) {
         return null == obj ? defaultValue : obj;
     }

@@ -1,4 +1,4 @@
-package com.silwings.responder;
+package com.silwings;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

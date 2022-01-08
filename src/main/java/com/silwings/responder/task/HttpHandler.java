@@ -35,6 +35,7 @@ public class HttpHandler implements Runnable {
     @Override
     public void run() {
 
+        // 使用死循环执行task
         while (true) {
             final HttpTask task = httpTaskManager.take();
 

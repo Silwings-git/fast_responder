@@ -4,6 +4,7 @@ import tk.mybatis.mapper.common.BaseMapper;
 import tk.mybatis.mapper.common.ConditionMapper;
 import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.MySqlMapper;
+import tk.mybatis.mapper.common.RowBoundsMapper;
 
 /**
  * @ClassName ResponderBaseMapper
@@ -12,5 +13,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @Date 2022/1/8 15:05
  * @Version V1.0
  **/
-public interface ResponderBaseMapper<T> extends BaseMapper<T>, MySqlMapper<T>, ConditionMapper<T>, IdsMapper<T> {
+public interface ResponderBaseMapper<T> extends BaseMapper<T>, MySqlMapper<T>, ConditionMapper<T>, IdsMapper<T>, RowBoundsMapper<T> {
 }

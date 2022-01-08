@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @ClassName ResponderFlowManager
@@ -70,6 +71,7 @@ public class ResponderFlowManager {
         }
 
         tasks.stream()
+                .filter(Objects::nonNull)
                 // 筛选符合运行条件的任务配置
                 .filter(e -> e.findCondition().meet(requestParamsAndBody))
                 // 创建任务

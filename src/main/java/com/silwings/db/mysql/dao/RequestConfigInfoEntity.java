@@ -22,11 +22,21 @@ import java.util.Date;
 @Table(name = "request_config_info")
 public class RequestConfigInfoEntity {
 
+    public static final String C_ID = "id";
+    public static final String C_NAME = "name";
     public static final String C_KEY_URL = "keyUrl";
     public static final String C_REQUEST_METHOD = "requestMethod";
+    public static final String C_ENABLE_STATUS = "enableStatus";
+    public static final String C_LOGIC_DELETE = "logicDelete";
 
     @Id
     private Long id;
+
+    /**
+     * 配置的自定义名称
+     */
+    @Column(name = "name")
+    private String name;
 
     /**
      * 请求地址
@@ -44,7 +54,7 @@ public class RequestConfigInfoEntity {
      * 启用状态
      */
     @Column(name = "enable_status")
-    private String enableStatus;
+    private Integer enableStatus;
 
     /**
      * 删除状态

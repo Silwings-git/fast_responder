@@ -8,18 +8,31 @@ package com.silwings.db.mysql.enums;
  * @Version V1.0
  **/
 public enum EnableStatus {
-    DISABLED("1"),
-    ENABLE("2"),
+    DISABLED(0),
+    ENABLE(1),
     ;
 
-    private String code;
+    private Integer code;
 
-    EnableStatus(String code) {
+    EnableStatus(Integer code) {
         this.code = code;
     }
 
-    public String code() {
+    public static EnableStatus valueOfCode(Integer enableStatus) {
+        for (EnableStatus value : values()) {
+            if (value.equalsCode(enableStatus)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    public Integer number() {
         return this.code;
+    }
+
+    public boolean equalsCode(final Integer code) {
+        return this.number().equals(code);
     }
 
 }

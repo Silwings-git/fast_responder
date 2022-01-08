@@ -1,6 +1,5 @@
 package com.silwings.test;
 
-import com.alibaba.fastjson.JSON;
 import com.silwings.responder.core.config.RequestConfigInfo;
 import com.silwings.responder.interfaces.RequestConfigRepository;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +23,8 @@ public class TestRequestConfigRepository implements RequestConfigRepository {
 
     @Override
     public List<RequestConfigInfo> queryByKeyUrl(String url) {
-        return Collections.singletonList(JSON.parseObject(getStr(), RequestConfigInfo.class));
-
+//        return Collections.singletonList(JSON.parseObject(getStr(), RequestConfigInfo.class));
+        return Collections.emptyList();
     }
 
     private static String getStr() {
