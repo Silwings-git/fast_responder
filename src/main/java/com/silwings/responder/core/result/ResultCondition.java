@@ -1,7 +1,7 @@
 package com.silwings.responder.core.result;
 
 import com.silwings.responder.core.codition.Condition;
-import com.silwings.responder.core.codition.ConditionAble;
+import com.silwings.responder.core.codition.ContainCondition;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,7 +17,7 @@ import java.util.List;
  **/
 @Setter
 @Getter
-public class ResultCondition implements ConditionAble {
+public class ResultCondition implements ContainCondition {
 
     /**
      * 返回值名称

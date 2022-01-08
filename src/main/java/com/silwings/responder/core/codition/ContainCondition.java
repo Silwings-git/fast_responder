@@ -1,13 +1,13 @@
 package com.silwings.responder.core.codition;
 
 /**
- * @ClassName ConditionAble
- * @Description ConditionAble
+ * @ClassName ContainCondition
+ * @Description ContainCondition
  * @Author Silwings
  * @Date 2022/1/3 18:45
  * @Version V1.0
  **/
-public interface ConditionAble {
+public interface ContainCondition {
 
     Condition findCondition();
 

@@ -174,6 +174,10 @@ public class Condition {
         GREATER_OR_EQUAL(">=", (k, v) -> ConditionSymbol.allIsNumeric(k, v) && Double.valueOf(k).compareTo(Double.valueOf(v)) >= 0),
         LESS_THEN("<", (k, v) -> ConditionSymbol.allIsNumeric(k, v) && Double.valueOf(k).compareTo(Double.valueOf(v)) < 0),
         LESS_OR_EQUAL("<=", (k, v) -> ConditionSymbol.allIsNumeric(k, v) && Double.valueOf(k).compareTo(Double.valueOf(v)) <= 0),
+        IS_NULL("=IsNull=", (k, v) -> null == k),
+        IS_NOT_NULL("=IsNotNull=", (k, v) -> null != k),
+        IS_BLANK("=IsBlank=", (k, v) -> null == k || StringUtils.isBlank(k)),
+        IS_NOT_BLANK("=IsNotBlank=", (k, v) -> StringUtils.isNotBlank(k)),
         ;
 
         private String symbol;

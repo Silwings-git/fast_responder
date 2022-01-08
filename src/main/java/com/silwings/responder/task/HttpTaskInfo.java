@@ -2,7 +2,7 @@ package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSONObject;
 import com.silwings.responder.core.codition.Condition;
-import com.silwings.responder.core.codition.ConditionAble;
+import com.silwings.responder.core.codition.ContainCondition;
 import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,7 @@ import java.util.Map;
  **/
 @Setter
 @Getter
-public class HttpTaskInfo implements ConditionAble {
+public class HttpTaskInfo implements ContainCondition {
 
     /**
      * 任务名称
