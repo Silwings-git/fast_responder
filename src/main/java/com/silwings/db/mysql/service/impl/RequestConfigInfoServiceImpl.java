@@ -3,9 +3,9 @@ package com.silwings.db.mysql.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.silwings.db.controller.bean.result.PageData;
 import com.silwings.db.controller.execption.DbException;
-import com.silwings.db.mysql.dto.RequestConfigInfoDto;
 import com.silwings.db.mysql.dao.RequestConfigInfoEntity;
 import com.silwings.db.mysql.dao.mapper.RequestConfigInfoMapper;
+import com.silwings.db.mysql.dto.RequestConfigInfoDto;
 import com.silwings.db.mysql.enums.EnableStatus;
 import com.silwings.db.mysql.enums.LogicDelete;
 import com.silwings.db.mysql.service.RequestConfigInfoService;
@@ -128,6 +128,7 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
         final Example example = new Example(RequestConfigInfoEntity.class);
         example.createCriteria()
                 .andEqualTo(RequestConfigInfoEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
+                .andEqualTo(RequestConfigInfoEntity.C_CLASS_NAME, ConvertUtils.toObj(queryInfo.getClassName()))
                 .andEqualTo(RequestConfigInfoEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
                 .andEqualTo(RequestConfigInfoEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
                 .andEqualTo(RequestConfigInfoEntity.C_REQUEST_METHOD, ConvertUtils.toObj(queryInfo.getRequestMethod()))

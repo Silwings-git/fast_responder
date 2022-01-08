@@ -23,6 +23,7 @@ import java.util.Date;
 public class RequestConfigInfoEntity {
 
     public static final String C_ID = "id";
+    public static final String C_CLASS_NAME = "className";
     public static final String C_NAME = "name";
     public static final String C_KEY_URL = "keyUrl";
     public static final String C_REQUEST_METHOD = "requestMethod";
@@ -31,6 +32,12 @@ public class RequestConfigInfoEntity {
 
     @Id
     private Long id;
+
+    /**
+     * 分类名称
+     */
+    @Column(name = "class_name")
+    private String className;
 
     /**
      * 配置的自定义名称

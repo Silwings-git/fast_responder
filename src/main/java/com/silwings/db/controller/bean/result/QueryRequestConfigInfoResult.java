@@ -18,6 +18,11 @@ public class QueryRequestConfigInfoResult extends PageParam{
     private Long id;
 
     /**
+     * 分类名称
+     */
+    private String className;
+
+    /**
      * 配置的自定义名称
      */
     private String name;
