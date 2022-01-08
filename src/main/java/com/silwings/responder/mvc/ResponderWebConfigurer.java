@@ -2,6 +2,7 @@ package com.silwings.responder.mvc;
 
 import com.silwings.responder.core.RequestContextFactory;
 import com.silwings.responder.core.ResponderFlowManager;
+import com.silwings.responder.mvc.exception.ResponderExceptionConvertAdvice;
 import com.silwings.responder.task.HttpHandler;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
@@ -68,6 +69,11 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
         thread.start();
 
         return httpHandler;
+    }
+
+    @Bean
+    public ResponderExceptionConvertAdvice responderExceptionConvertAdvice() {
+        return new ResponderExceptionConvertAdvice();
     }
 
 }

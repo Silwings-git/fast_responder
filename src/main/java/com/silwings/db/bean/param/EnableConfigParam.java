@@ -1,4 +1,4 @@
-package com.silwings.db.controller.bean.param;
+package com.silwings.db.bean.param;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
--- 注意! 如果MySql版本低于8.0,需要将json类型修改为字符类型,建议给定足够长度或使用text类型
+-- 注意! MySql版本应不低于8.0
 CREATE TABLE `request_config_info` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `class_name` varchar(255) DEFAULT NULL COMMENT '分类名称',

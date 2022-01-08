@@ -1,4 +1,4 @@
-package com.silwings.db.controller.bean.result;
+package com.silwings.db.bean.result;
 
 import com.silwings.responder.core.config.RequestConfigInfo;
 import lombok.Getter;

@@ -6,4 +6,4 @@ spring:
     url: jdbc:mysql://192.168.46.135:3306/responder?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver

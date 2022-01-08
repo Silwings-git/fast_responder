@@ -1,6 +1,6 @@
-package com.silwings.db.controller.bean.result;
+package com.silwings.db.bean.result;
 
-import com.silwings.db.controller.bean.param.PageParam;
+import com.silwings.db.bean.param.PageParam;
 import lombok.Getter;
 import lombok.Setter;
 

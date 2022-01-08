@@ -1,4 +1,4 @@
-package com.silwings.db.controller.execption;
+package com.silwings.db.execption;
 
 /**
  * @ClassName ResponderException
