@@ -204,4 +204,22 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
         this.updateById(enableParam);
     }
 
+    @Override
+    public void deleteById(final Long id) {
+
+        if (null == id) {
+            return;
+        }
+
+        final Example example = new Example(RequestConfigInfoEntity.class);
+        example.createCriteria()
+                .andEqualTo(RequestConfigInfoEntity.C_ID, ConvertUtils.toObj(id, -1L))
+                .andEqualTo(RequestConfigInfoEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
+
+        final RequestConfigInfoEntity delete = new RequestConfigInfoEntity();
+        delete.setLogicDelete(LogicDelete.DELETED.number());
+
+        this.requestConfigInfoMapper.updateByConditionSelective(delete, example);
+    }
+
 }

@@ -17,6 +17,7 @@ import com.silwings.db.mysql.service.RequestConfigInfoService;
 import com.silwings.responder.utils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -142,6 +143,22 @@ public class RequestConfigInfoController {
             log.info("/responder/request/crud/enableConfig/{id} param: {}", JSON.toJSONString(param));
 
             this.requestConfigInfoService.enableConfig(param.getId(), EnableStatus.valueOfCode(param.getEnableStatus()));
+
+            return ResponderResult.ok();
+
+        } catch (Exception e) {
+            throw new DbException(e);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponderResult<Void> delete(@PathVariable("id") Long id) {
+
+        try {
+
+            log.info("/responder/request/crud/delete/{id} id: {}", id);
+
+            this.requestConfigInfoService.deleteById(id);
 
             return ResponderResult.ok();
 

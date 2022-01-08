@@ -23,4 +23,6 @@ public interface RequestConfigInfoService extends RequestConfigRepository {
     RequestConfigInfoDto findById(Long id);
 
     void enableConfig(Long id, EnableStatus enableStatus);
+
+    void deleteById(Long id);
 }
