@@ -7,6 +7,8 @@ import com.silwings.responder.utils.ConvertUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,8 +25,6 @@ import java.util.regex.Matcher;
  * @Version V1.0
  **/
 public enum ResponderReplaceOperator {
-
-    // TODO_Silwings: 2022/1/8 时间操作符
 
     /**
      * 查询替换.从请求参数中寻找并替换标准处的字符串
@@ -61,6 +61,18 @@ public enum ResponderReplaceOperator {
      */
     UUID_REPLACE("-UUID()-", arg -> ReplaceOperatorPattern.UUID_PATTERN.matcher(arg).find(),
             ResponderReplaceOperator::uuid),
+
+    /**
+     * 当前时间时间戳.可指定秒或毫秒
+     */
+    TIMESTAMP_NOW("-TSNow()-", arg -> ReplaceOperatorPattern.TIMESTAMP_NOW_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::timestamp),
+
+    /**
+     * 当前时间时间戳.可指定秒或毫秒
+     */
+    TIMESTAMP_FORMAT_NOW("-TSFNow()-", arg -> ReplaceOperatorPattern.TIMESTAMP_FORMAT_NOW_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::timestampFormat),
 
     /**
      * 什么都不做.返回入参(该操作符意在筛选不到任何操作符时默认返回,这样不需要进行空判)
@@ -389,6 +401,67 @@ public enum ResponderReplaceOperator {
             }
 
             matcher = ReplaceOperatorPattern.UUID_PATTERN.matcher(input);
+        }
+
+        return input;
+    }
+
+
+    private static Object timestamp(final String arg, final RequestParamsAndBody paramsAndBody) {
+        Matcher matcher = ReplaceOperatorPattern.TIMESTAMP_NOW_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            final String timeUnit = group.replace("-TSNow(", "").replace(")-", "");
+
+            long replaceValue = System.currentTimeMillis();
+            if ("s".equals(timeUnit)) {
+                replaceValue = System.currentTimeMillis() / 1000L;
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, Long.toString(replaceValue));
+            } else {
+                return Long.toString(replaceValue);
+            }
+
+            matcher = ReplaceOperatorPattern.TIMESTAMP_NOW_PATTERN.matcher(input);
+        }
+
+        return input;
+    }
+
+
+    private static Object timestampFormat(final String arg, final RequestParamsAndBody paramsAndBody) {
+        Matcher matcher = ReplaceOperatorPattern.TIMESTAMP_FORMAT_NOW_PATTERN.matcher(arg);
+
+        String input = arg;
+
+        while (matcher.find()) {
+            final String group = matcher.group();
+
+            final String timePattern = group.replace("-TSFNow(", "").replace(")-", "");
+
+            String replaceValue;
+            try {
+                replaceValue = new SimpleDateFormat(timePattern).format(new Date());
+            } catch (Exception e) {
+                // 当format失败时使用错误的 timePattern 替换
+                replaceValue = timePattern;
+            }
+
+            // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+            if (input.length() > group.length()) {
+                input = input.replace(group, replaceValue);
+            } else {
+                return replaceValue;
+            }
+
+            matcher = ReplaceOperatorPattern.TIMESTAMP_FORMAT_NOW_PATTERN.matcher(input);
         }
 
         return input;
