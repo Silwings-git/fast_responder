@@ -1,6 +1,12 @@
 package com.silwings.responder.utils;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName BeanCopyUtils
@@ -33,5 +39,18 @@ public class BeanCopyUtils {
 
         return JSON.parseObject(JSON.toJSONString(source), clazz);
     }
+
+    public static <T> List<T> jsonCopyList(final List<?> source, final Class<T> clazz) {
+
+        if (CollectionUtils.isEmpty(source)) {
+            return Collections.emptyList();
+        }
+
+        return source.stream()
+                .map(s -> BeanCopyUtils.jsonCopyBean(s, clazz))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
 
 }

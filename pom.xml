@@ -20,10 +20,10 @@
         <lombok.version>1.18.12</lombok.version>
         <commons-lang3.version>3.11</commons-lang3.version>
         <commons-collections4.version>4.3</commons-collections4.version>
-        <!--        <mysql-connector.version>5.1.30</mysql-connector.version>-->
-        <!--        <druid.version>1.1.10</druid.version>-->
-        <!--        <tk.mybatis.version>2.1.5</tk.mybatis.version>-->
-        <!--        <pagehelper.version>1.2.13</pagehelper.version>-->
+        <mysql-connector.version>5.1.30</mysql-connector.version>
+        <druid.version>1.1.10</druid.version>
+        <tk.mybatis.version>2.1.5</tk.mybatis.version>
+        <pagehelper.version>1.2.13</pagehelper.version>
 
     </properties>
 
@@ -58,31 +58,31 @@
             <version>${commons-collections4.version}</version>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>mysql</groupId>-->
-        <!--            <artifactId>mysql-connector-java</artifactId>-->
-        <!--            <version>${mysql-connector.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector.version}</version>
+        </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba</groupId>-->
-        <!--            <artifactId>druid-spring-boot-starter</artifactId>-->
-        <!--            <version>${druid.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
 
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>tk.mybatis</groupId>-->
-        <!--            <artifactId>mapper-spring-boot-starter</artifactId>-->
-        <!--            <version>${tk.mybatis.version}</version>-->
-        <!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter -->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>${tk.mybatis.version}</version>
+        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.github.pagehelper</groupId>-->
-        <!--            <artifactId>pagehelper-spring-boot-starter</artifactId>-->
-        <!--            <version>${pagehelper.version}</version>-->
-        <!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.version}</version>
+        </dependency>
 
     </dependencies>
 
