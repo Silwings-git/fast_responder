@@ -2,6 +2,7 @@ package com.silwings.responder.mvc.config;
 
 import com.silwings.responder.core.RequestContextFactory;
 import com.silwings.responder.core.ResponderFlowManager;
+import com.silwings.responder.event.ResponderEventManager;
 import com.silwings.responder.mvc.ResponderMappingArgumentResolver;
 import com.silwings.responder.mvc.ResponderReturnValueHandler;
 import com.silwings.responder.mvc.exception.ResponderExceptionConvertAdvice;
@@ -79,8 +80,13 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     }
 
     @Bean
+    public ResponderEventManager httpTaskEventManager() {
+        return new ResponderEventManager();
+    }
+
+    @Bean
     public HttpHandler httpHandler(final AsyncRestTemplate httpTaskRestTemplate) {
-        return new HttpHandler(httpTaskManager(), httpTaskRestTemplate);
+        return new HttpHandler(httpTaskManager(), httpTaskRestTemplate, httpTaskEventManager());
     }
 
     @Bean("httpTaskScheduler")

@@ -1,6 +1,6 @@
 package com.silwings.responder.utils;
 
-import com.silwings.db.bean.param.PageParam;
+import com.silwings.web.bean.param.PageParam;
 import org.apache.ibatis.session.RowBounds;
 
 /**

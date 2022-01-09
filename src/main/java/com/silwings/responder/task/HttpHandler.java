@@ -2,6 +2,10 @@ package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.silwings.responder.event.ResponderEventManager;
+import com.silwings.responder.event.ResponderEventPack;
+import com.silwings.responder.event.ResponderEventType;
+import com.silwings.responder.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -27,10 +32,12 @@ public class HttpHandler {
 
     private HttpTaskManager httpTaskManager;
     private AsyncRestTemplate httpTaskRestTemplate;
+    private ResponderEventManager responderEventManager;
 
-    public HttpHandler(final HttpTaskManager httpTaskManager, final AsyncRestTemplate httpTaskRestTemplate) {
+    public HttpHandler(final HttpTaskManager httpTaskManager, final AsyncRestTemplate httpTaskRestTemplate, final ResponderEventManager responderEventManager) {
         this.httpTaskManager = httpTaskManager;
         this.httpTaskRestTemplate = httpTaskRestTemplate;
+        this.responderEventManager = responderEventManager;
     }
 
     @Async("httpTaskScheduler")
@@ -48,11 +55,11 @@ public class HttpHandler {
     private void request(final HttpTask httpTask) {
 
         if (this.invalidTask(httpTask)) {
-            log.error("Http Task 无效. task name: {}.", null == httpTask ? "{}" : JSON.toJSONString(httpTask));
+            this.logError("Http Task 无效. task name: {}.", null == httpTask ? "{}" : JSON.toJSONString(httpTask));
             return;
         }
 
-        log.info("HttpTask {} 开始执行.", httpTask.getTaskName());
+        this.logInfo("HttpTask {} 开始执行.", httpTask.getTaskName());
 
         final String realUrl = this.spliceRealRequestUrl(httpTask.getRequestUrl(), httpTask.getParams());
 
@@ -67,8 +74,8 @@ public class HttpHandler {
 
         final ListenableFuture<ResponseEntity<String>> requestResult = this.httpTaskRestTemplate.exchange(realUrl, httpTask.getHttpMethod(), httpEntity, String.class, httpTask.getParams());
 
-        requestResult.addCallback(result -> log.info("HttpTask {} 执行 {} 请求成功. 耗时 {} ms. 参数信息: {}. 响应信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), System.currentTimeMillis() - start, JSON.toJSONString(httpTask), result.toString())
-                , ex -> log.error("HttpTask {} 执行 {} 请求失败. 参数信息: {}. 错误信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), JSON.toJSONString(httpTask), ex.getMessage()));
+        requestResult.addCallback(result -> this.logInfo("HttpTask {} 执行 {} 请求成功. 耗时 {} ms. 参数信息: {}. 响应信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), System.currentTimeMillis() - start, JSON.toJSONString(httpTask), result.toString())
+                , ex -> this.logError("HttpTask {} 执行 {} 请求失败. 参数信息: {}. 错误信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), JSON.toJSONString(httpTask), ex.getMessage()));
 
     }
 
@@ -113,6 +120,41 @@ public class HttpHandler {
         }
 
         return requestUrl + (builder.length() > 0 ? ("?" + builder.substring(0, builder.length() - 1)) : "");
+    }
+
+
+    private void logInfo(final String format, final Object... arguments) {
+
+        log.info(format, arguments);
+
+        this.log("INFO", format, arguments);
+    }
+
+    private void logError(final String format, final Object... arguments) {
+
+        log.error(format, arguments);
+
+        this.log("ERROR", format, arguments);
+    }
+
+    private void log(final String level, final String format, final Object... arguments) {
+        final String threadName = Thread.currentThread().getName();
+
+        final String dateFormat = DateUtils.format(new Date(), DateUtils.YYYYMMDD_HHMMSS_SSSZ);
+
+        String eventData = format;
+        for (Object argument : arguments) {
+            eventData = eventData.replaceFirst("\\{}", argument.toString());
+        }
+
+        eventData = dateFormat +
+                " " +
+                level +
+                " --- [ " +
+                threadName +
+                " ] : " +
+                eventData;
+        this.responderEventManager.notify(new ResponderEventPack<>(ResponderEventType.HTTP_TASK_LOG, ResponderEventPack.simpleEventData(eventData)));
     }
 
 }
