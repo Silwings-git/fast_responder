@@ -125,13 +125,16 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
             return PageData.empty();
         }
 
+        final String queryCategoryName = StringUtils.isBlank(queryInfo.getCategoryName()) ? null : "%" + queryInfo.getCategoryName() + "%";
+        final String queryName = StringUtils.isBlank(queryInfo.getName()) ? null : "%" + queryInfo.getName() + "%";
+
         final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
                 .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
-                .andEqualTo(ResponderInfoConfigEntity.C_CATEGORY_NAME, ConvertUtils.toObj(queryInfo.getCategoryName()))
-                .andEqualTo(ResponderInfoConfigEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
-                .andEqualTo(ResponderInfoConfigEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
-                .andEqualTo(ResponderInfoConfigEntity.C_HTTP_METHOD, ConvertUtils.toObj(queryInfo.getHttpMethod()))
+                .andEqualTo(ResponderInfoConfigEntity.C_CATEGORY_NAME, queryCategoryName)
+                .andLike(ResponderInfoConfigEntity.C_NAME, queryName)
+                .andEqualTo(ResponderInfoConfigEntity.C_KEY_URL, ConvertUtils.toString(queryInfo.getKeyUrl()))
+                .andEqualTo(ResponderInfoConfigEntity.C_HTTP_METHOD, ConvertUtils.toString(queryInfo.getHttpMethod()))
                 .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
                 .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 

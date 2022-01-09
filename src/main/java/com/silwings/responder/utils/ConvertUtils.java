@@ -1,6 +1,7 @@
 package com.silwings.responder.utils;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @ClassName RequestContext
@@ -13,6 +14,13 @@ public class ConvertUtils {
 
     private ConvertUtils() {
         // No codes.
+    }
+
+    public static String toString(final String source) {
+        return ConvertUtils.toString(source,null);
+    }
+    public static String toString(final String source, final String defaultValue) {
+        return StringUtils.isBlank(source) ? defaultValue : source;
     }
 
     public static <T> T toObj(final T obj) {

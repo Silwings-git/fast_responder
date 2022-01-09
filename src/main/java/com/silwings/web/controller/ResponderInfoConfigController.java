@@ -65,7 +65,7 @@ public class ResponderInfoConfigController {
     }
 
 
-    @GetMapping("/query")
+    @PostMapping("/query")
     public PageResult<QueryResponderInfoConfigResult> query(@RequestBody QueryResponderInfoConfigParam param) {
 
         log.info("/responder/request/crud/query param: {}", JSON.toJSONString(param));
