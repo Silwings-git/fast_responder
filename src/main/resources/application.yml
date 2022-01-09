@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  banner:
+    location: banner.txt
   datasource:
     url: jdbc:mysql://192.168.46.135:3306/responder?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
     username: root

@@ -45,6 +45,8 @@ public class HttpTaskController implements ResponderEventListener<String> {
         final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
         this.allLogSseEmitterList.add(sseEmitter);
 
+        this.sendWelcomeStatement(sseEmitter);
+
         return sseEmitter;
     }
 
@@ -56,6 +58,8 @@ public class HttpTaskController implements ResponderEventListener<String> {
 
         final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
         this.httpTaskLogSseEmitterList.add(sseEmitter);
+
+        this.sendWelcomeStatement(sseEmitter);
 
         return sseEmitter;
     }
@@ -103,6 +107,20 @@ public class HttpTaskController implements ResponderEventListener<String> {
                     this.closeSseEmitter(sseEmitter, httpTaskLogSseEmitterList);
                 }
             }
+        }
+    }
+
+
+    private void sendWelcomeStatement(final SseEmitter sseEmitter) {
+
+        if (null == sseEmitter) {
+            return;
+        }
+
+        try {
+            sseEmitter.send(new ResponderEventPack<>(ResponderEventType.PROJECT_LOG, ResponderEventPack.simpleEventData("欢迎使用 Fast_Responder 快捷应答服务.")));
+        } catch (IOException e) {
+            log.info("欢迎语推送失败");
         }
     }
 
