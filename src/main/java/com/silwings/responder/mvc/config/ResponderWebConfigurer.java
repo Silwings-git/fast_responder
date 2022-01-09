@@ -5,7 +5,7 @@ import com.silwings.responder.core.ResponderFlowManager;
 import com.silwings.responder.event.ResponderEventManager;
 import com.silwings.responder.mvc.ResponderMappingArgumentResolver;
 import com.silwings.responder.mvc.ResponderReturnValueHandler;
-import com.silwings.responder.mvc.exception.ResponderExceptionConvertAdvice;
+import com.silwings.responder.mvc.exception.ResponderExceptionConvertAspect;
 import com.silwings.responder.task.HttpHandler;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
@@ -98,8 +98,8 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     }
 
     @Bean
-    public ResponderExceptionConvertAdvice responderExceptionConvertAdvice() {
-        return new ResponderExceptionConvertAdvice();
+    public ResponderExceptionConvertAspect responderExceptionConvertAdvice() {
+        return new ResponderExceptionConvertAspect();
     }
 
 }

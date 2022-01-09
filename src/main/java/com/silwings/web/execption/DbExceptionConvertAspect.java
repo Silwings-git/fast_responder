@@ -1,4 +1,4 @@
-package com.silwings.responder.mvc.exception;
+package com.silwings.web.execption;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
- * @ClassName ResponderExceptionConvertAdvice
+ * @ClassName DbExceptionConvertAspect
  * @Description 统一异常转换
  * @Author Silwings
  * @Date 2022/1/8 21:27
@@ -15,9 +15,9 @@ import org.aspectj.lang.annotation.Pointcut;
  **/
 @Slf4j
 @Aspect
-public class ResponderExceptionConvertAdvice {
+public class DbExceptionConvertAspect {
 
-    @Pointcut("execution(* com.silwings.responder.mvc.ResponderHandlerController.*.*(..))")
+    @Pointcut("execution(* com.silwings.web.controller..*.*(..))")
     public void pointCut() {
         // no codes
     }
@@ -27,7 +27,7 @@ public class ResponderExceptionConvertAdvice {
         try {
             return jp.proceed();
         } catch (Throwable throwable) {
-            throw new ResponderException(throwable);
+            throw new DbException(throwable);
         }
     }
 

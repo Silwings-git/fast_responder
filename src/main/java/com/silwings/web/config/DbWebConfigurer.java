@@ -1,6 +1,6 @@
 package com.silwings.web.config;
 
-import com.silwings.web.execption.DbExceptionConvertAdvice;
+import com.silwings.web.execption.DbExceptionConvertAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class DbWebConfigurer implements WebMvcConfigurer {
 
     @Bean
-    public DbExceptionConvertAdvice dbExceptionConvertAdvice() {
-        return new DbExceptionConvertAdvice();
+    public DbExceptionConvertAspect dbExceptionConvertAdvice() {
+        return new DbExceptionConvertAspect();
     }
 
 }
