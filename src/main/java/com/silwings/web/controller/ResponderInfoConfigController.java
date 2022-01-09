@@ -2,19 +2,19 @@ package com.silwings.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.silwings.responder.utils.BeanCopyUtils;
-import com.silwings.web.bean.param.EnableConfigParam;
-import com.silwings.web.bean.param.QueryResponderInfoParam;
-import com.silwings.web.bean.param.SaveResponderInfoParam;
-import com.silwings.web.bean.result.FindResponderInfoDetailResult;
+import com.silwings.web.bean.param.EnableResponderInfoParam;
+import com.silwings.web.bean.param.QueryResponderInfoConfigParam;
+import com.silwings.web.bean.param.SaveResponderInfoConfigParam;
+import com.silwings.web.bean.result.FindResponderInfoConfigDetailResult;
 import com.silwings.web.bean.result.PageData;
-import com.silwings.web.bean.result.QueryResponderInfoResult;
-import com.silwings.web.bean.result.ResponderInfoResult;
-import com.silwings.web.bean.result.ResponderPageResult;
-import com.silwings.web.bean.result.ResponderResult;
+import com.silwings.web.bean.result.PageResult;
+import com.silwings.web.bean.result.QueryResponderInfoConfigResult;
+import com.silwings.web.bean.result.ResponderInfoConfigResult;
+import com.silwings.web.bean.result.WebResult;
 import com.silwings.web.enums.EnableStatus;
 import com.silwings.web.execption.DbException;
-import com.silwings.web.mysql.dto.ResponderInfoDto;
-import com.silwings.web.mysql.service.ResponderInfoInfoService;
+import com.silwings.web.mysql.dto.ResponderInfoConfigDto;
+import com.silwings.web.mysql.service.ResponderInfoConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,14 +43,14 @@ import java.util.List;
 public class ResponderInfoConfigController {
 
     @Autowired
-    private ResponderInfoInfoService responderInfoInfoService;
+    private ResponderInfoConfigService responderInfoConfigService;
 
     @PostMapping("/insert")
-    public ResponderResult<Void> insert(@RequestBody SaveResponderInfoParam param) {
+    public WebResult<Void> insert(@RequestBody SaveResponderInfoConfigParam param) {
 
         log.info("/responder/request/crud/insert param: {}", JSON.toJSONString(param));
 
-        final ResponderInfoDto insertInfo = new ResponderInfoDto();
+        final ResponderInfoConfigDto insertInfo = new ResponderInfoConfigDto();
         insertInfo
                 .setName(param.getName())
                 .setCategoryName(param.getCategoryName())
@@ -59,52 +59,52 @@ public class ResponderInfoConfigController {
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 
-        this.responderInfoInfoService.insert(insertInfo);
+        this.responderInfoConfigService.insert(insertInfo);
 
-        return ResponderResult.ok();
+        return WebResult.ok();
     }
 
 
     @GetMapping("/query")
-    public ResponderPageResult<QueryResponderInfoResult> query(@RequestBody QueryResponderInfoParam param) {
+    public PageResult<QueryResponderInfoConfigResult> query(@RequestBody QueryResponderInfoConfigParam param) {
 
         log.info("/responder/request/crud/query param: {}", JSON.toJSONString(param));
 
-        final ResponderInfoDto queryInfo = BeanCopyUtils.jsonCopyBean(param, ResponderInfoDto.class);
+        final ResponderInfoConfigDto queryInfo = BeanCopyUtils.jsonCopyBean(param, ResponderInfoConfigDto.class);
 
-        final PageData<ResponderInfoDto> pageData = this.responderInfoInfoService.query(queryInfo);
+        final PageData<ResponderInfoConfigDto> pageData = this.responderInfoConfigService.query(queryInfo);
 
-        final List<QueryResponderInfoResult> infoResultList = BeanCopyUtils.jsonCopyList(pageData.getList(), QueryResponderInfoResult.class);
+        final List<QueryResponderInfoConfigResult> infoResultList = BeanCopyUtils.jsonCopyList(pageData.getList(), QueryResponderInfoConfigResult.class);
 
-        return ResponderPageResult.ok(infoResultList, pageData.getTotal());
+        return PageResult.ok(infoResultList, pageData.getTotal());
 
     }
 
     @GetMapping("/find/{id}")
-    public ResponderResult<FindResponderInfoDetailResult> find(@PathVariable("id") Long id) {
+    public WebResult<FindResponderInfoConfigDetailResult> find(@PathVariable("id") Long id) {
 
         log.info("/responder/request/crud/find/{id} id: {}", id);
 
-        final ResponderInfoDto infoDto = this.responderInfoInfoService.findById(id);
+        final ResponderInfoConfigDto infoDto = this.responderInfoConfigService.findById(id);
 
         if (null == infoDto) {
             throw new DbException("配置信息不存在");
         }
 
-        final FindResponderInfoDetailResult detailResult = new FindResponderInfoDetailResult();
+        final FindResponderInfoConfigDetailResult detailResult = new FindResponderInfoConfigDetailResult();
         detailResult.setId(infoDto.getId());
-        detailResult.setConfigInfo(JSON.parseObject(infoDto.getDataJson(), ResponderInfoResult.class));
+        detailResult.setConfigInfo(JSON.parseObject(infoDto.getDataJson(), ResponderInfoConfigResult.class));
 
-        return ResponderResult.ok(detailResult);
+        return WebResult.ok(detailResult);
 
     }
 
     @PutMapping("/update/{id}")
-    public ResponderResult<Void> update(@PathVariable("id") Long id, @RequestBody SaveResponderInfoParam param) {
+    public WebResult<Void> update(@PathVariable("id") Long id, @RequestBody SaveResponderInfoConfigParam param) {
 
         log.info("/responder/request/crud/updateById/{id} id: {}  param: {}", id, JSON.toJSONString(param));
 
-        final ResponderInfoDto updateInfo = new ResponderInfoDto();
+        final ResponderInfoConfigDto updateInfo = new ResponderInfoConfigDto();
         updateInfo
                 .setId(id)
                 .setName(param.getName())
@@ -114,31 +114,31 @@ public class ResponderInfoConfigController {
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 
-        this.responderInfoInfoService.updateById(updateInfo);
+        this.responderInfoConfigService.updateById(updateInfo);
 
-        return ResponderResult.ok();
+        return WebResult.ok();
 
     }
 
     @PutMapping("/enableConfig")
-    public ResponderResult<Void> enableConfig(@RequestBody EnableConfigParam param) {
+    public WebResult<Void> enableConfig(@RequestBody EnableResponderInfoParam param) {
 
         log.info("/responder/request/crud/enableConfig/{id} param: {}", JSON.toJSONString(param));
 
-        this.responderInfoInfoService.enableConfig(param.getId(), EnableStatus.valueOfCode(param.getEnableStatus()));
+        this.responderInfoConfigService.enableConfig(param.getId(), EnableStatus.valueOfCode(param.getEnableStatus()));
 
-        return ResponderResult.ok();
+        return WebResult.ok();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponderResult<Void> delete(@PathVariable("id") Long id) {
+    public WebResult<Void> delete(@PathVariable("id") Long id) {
 
         log.info("/responder/request/crud/delete/{id} id: {}", id);
 
-        this.responderInfoInfoService.deleteById(id);
+        this.responderInfoConfigService.deleteById(id);
 
-        return ResponderResult.ok();
+        return WebResult.ok();
 
     }
 

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName EnableConfigParam
+ * @ClassName EnableResponderInfoParam
  * @Description 启用禁用请求配置接口参数
  * @Author Silwings
  * @Date 2022/1/8 17:27
@@ -12,7 +12,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class EnableConfigParam {
+public class EnableResponderInfoParam {
 
     private Long id;
 

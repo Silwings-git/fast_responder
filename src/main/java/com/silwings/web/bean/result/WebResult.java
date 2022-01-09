@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * @ClassName ResponderResult
+ * @ClassName WebResult
  * @Description 和前端交互用的返回值
  * @Author Silwings
  * @Date 2022/1/8 15:28
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ResponderResult<T> {
+public class WebResult<T> {
 
     public static final String SUCCESS_CODE = "200200";
     public static final String FAIL_CODE = "200500";
@@ -25,22 +25,22 @@ public class ResponderResult<T> {
 
     private String msg;
 
-    private ResponderResult(final String code, final T data, final String msg) {
+    private WebResult(final String code, final T data, final String msg) {
         this.code = code;
         this.data = data;
         this.msg = msg;
     }
 
-    public static <T> ResponderResult<T> ok() {
-        return ResponderResult.ok(null);
+    public static <T> WebResult<T> ok() {
+        return WebResult.ok(null);
     }
 
-    public static <T> ResponderResult<T> ok(final T data) {
-        return new ResponderResult<>(SUCCESS_CODE, data, "");
+    public static <T> WebResult<T> ok(final T data) {
+        return new WebResult<>(SUCCESS_CODE, data, "");
     }
 
-    public static <T> ResponderResult<T> fail(final String msg) {
-        return new ResponderResult<>(FAIL_CODE, null, msg);
+    public static <T> WebResult<T> fail(final String msg) {
+        return new WebResult<>(FAIL_CODE, null, msg);
     }
 
 }

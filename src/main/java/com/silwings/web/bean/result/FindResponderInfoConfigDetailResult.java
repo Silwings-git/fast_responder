@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName FindResponderInfoDetailResult
+ * @ClassName FindResponderInfoConfigDetailResult
  * @Description 查询配置信息详情接口返回值
  * @Author Silwings
  * @Date 2022/1/8 17:05
@@ -12,10 +12,10 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class FindResponderInfoDetailResult {
+public class FindResponderInfoConfigDetailResult {
 
     private Long id;
 
-    private ResponderInfoResult configInfo;
+    private ResponderInfoConfigResult configInfo;
 
 }

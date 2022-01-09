@@ -10,10 +10,10 @@ import com.silwings.web.bean.result.PageData;
 import com.silwings.web.enums.EnableStatus;
 import com.silwings.web.enums.LogicDelete;
 import com.silwings.web.execption.DbException;
-import com.silwings.web.mysql.dao.ResponderInfoEntity;
-import com.silwings.web.mysql.dao.mapper.ResponderInfoMapper;
-import com.silwings.web.mysql.dto.ResponderInfoDto;
-import com.silwings.web.mysql.service.ResponderInfoInfoService;
+import com.silwings.web.mysql.dao.ResponderInfoConfigEntity;
+import com.silwings.web.mysql.dao.mapper.ResponderInfoConfigMapper;
+import com.silwings.web.mysql.dto.ResponderInfoConfigDto;
+import com.silwings.web.mysql.service.ResponderInfoConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @ClassName ResponderInfoInfoServiceImpl
+ * @ClassName ResponderInfoConfigServiceImpl
  * @Description 请求配置service
  * @Author Silwings
  * @Date 2022/1/8 15:07
@@ -34,10 +34,10 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @Service
-public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
+public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigService {
 
     @Autowired
-    private ResponderInfoMapper responderInfoMapper;
+    private ResponderInfoConfigMapper responderInfoConfigMapper;
 
     @Override
     public List<ResponderInfo> queryByKeyUrl(final String url) {
@@ -46,13 +46,13 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
             return Collections.emptyList();
         }
 
-        final ResponderInfoEntity infoEntity = new ResponderInfoEntity();
+        final ResponderInfoConfigEntity infoEntity = new ResponderInfoConfigEntity();
         infoEntity
                 .setKeyUrl(url)
                 .setEnableStatus(EnableStatus.ENABLE.number())
                 .setLogicDelete(LogicDelete.NORMAL.number());
 
-        final List<ResponderInfoEntity> selectInfos = this.responderInfoMapper.select(infoEntity);
+        final List<ResponderInfoConfigEntity> selectInfos = this.responderInfoConfigMapper.select(infoEntity);
 
         return this.entity2ConfigInfo(selectInfos);
     }
@@ -64,99 +64,99 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
             return Collections.emptyList();
         }
 
-        final ResponderInfoEntity infoEntity = new ResponderInfoEntity();
+        final ResponderInfoConfigEntity infoEntity = new ResponderInfoConfigEntity();
         infoEntity
                 .setHttpMethod(httpMethod.toString())
                 .setEnableStatus(EnableStatus.ENABLE.number())
                 .setLogicDelete(LogicDelete.NORMAL.number());
 
-        final List<ResponderInfoEntity> selectInfos = this.responderInfoMapper.select(infoEntity);
+        final List<ResponderInfoConfigEntity> selectInfos = this.responderInfoConfigMapper.select(infoEntity);
 
         return this.entity2ConfigInfo(selectInfos);
     }
 
-    private List<ResponderInfo> entity2ConfigInfo(final List<ResponderInfoEntity> selectInfos) {
+    private List<ResponderInfo> entity2ConfigInfo(final List<ResponderInfoConfigEntity> selectInfos) {
         return selectInfos.stream()
-                .map(ResponderInfoEntity::getDataJson)
+                .map(ResponderInfoConfigEntity::getDataJson)
                 .filter(StringUtils::isNotBlank)
                 .map(dataJson -> JSON.parseObject(dataJson, ResponderInfo.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void insert(final ResponderInfoDto insertInfo) {
+    public void insert(final ResponderInfoConfigDto insertInfo) {
 
         if (null == insertInfo) {
             return;
         }
 
-        final ResponderInfoEntity entity = BeanCopyUtils.jsonCopyBean(insertInfo, ResponderInfoEntity.class);
+        final ResponderInfoConfigEntity entity = BeanCopyUtils.jsonCopyBean(insertInfo, ResponderInfoConfigEntity.class);
         entity.setId(null);
         entity.setCreateTime(null);
         entity.setUpdateTime(null);
 
-        this.responderInfoMapper.insertSelective(entity);
+        this.responderInfoConfigMapper.insertSelective(entity);
     }
 
     @Override
-    public void updateById(final ResponderInfoDto updateInfo) {
+    public void updateById(final ResponderInfoConfigDto updateInfo) {
 
         if (null == updateInfo || null == updateInfo.getId()) {
             log.error("更新请求配置信息失败. 参数: {}", null == updateInfo ? "参数为空" : JSON.toJSONString(updateInfo));
             throw new DbException("更新失败");
         }
 
-        final ResponderInfoEntity entity = BeanCopyUtils.jsonCopyBean(updateInfo, ResponderInfoEntity.class);
+        final ResponderInfoConfigEntity entity = BeanCopyUtils.jsonCopyBean(updateInfo, ResponderInfoConfigEntity.class);
         entity.setId(null);
         entity.setCreateTime(null);
         entity.setUpdateTime(null);
 
-        final Example example = new Example(ResponderInfoEntity.class);
+        final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoEntity.C_ID, ConvertUtils.toObj(updateInfo.getId(), -1L));
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(updateInfo.getId(), -1L));
 
-        this.responderInfoMapper.updateByConditionSelective(entity, example);
+        this.responderInfoConfigMapper.updateByConditionSelective(entity, example);
     }
 
     @Override
-    public PageData<ResponderInfoDto> query(final ResponderInfoDto queryInfo) {
+    public PageData<ResponderInfoConfigDto> query(final ResponderInfoConfigDto queryInfo) {
 
         if (null == queryInfo) {
             return PageData.empty();
         }
 
-        final Example example = new Example(ResponderInfoEntity.class);
+        final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
-                .andEqualTo(ResponderInfoEntity.C_CATEGORY_NAME, ConvertUtils.toObj(queryInfo.getCategoryName()))
-                .andEqualTo(ResponderInfoEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
-                .andEqualTo(ResponderInfoEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
-                .andEqualTo(ResponderInfoEntity.C_HTTP_METHOD, ConvertUtils.toObj(queryInfo.getHttpMethod()))
-                .andEqualTo(ResponderInfoEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
-                .andEqualTo(ResponderInfoEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
+                .andEqualTo(ResponderInfoConfigEntity.C_CATEGORY_NAME, ConvertUtils.toObj(queryInfo.getCategoryName()))
+                .andEqualTo(ResponderInfoConfigEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
+                .andEqualTo(ResponderInfoConfigEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
+                .andEqualTo(ResponderInfoConfigEntity.C_HTTP_METHOD, ConvertUtils.toObj(queryInfo.getHttpMethod()))
+                .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
+                .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 
-        final int count = this.responderInfoMapper.selectCountByCondition(example);
+        final int count = this.responderInfoConfigMapper.selectCountByCondition(example);
         if (0 == count) {
             return PageData.empty();
         }
 
-        final List<ResponderInfoEntity> entityList = this.responderInfoMapper.selectByExampleAndRowBounds(example, RowBoundsUtils.build(queryInfo));
+        final List<ResponderInfoConfigEntity> entityList = this.responderInfoConfigMapper.selectByExampleAndRowBounds(example, RowBoundsUtils.build(queryInfo));
 
-        final List<ResponderInfoDto> dtoList = BeanCopyUtils.jsonCopyList(entityList, ResponderInfoDto.class);
+        final List<ResponderInfoConfigDto> dtoList = BeanCopyUtils.jsonCopyList(entityList, ResponderInfoConfigDto.class);
 
         return new PageData<>(dtoList, (long) count);
     }
 
     @Override
-    public ResponderInfoDto findById(final Long id) {
+    public ResponderInfoConfigDto findById(final Long id) {
 
         if (null == id) {
             return null;
         }
 
-        final ResponderInfoEntity entity = this.responderInfoMapper.selectByPrimaryKey(id);
+        final ResponderInfoConfigEntity entity = this.responderInfoConfigMapper.selectByPrimaryKey(id);
 
-        return BeanCopyUtils.jsonCopyBean(entity, ResponderInfoDto.class);
+        return BeanCopyUtils.jsonCopyBean(entity, ResponderInfoConfigDto.class);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
 
     private void enableConfig(final Long id) {
 
-        final ResponderInfoDto configInfo = this.findById(id);
+        final ResponderInfoConfigDto configInfo = this.findById(id);
 
         if (null == configInfo) {
             throw new DbException("配置信息不存在");
@@ -186,7 +186,7 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
             throw new DbException("配置信息检查不通过. " + checkResult.getMsg());
         }
 
-        final ResponderInfoDto enableParam = new ResponderInfoDto();
+        final ResponderInfoConfigDto enableParam = new ResponderInfoConfigDto();
         enableParam
                 .setId(id)
                 .setEnableStatus(EnableStatus.ENABLE.number());
@@ -196,7 +196,7 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
 
     private void disableConfig(final Long id) {
 
-        final ResponderInfoDto enableParam = new ResponderInfoDto();
+        final ResponderInfoConfigDto enableParam = new ResponderInfoConfigDto();
         enableParam
                 .setId(id)
                 .setEnableStatus(EnableStatus.DISABLED.number());
@@ -211,15 +211,15 @@ public class ResponderInfoInfoServiceImpl implements ResponderInfoInfoService {
             return;
         }
 
-        final Example example = new Example(ResponderInfoEntity.class);
+        final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoEntity.C_ID, ConvertUtils.toObj(id, -1L))
-                .andEqualTo(ResponderInfoEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(id, -1L))
+                .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 
-        final ResponderInfoEntity delete = new ResponderInfoEntity();
+        final ResponderInfoConfigEntity delete = new ResponderInfoConfigEntity();
         delete.setLogicDelete(LogicDelete.DELETED.number());
 
-        this.responderInfoMapper.updateByConditionSelective(delete, example);
+        this.responderInfoConfigMapper.updateByConditionSelective(delete, example);
     }
 
 }

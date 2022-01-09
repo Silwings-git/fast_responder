@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @ClassName ResponderInfoEntity
+ * @ClassName ResponderInfoConfigEntity
  * @Description 请求信息配置实体
  * @Author Silwings
  * @Date 2022/1/8 14:57
@@ -20,7 +20,7 @@ import java.util.Date;
 @Getter
 @Accessors(chain = true)
 @Table(name = "responder_info_config")
-public class ResponderInfoEntity {
+public class ResponderInfoConfigEntity {
 
     public static final String C_ID = "id";
     public static final String C_CATEGORY_NAME = "categoryName";

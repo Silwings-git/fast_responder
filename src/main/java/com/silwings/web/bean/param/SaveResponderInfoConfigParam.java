@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName SaveResponderInfoParam
+ * @ClassName SaveResponderInfoConfigParam
  * @Description 新增请求配置接口参数
  * @Author Silwings
  * @Date 2022/1/8 16:10
@@ -13,7 +13,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class SaveResponderInfoParam extends ResponderInfo {
+public class SaveResponderInfoConfigParam extends ResponderInfo {
 
     /**
      * 分类名称
