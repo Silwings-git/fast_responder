@@ -17,8 +17,8 @@ import com.silwings.responder.utils.RowBoundsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMethod;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Collections;
@@ -59,14 +59,14 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
 
 
     @Override
-    public List<RequestConfigInfo> queryRestConfigByMethod(final RequestMethod requestMethod) {
-        if (null == requestMethod) {
+    public List<RequestConfigInfo> queryRestConfigByMethod(final HttpMethod httpMethod) {
+        if (null == httpMethod) {
             return Collections.emptyList();
         }
 
         final RequestConfigInfoEntity infoEntity = new RequestConfigInfoEntity();
         infoEntity
-                .setRequestMethod(requestMethod.toString())
+                .setHttpMethod(httpMethod.toString())
                 .setEnableStatus(EnableStatus.ENABLE.number())
                 .setLogicDelete(LogicDelete.NORMAL.number());
 
@@ -131,7 +131,7 @@ public class RequestConfigInfoServiceImpl implements RequestConfigInfoService {
                 .andEqualTo(RequestConfigInfoEntity.C_CATEGORY_NAME, ConvertUtils.toObj(queryInfo.getCategoryName()))
                 .andEqualTo(RequestConfigInfoEntity.C_NAME, ConvertUtils.toObj(queryInfo.getName()))
                 .andEqualTo(RequestConfigInfoEntity.C_KEY_URL, ConvertUtils.toObj(queryInfo.getKeyUrl()))
-                .andEqualTo(RequestConfigInfoEntity.C_REQUEST_METHOD, ConvertUtils.toObj(queryInfo.getRequestMethod()))
+                .andEqualTo(RequestConfigInfoEntity.C_HTTP_METHOD, ConvertUtils.toObj(queryInfo.getHttpMethod()))
                 .andEqualTo(RequestConfigInfoEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
                 .andEqualTo(RequestConfigInfoEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 

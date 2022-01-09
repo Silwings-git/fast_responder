@@ -26,7 +26,7 @@ public class RequestConfigInfoEntity {
     public static final String C_CATEGORY_NAME = "categoryName";
     public static final String C_NAME = "name";
     public static final String C_KEY_URL = "keyUrl";
-    public static final String C_REQUEST_METHOD = "requestMethod";
+    public static final String C_HTTP_METHOD = "httpMethod";
     public static final String C_ENABLE_STATUS = "enableStatus";
     public static final String C_LOGIC_DELETE = "logicDelete";
 
@@ -54,8 +54,8 @@ public class RequestConfigInfoEntity {
     /**
      * 请求方式
      */
-    @Column(name = "request_method")
-    private String requestMethod;
+    @Column(name = "http_method")
+    private String httpMethod;
 
     /**
      * 启用状态

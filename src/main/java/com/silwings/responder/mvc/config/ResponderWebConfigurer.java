@@ -1,14 +1,22 @@
-package com.silwings.responder.mvc;
+package com.silwings.responder.mvc.config;
 
 import com.silwings.responder.core.RequestContextFactory;
 import com.silwings.responder.core.ResponderFlowManager;
+import com.silwings.responder.mvc.ResponderMappingArgumentResolver;
+import com.silwings.responder.mvc.ResponderReturnValueHandler;
 import com.silwings.responder.mvc.exception.ResponderExceptionConvertAdvice;
 import com.silwings.responder.task.HttpHandler;
 import com.silwings.responder.task.HttpTaskFactory;
 import com.silwings.responder.task.HttpTaskManager;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,7 +31,9 @@ import java.util.List;
  * @Version V1.0
  **/
 @Configuration
+@EnableConfigurationProperties({TaskSchedulerProperties.class, HttpTaskRestTemplateProperties.class})
 public class ResponderWebConfigurer implements WebMvcConfigurer {
+
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ResponderMappingArgumentResolver());
@@ -60,15 +70,25 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
     }
 
     @Bean
-    public HttpHandler httpHandler() {
-        final HttpHandler httpHandler = new HttpHandler(httpTaskManager());
-        // 启动后台回调线程
-        final Thread thread = new Thread(httpHandler);
-        thread.setDaemon(true);
-        thread.setName("http-task");
-        thread.start();
+    public AsyncRestTemplate httpTaskRestTemplate(final HttpTaskRestTemplateProperties httpTaskRestTemplateProperties) {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(httpTaskRestTemplateProperties.getConnectTimeout());
+        factory.setReadTimeout(httpTaskRestTemplateProperties.getReadTimeout());
+        factory.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        return new AsyncRestTemplate(factory);
+    }
 
-        return httpHandler;
+    @Bean
+    public HttpHandler httpHandler(final AsyncRestTemplate httpTaskRestTemplate) {
+        return new HttpHandler(httpTaskManager(), httpTaskRestTemplate);
+    }
+
+    @Bean("httpTaskScheduler")
+    public TaskScheduler taskScheduler(final TaskSchedulerProperties taskSchedulerProperties) {
+        final ThreadPoolTaskScheduler httpTaskScheduler = new ThreadPoolTaskScheduler();
+        // 因为该服务通常用于调试,http任务不会很多,默认设置核心线程数为1
+        httpTaskScheduler.setPoolSize(taskSchedulerProperties.getThreadPoolSize());
+        return httpTaskScheduler;
     }
 
     @Bean

@@ -59,7 +59,7 @@ public class RequestConfigInfos {
         if (StringUtils.isBlank(requestConfigInfo.getKeyUrl())) {
             return CheckResult.fail("配置信息缺少关键Url");
         }
-        if (null == requestConfigInfo.getRequestMethod()) {
+        if (null == requestConfigInfo.getHttpMethod()) {
             return CheckResult.fail("配置信息缺少请求方式");
         }
 
@@ -85,7 +85,7 @@ public class RequestConfigInfos {
 
                 final HttpTaskInfo.HttpTaskContent content = task.getContent();
 
-                if (null == content.getRequestMethod()) {
+                if (null == content.getHttpMethod()) {
                     return CheckResult.fail("Http任务缺少请求方式.");
                 }
                 if (StringUtils.isBlank(content.getRequestUrl())) {

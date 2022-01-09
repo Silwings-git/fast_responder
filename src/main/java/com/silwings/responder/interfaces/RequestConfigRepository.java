@@ -1,7 +1,7 @@
 package com.silwings.responder.interfaces;
 
 import com.silwings.responder.core.config.RequestConfigInfo;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public interface RequestConfigRepository {
 
     List<RequestConfigInfo> queryByKeyUrl(String url);
 
-    List<RequestConfigInfo> queryRestConfigByMethod(RequestMethod requestMethod);
+    List<RequestConfigInfo> queryRestConfigByMethod(HttpMethod httpMethod);
 
 }

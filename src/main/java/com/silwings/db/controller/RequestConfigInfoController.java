@@ -53,7 +53,7 @@ public class RequestConfigInfoController {
                 .setName(param.getName())
                 .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
-                .setRequestMethod(param.getRequestMethod().toString())
+                .setHttpMethod(param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 
@@ -108,7 +108,7 @@ public class RequestConfigInfoController {
                 .setName(param.getName())
                 .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
-                .setRequestMethod(param.getRequestMethod().toString())
+                .setHttpMethod(param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 

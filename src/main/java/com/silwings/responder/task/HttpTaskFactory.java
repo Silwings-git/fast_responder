@@ -81,7 +81,7 @@ public class HttpTaskFactory {
         task
                 .setTaskName(taskInfo.getName())
                 .setRequestUrl(realRequestUrl)
-                .setRequestMethod(taskContent.getRequestMethod())
+                .setHttpMethod(taskContent.getHttpMethod())
                 .setHeaders(taskContent.getHeaders())
                 .setParams(realParams)
                 .setBody(realBody)

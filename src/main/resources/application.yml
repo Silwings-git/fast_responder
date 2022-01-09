@@ -7,3 +7,10 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+httptask:
+  scheduler:
+    thread-pool-size: 5
+  resttemplate:
+    connect-timeout: 20000
+    read-timeout: 20000

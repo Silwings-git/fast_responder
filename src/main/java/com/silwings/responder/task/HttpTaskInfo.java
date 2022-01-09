@@ -7,7 +7,7 @@ import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpMethod;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +61,7 @@ public class HttpTaskInfo implements ContainCondition {
         /**
          * 请求方式
          */
-        private RequestMethod requestMethod;
+        private HttpMethod httpMethod;
 
         /**
          * 请求地址
@@ -83,7 +83,7 @@ public class HttpTaskInfo implements ContainCondition {
          */
         private JSONObject body;
 
-        Map<String, String[]> getParams() {
+        public Map<String, String[]> getParams() {
             return ConvertUtils.toObj(this.params, Collections.emptyMap());
         }
 
@@ -93,7 +93,7 @@ public class HttpTaskInfo implements ContainCondition {
 
     }
 
-    Long getDelayTime() {
+    public Long getDelayTime() {
         return null == this.delayTime ? 0L : this.delayTime;
     }
 

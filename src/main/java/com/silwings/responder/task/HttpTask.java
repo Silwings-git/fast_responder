@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpMethod;
 
 import java.util.Collections;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class HttpTask implements Delayed {
     /**
      * 请求方式
      */
-    private RequestMethod requestMethod;
+    private HttpMethod httpMethod;
 
     /**
      * 请求头

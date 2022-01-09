@@ -35,7 +35,7 @@ public class QueryRequestConfigInfoResult extends PageParam{
     /**
      * 请求方式
      */
-    private String requestMethod;
+    private String httpMethod;
 
     /**
      * 启用状态

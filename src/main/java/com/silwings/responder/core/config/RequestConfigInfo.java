@@ -5,9 +5,9 @@ import com.silwings.responder.core.result.Result;
 import com.silwings.responder.task.HttpTaskInfo;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.PathMatcher;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RequestConfigInfo {
     /**
      * 请求方式
      */
-    private RequestMethod requestMethod;
+    private HttpMethod httpMethod;
 
     /**
      * 请求的任务集

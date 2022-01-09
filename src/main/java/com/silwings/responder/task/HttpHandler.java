@@ -1,14 +1,17 @@
 package com.silwings.responder.task;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.AsyncRestTemplate;
 
 import java.util.Map;
 
@@ -20,28 +23,26 @@ import java.util.Map;
  * @Version V1.0
  **/
 @Slf4j
-public class HttpHandler implements Runnable {
+public class HttpHandler {
 
     private HttpTaskManager httpTaskManager;
-    private RestTemplate restTemplate;
+    private AsyncRestTemplate httpTaskRestTemplate;
 
-
-    public HttpHandler(HttpTaskManager httpTaskManager) {
+    public HttpHandler(final HttpTaskManager httpTaskManager, final AsyncRestTemplate httpTaskRestTemplate) {
         this.httpTaskManager = httpTaskManager;
-        this.restTemplate = new RestTemplate();
+        this.httpTaskRestTemplate = httpTaskRestTemplate;
     }
 
-    @Override
-    public void run() {
+    @Async("httpTaskScheduler")
+    @Scheduled(cron = "${httptask.handler.cron:* * * * * ?}")
+    public void handle() {
 
-        // 使用死循环执行task
-        while (true) {
-            final HttpTask task = httpTaskManager.take();
+        final HttpTask task = this.httpTaskManager.poll();
 
-            if (null != task) {
-                this.request(task);
-            }
+        if (null != task) {
+            this.request(task);
         }
+
     }
 
     private void request(final HttpTask httpTask) {
@@ -60,25 +61,14 @@ public class HttpHandler implements Runnable {
             httpHeaders.set(headerEntry.getKey(), headerEntry.getValue());
         }
 
-        String body = "";
-        if (null != httpTask.getBody()) {
-            body = httpTask.getBody().toJSONString();
-        }
-
-        final HttpEntity<String> httpEntity = new HttpEntity<>(body, httpHeaders);
+        final HttpEntity<JSONObject> httpEntity = new HttpEntity<>(httpTask.getBody(), httpHeaders);
 
         final long start = System.currentTimeMillis();
 
-        try {
+        final ListenableFuture<ResponseEntity<String>> requestResult = this.httpTaskRestTemplate.exchange(realUrl, httpTask.getHttpMethod(), httpEntity, String.class, httpTask.getParams());
 
-            ResponseEntity<String> requestResult = this.restTemplate.exchange(realUrl, HttpMethod.GET, httpEntity, String.class);
-
-            final long exchangeTime = System.currentTimeMillis() - start;
-
-            log.info("HttpTask {} 执行 {} 请求成功. 耗时 {} ms. 参数信息: {}. 响应信息: {}", httpTask.getTaskName(), httpTask.getRequestMethod(), exchangeTime, httpEntity.toString(), requestResult.toString());
-        } catch (Exception ex) {
-            log.error("HttpTask {} 执行 {} 请求失败. 参数信息: {}. 错误信息: {}", httpTask.getTaskName(), httpTask.getRequestMethod(), httpEntity.toString(), ex.getMessage());
-        }
+        requestResult.addCallback(result -> log.info("HttpTask {} 执行 {} 请求成功. 耗时 {} ms. 参数信息: {}. 响应信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), System.currentTimeMillis() - start, JSON.toJSONString(httpTask), result.toString())
+                , ex -> log.error("HttpTask {} 执行 {} 请求失败. 参数信息: {}. 错误信息: {}", httpTask.getTaskName(), httpTask.getHttpMethod(), JSON.toJSONString(httpTask), ex.getMessage()));
 
     }
 

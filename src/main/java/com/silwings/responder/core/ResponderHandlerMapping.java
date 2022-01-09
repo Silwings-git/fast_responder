@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 
@@ -48,11 +48,11 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
     @Override
     protected HandlerMethod getHandlerInternal(final HttpServletRequest request) throws Exception {
 
-        final RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
+        final HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
 
         final String requestUrl = this.getUrlPathHelper().getLookupPathForRequest(request);
 
-        final RequestConfigInfo requestConfig = this.getConfig(requestMethod, requestUrl);
+        final RequestConfigInfo requestConfig = this.getConfig(httpMethod, requestUrl);
 
         // 必须先确保数据库存在该url对应的配置才能读取流,否则会导致后续的处理器无法正常使用
         if (null != requestConfig) {
@@ -76,25 +76,25 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      * date: 2022/1/3 19:33
      * author: Silwings
      *
-     * @param requestMethod 请求方式
-     * @param url           请求地址
+     * @param httpMethod 请求方式
+     * @param url        请求地址
      * @return com.silwings.responder.core.config.RequestConfigInfo 自定义配置信息
      */
-    private RequestConfigInfo getConfig(final RequestMethod requestMethod, final String url) {
+    private RequestConfigInfo getConfig(final HttpMethod httpMethod, final String url) {
 
         RequestConfigInfo adaptedConfig = null;
 
         // 同一个url可能对应不同请求方式
         final List<RequestConfigInfo> configByUrl = this.requestConfigRepository.queryByKeyUrl(url);
         for (RequestConfigInfo configInfo : configByUrl) {
-            if (requestMethod.equals(configInfo.getRequestMethod())) {
+            if (httpMethod.equals(configInfo.getHttpMethod())) {
                 adaptedConfig = configInfo;
             }
         }
 
         if (null == adaptedConfig) {
 
-            final List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(requestMethod);
+            final List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(httpMethod);
 
             for (RequestConfigInfo configInfo : restFullConfigList) {
                 if (configInfo.matchUrl(url, this.antPathMatcher)) {

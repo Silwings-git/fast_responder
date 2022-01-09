@@ -22,12 +22,8 @@ public class HttpTaskManager {
         this.queue.add(httpTask);
     }
 
-    HttpTask take() {
-        try {
-            return this.queue.take();
-        } catch (InterruptedException e) {
-            return null;
-        }
+    HttpTask poll() {
+        return this.queue.poll();
     }
 
 }
