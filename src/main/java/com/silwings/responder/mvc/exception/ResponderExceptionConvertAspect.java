@@ -17,7 +17,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class ResponderExceptionConvertAspect {
 
-    @Pointcut("execution(* com.silwings.responder.mvc.ResponderHandlerController.*.*(..))")
+    @Pointcut("execution(* com.silwings.responder.mvc.ResponderHandlerController..*.*(..))")
     public void pointCut() {
         // no codes
     }
