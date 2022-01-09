@@ -1,6 +1,6 @@
 package com.silwings.responder.core;
 
-import com.silwings.responder.core.config.RequestConfigInfo;
+import com.silwings.responder.core.config.ResponderInfo;
 import com.silwings.responder.utils.ConvertUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,11 +24,11 @@ class RequestContext {
     /**
      * 请求配置信息
      */
-    private RequestConfigInfo requestConfigInfo;
+    private ResponderInfo responderInfo;
 
-    RequestContext(final RequestParamsAndBody requestParamsAndBody, final RequestConfigInfo requestConfigInfo) {
+    RequestContext(final RequestParamsAndBody requestParamsAndBody, final ResponderInfo responderInfo) {
         this.requestParamsAndBody = ConvertUtils.toObj(requestParamsAndBody, RequestParamsAndBody.EMPTY_OBJ);
-        this.requestConfigInfo = requestConfigInfo;
+        this.responderInfo = responderInfo;
     }
 
 }

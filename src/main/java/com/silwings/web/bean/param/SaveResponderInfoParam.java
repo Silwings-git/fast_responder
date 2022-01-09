@@ -1,11 +1,11 @@
 package com.silwings.web.bean.param;
 
-import com.silwings.responder.core.config.RequestConfigInfo;
+import com.silwings.responder.core.config.ResponderInfo;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName SaveRequestConfigInfoParam
+ * @ClassName SaveResponderInfoParam
  * @Description 新增请求配置接口参数
  * @Author Silwings
  * @Date 2022/1/8 16:10
@@ -13,7 +13,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class SaveRequestConfigInfoParam extends RequestConfigInfo {
+public class SaveResponderInfoParam extends ResponderInfo {
 
     /**
      * 分类名称

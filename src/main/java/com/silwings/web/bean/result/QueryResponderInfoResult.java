@@ -1,21 +1,19 @@
-package com.silwings.web.mysql.dto;
+package com.silwings.web.bean.result;
 
 import com.silwings.web.bean.param.PageParam;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
- * @ClassName RequestConfigInfoEntity
- * @Description 请求信息配置实体
+ * @ClassName SaveResponderInfoParam
+ * @Description 新增请求配置接口参数
  * @Author Silwings
- * @Date 2022/1/8 14:57
+ * @Date 2022/1/8 16:10
  * @Version V1.0
  **/
 @Setter
 @Getter
-@Accessors(chain = true)
-public class RequestConfigInfoDto extends PageParam {
+public class QueryResponderInfoResult extends PageParam{
 
     private Long id;
 
@@ -43,15 +41,5 @@ public class RequestConfigInfoDto extends PageParam {
      * 启用状态
      */
     private Integer enableStatus;
-
-    /**
-     * 删除状态
-     */
-    private Integer logicDelete;
-
-    /**
-     * 实际数据
-     */
-    private String dataJson;
 
 }

@@ -28,7 +28,7 @@ public class ResponderContext {
     }
 
     List<HttpTaskInfo> getTasks() {
-        return this.requestContext.getRequestConfigInfo().getTasks();
+        return this.requestContext.getResponderInfo().getTasks();
     }
 
     public Object getParam(final String parameterName) {
@@ -40,7 +40,7 @@ public class ResponderContext {
     }
 
     List<Result> getResults() {
-        return this.requestContext.getRequestConfigInfo().getResults();
+        return this.requestContext.getResponderInfo().getResults();
     }
 
     public void setResult(Result result) {

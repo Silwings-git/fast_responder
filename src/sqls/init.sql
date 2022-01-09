@@ -1,5 +1,5 @@
 -- 注意! MySql版本应不低于8.0
-CREATE TABLE `request_config_info` (
+CREATE TABLE `responder_info_config` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `category_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
   `name` varchar(255) NOT NULL COMMENT '配置名称',
@@ -11,5 +11,5 @@ CREATE TABLE `request_config_info` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uidx_requestconfiginfo_keyurl_requestmethod` (`key_url`,`request_method`) USING BTREE COMMENT 'url与请求方式组合唯一'
-) ENGINE=InnoDB COMMENT='请求信息配置表';
+  UNIQUE KEY `uidx_responderinfoconfig_keyurl_requestmethod` (`key_url`,`http_method`) USING BTREE COMMENT 'url与请求方式组合唯一'
+) ENGINE=InnoDB COMMENT='应答器配置表';

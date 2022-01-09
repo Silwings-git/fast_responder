@@ -2,7 +2,7 @@ package com.silwings.responder.core;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.silwings.responder.core.config.RequestConfigInfo;
+import com.silwings.responder.core.config.ResponderInfo;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
 
@@ -30,7 +30,7 @@ public class RequestContextFactory {
         this.jsonbHttpMessageConverter = new FastJsonHttpMessageConverter();
     }
 
-    RequestContext createRequestContext(final String url, final RequestConfigInfo requestConfigInfo, final HttpServletRequest request) throws IOException {
+    RequestContext createRequestContext(final String url, final ResponderInfo responderInfo, final HttpServletRequest request) throws IOException {
 
         final String[] urlArray = url.split(QUESTION_MARK);
 
@@ -39,9 +39,9 @@ public class RequestContextFactory {
 
         // rest参数
         Map<String, String> pathParams = Collections.emptyMap();
-        if (this.antPathMatcher.match(requestConfigInfo.getKeyUrl(), urlArray[0])) {
+        if (this.antPathMatcher.match(responderInfo.getKeyUrl(), urlArray[0])) {
             // 必须使用经过?分割后的url数据,否者可能将?后的参数错误解析到path参数中
-            pathParams = this.antPathMatcher.extractUriTemplateVariables(requestConfigInfo.getKeyUrl(), urlArray[0]);
+            pathParams = this.antPathMatcher.extractUriTemplateVariables(responderInfo.getKeyUrl(), urlArray[0]);
         }
 
         // 请求体
@@ -49,7 +49,7 @@ public class RequestContextFactory {
 
         final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, pathParams, requestBody);
 
-        return new RequestContext(paramsAndBody, requestConfigInfo);
+        return new RequestContext(paramsAndBody, responderInfo);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.silwings.responder.core;
 
-import com.silwings.responder.core.config.RequestConfigInfo;
-import com.silwings.responder.interfaces.RequestConfigRepository;
+import com.silwings.responder.core.config.ResponderInfo;
+import com.silwings.responder.interfaces.ResponderInfoRepository;
 import com.silwings.responder.mvc.ResponderHandler;
 import com.silwings.responder.mvc.ResponderMapping;
 import com.silwings.responder.mvc.ResponderMappingInfo;
@@ -40,7 +40,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
     private RequestContextFactory requestContextFactory;
 
     @Autowired
-    private RequestConfigRepository requestConfigRepository;
+    private ResponderInfoRepository responderInfoRepository;
 
     @Autowired
     private AntPathMatcher antPathMatcher;
@@ -52,12 +52,12 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
         final String requestUrl = this.getUrlPathHelper().getLookupPathForRequest(request);
 
-        final RequestConfigInfo requestConfig = this.getConfig(httpMethod, requestUrl);
+        final ResponderInfo responderInfo = this.getConfig(httpMethod, requestUrl);
 
         // 必须先确保数据库存在该url对应的配置才能读取流,否则会导致后续的处理器无法正常使用
-        if (null != requestConfig) {
+        if (null != responderInfo) {
 
-            final RequestContext requestContext = this.requestContextFactory.createRequestContext(requestUrl, requestConfig, request);
+            final RequestContext requestContext = this.requestContextFactory.createRequestContext(requestUrl, responderInfo, request);
 
             final ResponderContext responderContext = new ResponderContext(requestContext);
 
@@ -78,15 +78,15 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      *
      * @param httpMethod 请求方式
      * @param url        请求地址
-     * @return com.silwings.responder.core.config.RequestConfigInfo 自定义配置信息
+     * @return com.silwings.responder.core.config.ResponderInfo 自定义配置信息
      */
-    private RequestConfigInfo getConfig(final HttpMethod httpMethod, final String url) {
+    private ResponderInfo getConfig(final HttpMethod httpMethod, final String url) {
 
-        RequestConfigInfo adaptedConfig = null;
+        ResponderInfo adaptedConfig = null;
 
         // 同一个url可能对应不同请求方式
-        final List<RequestConfigInfo> configByUrl = this.requestConfigRepository.queryByKeyUrl(url);
-        for (RequestConfigInfo configInfo : configByUrl) {
+        final List<ResponderInfo> configByUrl = this.responderInfoRepository.queryByKeyUrl(url);
+        for (ResponderInfo configInfo : configByUrl) {
             if (httpMethod.equals(configInfo.getHttpMethod())) {
                 adaptedConfig = configInfo;
             }
@@ -94,9 +94,9 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
         if (null == adaptedConfig) {
 
-            final List<RequestConfigInfo> restFullConfigList = this.requestConfigRepository.queryRestConfigByMethod(httpMethod);
+            final List<ResponderInfo> restFullConfigList = this.responderInfoRepository.queryRestConfigByMethod(httpMethod);
 
-            for (RequestConfigInfo configInfo : restFullConfigList) {
+            for (ResponderInfo configInfo : restFullConfigList) {
                 if (configInfo.matchUrl(url, this.antPathMatcher)) {
                     adaptedConfig = configInfo;
                     break;

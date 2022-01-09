@@ -13,15 +13,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @ClassName RequestConfigInfo
- * @Description 请求配置映射类
+ * @ClassName ResponderInfo
+ * @Description 应答器类
  * @Author Silwings
  * @Date 2021/8/7 11:19
  * @Version V1.0
  **/
 @Setter
 @Getter
-public class RequestConfigInfo {
+public class ResponderInfo {
 
     /**
      * 配置的自定义名称

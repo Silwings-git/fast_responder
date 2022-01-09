@@ -1,11 +1,10 @@
-package com.silwings.web.bean.result;
+package com.silwings.web.bean.param;
 
-import com.silwings.web.bean.param.PageParam;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @ClassName SaveRequestConfigInfoParam
+ * @ClassName SaveResponderInfoParam
  * @Description 新增请求配置接口参数
  * @Author Silwings
  * @Date 2022/1/8 16:10
@@ -13,7 +12,7 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class QueryRequestConfigInfoResult extends PageParam{
+public class QueryResponderInfoParam extends PageParam{
 
     private Long id;
 

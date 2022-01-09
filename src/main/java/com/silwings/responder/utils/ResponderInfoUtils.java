@@ -2,7 +2,7 @@ package com.silwings.responder.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.silwings.responder.core.codition.Condition;
-import com.silwings.responder.core.config.RequestConfigInfo;
+import com.silwings.responder.core.config.ResponderInfo;
 import com.silwings.responder.core.result.Result;
 import com.silwings.responder.task.HttpTaskInfo;
 import lombok.AllArgsConstructor;
@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * @ClassName RequestConfigInfos
+ * @ClassName ResponderInfoUtils
  * @Description 请求配置工具
  * @Author Silwings
  * @Date 2022/1/8 18:17
  * @Version V1.0
  **/
-public class RequestConfigInfos {
+public class ResponderInfoUtils {
 
     private static final Pattern HTTP_PATTERN = Pattern.compile("^http(s)?://.+$");
 
@@ -34,37 +34,37 @@ public class RequestConfigInfos {
      * author: Silwings
      *
      * @param infoStr 请求配置信息文本
-     * @return com.silwings.responder.utils.RequestConfigInfos.CheckResult 结果信息.不可能为null
+     * @return com.silwings.responder.utils.ResponderInfoUtils.CheckResult 结果信息.不可能为null
      */
-    public static CheckResult checkRequestConfigInfo(final String infoStr) {
+    public static CheckResult checkResponderInfo(final String infoStr) {
 
         if (StringUtils.isBlank(infoStr)) {
             return CheckResult.fail("配置信息为空.");
         }
 
-        final RequestConfigInfo requestConfigInfo;
+        final ResponderInfo responderInfo;
         try {
-            requestConfigInfo = JSON.parseObject(infoStr, RequestConfigInfo.class);
+            responderInfo = JSON.parseObject(infoStr, ResponderInfo.class);
         } catch (Exception e) {
             return CheckResult.fail("配置信息格式错误.");
         }
 
-        if (null == requestConfigInfo) {
+        if (null == responderInfo) {
             return CheckResult.fail("配置信息格式错误");
         }
 
-        if (StringUtils.isBlank(requestConfigInfo.getName())) {
+        if (StringUtils.isBlank(responderInfo.getName())) {
             return CheckResult.fail("配置信息缺少名称");
         }
-        if (StringUtils.isBlank(requestConfigInfo.getKeyUrl())) {
+        if (StringUtils.isBlank(responderInfo.getKeyUrl())) {
             return CheckResult.fail("配置信息缺少关键Url");
         }
-        if (null == requestConfigInfo.getHttpMethod()) {
+        if (null == responderInfo.getHttpMethod()) {
             return CheckResult.fail("配置信息缺少请求方式");
         }
 
-        if (CollectionUtils.isNotEmpty(requestConfigInfo.getTasks())) {
-            final List<HttpTaskInfo> tasks = requestConfigInfo.getTasks();
+        if (CollectionUtils.isNotEmpty(responderInfo.getTasks())) {
+            final List<HttpTaskInfo> tasks = responderInfo.getTasks();
 
             for (HttpTaskInfo task : tasks) {
                 if (null == task) {
@@ -79,7 +79,7 @@ public class RequestConfigInfos {
                     return CheckResult.fail("Http任务缺少内容.");
                 }
 
-                if (RequestConfigInfos.invalidCondition(task.findCondition())) {
+                if (ResponderInfoUtils.invalidCondition(task.findCondition())) {
                     return CheckResult.fail("Http任务条件无效.");
                 }
 
@@ -97,11 +97,11 @@ public class RequestConfigInfos {
             }
         }
 
-        if (CollectionUtils.isNotEmpty(requestConfigInfo.getResults())) {
-            final List<Result> results = requestConfigInfo.getResults();
+        if (CollectionUtils.isNotEmpty(responderInfo.getResults())) {
+            final List<Result> results = responderInfo.getResults();
 
             for (Result result : results) {
-                if (RequestConfigInfos.invalidCondition(result.findCondition())) {
+                if (ResponderInfoUtils.invalidCondition(result.findCondition())) {
                     return CheckResult.fail("返回值过滤条件无效.");
                 }
             }
