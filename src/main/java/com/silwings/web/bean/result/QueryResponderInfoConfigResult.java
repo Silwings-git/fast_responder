@@ -53,7 +53,7 @@ public class QueryResponderInfoConfigResult extends PageParam{
     public String getEnableStatusDesc() {
         final EnableStatus enableStatusEnum = EnableStatus.valueOfCode(this.enableStatus);
         if (null == enableStatusEnum) {
-            return "";
+            return null;
         }
         return enableStatusEnum.desc();
     }
