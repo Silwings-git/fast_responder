@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * @ClassName ResponderInfoConfigEntity
  * @Description 请求信息配置实体
@@ -53,5 +55,10 @@ public class ResponderInfoConfigDto extends PageParam {
      * 实际数据
      */
     private String dataJson;
+
+    /**
+     * 最后更新时间
+     */
+    private Date updateTime;
 
 }

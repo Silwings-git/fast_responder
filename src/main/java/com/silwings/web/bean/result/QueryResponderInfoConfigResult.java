@@ -1,8 +1,11 @@
 package com.silwings.web.bean.result;
 
 import com.silwings.web.bean.param.PageParam;
+import com.silwings.web.enums.EnableStatus;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @ClassName SaveResponderInfoConfigParam
@@ -41,5 +44,18 @@ public class QueryResponderInfoConfigResult extends PageParam{
      * 启用状态
      */
     private Integer enableStatus;
+
+    /**
+     * 最后更新时间
+     */
+    private Date updateTime;
+
+    public String getEnableStatusDesc() {
+        final EnableStatus enableStatusEnum = EnableStatus.valueOfCode(this.enableStatus);
+        if (null == enableStatusEnum) {
+            return "";
+        }
+        return enableStatusEnum.desc();
+    }
 
 }

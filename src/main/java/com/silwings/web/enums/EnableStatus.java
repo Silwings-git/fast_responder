@@ -8,17 +8,19 @@ package com.silwings.web.enums;
  * @Version V1.0
  **/
 public enum EnableStatus {
-    DISABLED(0),
-    ENABLE(1),
+    DISABLED(0, "禁用"),
+    ENABLE(1, "启用"),
     ;
 
     private Integer code;
+    private String desc;
 
-    EnableStatus(Integer code) {
+    EnableStatus(Integer code, String desc) {
         this.code = code;
+        this.desc = desc;
     }
 
-    public static EnableStatus valueOfCode(Integer enableStatus) {
+    public static EnableStatus valueOfCode(final Integer enableStatus) {
         for (EnableStatus value : values()) {
             if (value.equalsCode(enableStatus)) {
                 return value;
@@ -35,4 +37,7 @@ public enum EnableStatus {
         return this.number().equals(code);
     }
 
+    public String desc() {
+        return this.desc;
+    }
 }
