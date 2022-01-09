@@ -61,7 +61,7 @@ public class HttpTaskController implements ResponderEventListener {
 
     @Override
     public ResponderEventType getEventType() {
-        return ResponderEventType.HTTP_TASK_LOG;
+        return ResponderEventType.PROJECT_LOG;
     }
 
     @Override

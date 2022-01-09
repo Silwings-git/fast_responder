@@ -9,8 +9,8 @@ package com.silwings.responder.event;
  **/
 public enum ResponderEventType {
 
-    // http 任务日志
-    HTTP_TASK_LOG,
+    // 项目日志
+    PROJECT_LOG,
     ;
 
 }
