@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -24,38 +25,50 @@ import java.util.concurrent.CopyOnWriteArrayList;
  **/
 @Slf4j
 @RestController
-@RequestMapping("/responder/httpTask")
-public class HttpTaskController implements ResponderEventListener {
+@RequestMapping("/responder/logs")
+public class HttpTaskController implements ResponderEventListener<String> {
 
     @Value("${web.httptask.querylogs.max-connect-number:10}")
     private Integer maxConnectNumber;
 
-    private final CopyOnWriteArrayList<SseEmitter> sseEmitterArrayList = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<SseEmitter> allLogSseEmitterList = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<SseEmitter> httpTaskLogSseEmitterList = new CopyOnWriteArrayList<>();
 
-    @GetMapping(value = "/logs")
+    @GetMapping(value = "/all")
     public SseEmitter queryLogs() {
-        if (this.sseEmitterArrayList.size() >= this.maxConnectNumber) {
-            this.closeSseEmitter(this.sseEmitterArrayList.get(0));
+        if (this.allLogSseEmitterList.size() >= this.maxConnectNumber) {
+            this.closeSseEmitter(this.allLogSseEmitterList.get(0), this.allLogSseEmitterList);
         }
 
         final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
-        this.sseEmitterArrayList.add(sseEmitter);
+        this.allLogSseEmitterList.add(sseEmitter);
 
         return sseEmitter;
     }
 
-    private void closeSseEmitter(final SseEmitter sseEmitter) {
-        if (null == sseEmitter) {
+    @GetMapping(value = "/httpTask")
+    public SseEmitter queryHttpTaskLogs() {
+        if (this.httpTaskLogSseEmitterList.size() >= this.maxConnectNumber) {
+            this.closeSseEmitter(this.httpTaskLogSseEmitterList.get(0), this.httpTaskLogSseEmitterList);
+        }
+
+        final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
+        this.httpTaskLogSseEmitterList.add(sseEmitter);
+
+        return sseEmitter;
+    }
+
+    private void closeSseEmitter(final SseEmitter sseEmitter, final List<SseEmitter> sseEmitterList) {
+        if (null == sseEmitter || null == sseEmitterList) {
             return;
         }
 
         try {
-            this.sseEmitterArrayList.remove(sseEmitter);
+            sseEmitterList.remove(sseEmitter);
             sseEmitter.onCompletion(() -> log.info("一个 SseEmitter 断开."));
             sseEmitter.complete();
         } catch (Exception e) {
             log.error("HttpTaskController#closeSseEmitter error.", e);
-            // no codes
         }
     }
 
@@ -65,14 +78,28 @@ public class HttpTaskController implements ResponderEventListener {
     }
 
     @Override
-    public void doEvent(final ResponderEventPack<?> eventPack) {
+    public void doEvent(final ResponderEventPack<String> eventPack) {
 
-        for (SseEmitter nextEmitter : this.sseEmitterArrayList) {
+        for (SseEmitter nextEmitter : this.allLogSseEmitterList) {
             try {
                 nextEmitter.send(eventPack, MediaType.APPLICATION_JSON);
             } catch (IOException e) {
                 // 读写分离集合,可以在遍历过程中remove
-                this.closeSseEmitter(nextEmitter);
+                this.closeSseEmitter(nextEmitter, allLogSseEmitterList);
+            }
+        }
+
+        // http task的执行由 httpTaskScheduler 触发,结果由 SimpleAsyncTaskExecutor 处理
+        if (eventPack.getData().getData().contains("httpTaskScheduler")
+                || eventPack.getData().getData().contains("SimpleAsyncTaskExecutor")) {
+
+            for (SseEmitter sseEmitter : this.httpTaskLogSseEmitterList) {
+                try {
+                    sseEmitter.send(eventPack, MediaType.APPLICATION_JSON);
+                } catch (IOException e) {
+                    // 读写分离集合,可以在遍历过程中remove
+                    this.closeSseEmitter(sseEmitter, httpTaskLogSseEmitterList);
+                }
             }
         }
     }

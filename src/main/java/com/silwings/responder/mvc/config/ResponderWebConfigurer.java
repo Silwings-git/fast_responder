@@ -86,11 +86,11 @@ public class ResponderWebConfigurer implements WebMvcConfigurer {
 
     @Bean
     public HttpHandler httpHandler(final AsyncRestTemplate httpTaskRestTemplate) {
-        return new HttpHandler(httpTaskManager(), httpTaskRestTemplate, httpTaskEventManager());
+        return new HttpHandler(httpTaskManager(), httpTaskRestTemplate);
     }
 
     @Bean("httpTaskScheduler")
-    public TaskScheduler taskScheduler(final TaskSchedulerProperties taskSchedulerProperties) {
+    public TaskScheduler httpTaskScheduler(final TaskSchedulerProperties taskSchedulerProperties) {
         final ThreadPoolTaskScheduler httpTaskScheduler = new ThreadPoolTaskScheduler();
         // 因为该服务通常用于调试,http任务不会很多,默认设置核心线程数为1
         httpTaskScheduler.setPoolSize(taskSchedulerProperties.getThreadPoolSize());

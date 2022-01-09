@@ -1,4 +1,4 @@
-package com.silwings.log;
+package com.silwings.infrastructure.log;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Layout;

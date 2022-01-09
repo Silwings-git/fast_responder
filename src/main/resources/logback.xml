@@ -11,7 +11,7 @@
     </appender>
 
     <!-- 事件输出 -->
-    <appender name="eventAppender" class="com.silwings.log.EventAppender">
+    <appender name="eventAppender" class="com.silwings.infrastructure.log.EventAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>${log.pattern}</pattern>
         </layout>

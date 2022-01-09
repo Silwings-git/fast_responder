@@ -10,10 +10,10 @@ import com.silwings.responder.event.ResponderEventType;
  * @Date 2022/1/9 13:00
  * @Version V1.0
  **/
-public interface ResponderEventListener {
+public interface ResponderEventListener<T> {
 
     ResponderEventType getEventType();
 
-    void doEvent(ResponderEventPack<?> eventPack);
+    void doEvent(ResponderEventPack<T> eventPack);
 
 }
