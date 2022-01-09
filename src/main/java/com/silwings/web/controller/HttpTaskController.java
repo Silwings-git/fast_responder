@@ -7,6 +7,7 @@ import com.silwings.web.bean.Utf8SseEmitter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @Version V1.0
  **/
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/responder/logs")
 public class HttpTaskController implements ResponderEventListener<String> {
