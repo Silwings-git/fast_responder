@@ -28,6 +28,7 @@ public class ResponderInfoConfigEntity {
     public static final String C_KEY_URL = "keyUrl";
     public static final String C_HTTP_METHOD = "httpMethod";
     public static final String C_ENABLE_STATUS = "enableStatus";
+    public static final String C_UPDATE_TIME = "updateTime";
     public static final String C_LOGIC_DELETE = "logicDelete";
 
     @Id

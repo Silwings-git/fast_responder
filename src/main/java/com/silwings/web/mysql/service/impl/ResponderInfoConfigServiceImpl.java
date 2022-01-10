@@ -127,16 +127,19 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
 
         final String queryCategoryName = StringUtils.isBlank(queryInfo.getCategoryName()) ? null : "%" + queryInfo.getCategoryName() + "%";
         final String queryName = StringUtils.isBlank(queryInfo.getName()) ? null : "%" + queryInfo.getName() + "%";
+        final String queryKeyUrl = StringUtils.isBlank(queryInfo.getKeyUrl()) ? null : "%" + queryInfo.getKeyUrl() + "%";
 
         final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
                 .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
-                .andEqualTo(ResponderInfoConfigEntity.C_CATEGORY_NAME, queryCategoryName)
+                .andLike(ResponderInfoConfigEntity.C_CATEGORY_NAME, queryCategoryName)
                 .andLike(ResponderInfoConfigEntity.C_NAME, queryName)
-                .andEqualTo(ResponderInfoConfigEntity.C_KEY_URL, ConvertUtils.toString(queryInfo.getKeyUrl()))
+                .andLike(ResponderInfoConfigEntity.C_KEY_URL, queryKeyUrl)
                 .andEqualTo(ResponderInfoConfigEntity.C_HTTP_METHOD, ConvertUtils.toString(queryInfo.getHttpMethod()))
                 .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
                 .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
+
+        example.orderBy(ResponderInfoConfigEntity.C_UPDATE_TIME).desc();
 
         final int count = this.responderInfoConfigMapper.selectCountByCondition(example);
         if (0 == count) {
