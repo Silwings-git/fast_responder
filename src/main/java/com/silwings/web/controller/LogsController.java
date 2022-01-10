@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @CrossOrigin
 @RestController
 @RequestMapping("/responder/logs")
-public class HttpTaskController implements ResponderEventListener<String> {
+public class LogsController implements ResponderEventListener<String> {
 
     @Value("${web.httptask.querylogs.max-connect-number:10}")
     private Integer maxConnectNumber;
