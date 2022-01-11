@@ -16,6 +16,8 @@ public class FindResponderInfoConfigDetailResult {
 
     private Long id;
 
-    private ResponderInfoConfigResult configInfo;
+    private Integer enableStatus;
+
+    private ResponderInfoConfigResult responderInfoDetail;
 
 }
