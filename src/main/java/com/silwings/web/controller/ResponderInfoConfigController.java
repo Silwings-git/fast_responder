@@ -93,7 +93,7 @@ public class ResponderInfoConfigController {
 
         final FindResponderInfoConfigDetailResult detailResult = new FindResponderInfoConfigDetailResult();
         detailResult.setId(infoDto.getId());
-        detailResult.setConfigInfo(JSON.parseObject(infoDto.getDataJson(), ResponderInfoConfigResult.class));
+        detailResult.setResponderInfoDetail(JSON.parseObject(infoDto.getDataJson(), ResponderInfoConfigResult.class));
 
         return WebResult.ok(detailResult);
 
