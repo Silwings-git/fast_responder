@@ -12,12 +12,8 @@ import lombok.Setter;
  **/
 @Setter
 @Getter
-public class FindResponderInfoConfigDetailResult {
+public class FindResponderInfoConfigDetailResult extends ResponderInfoConfigResult {
 
-    private Long id;
-
-    private Integer enableStatus;
-
-    private ResponderInfoConfigResult responderInfoDetail;
+    private String formatDetailJson;
 
 }

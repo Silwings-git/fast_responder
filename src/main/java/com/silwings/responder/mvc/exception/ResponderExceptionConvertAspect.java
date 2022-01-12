@@ -27,7 +27,7 @@ public class ResponderExceptionConvertAspect {
         try {
             return jp.proceed();
         } catch (Throwable throwable) {
-            throw new ResponderException(throwable);
+            throw new ResponderException(throwable.getMessage(), throwable);
         }
     }
 

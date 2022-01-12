@@ -3,6 +3,7 @@ package com.silwings.web.mysql.dao;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -32,6 +33,7 @@ public class ResponderInfoConfigEntity {
     public static final String C_LOGIC_DELETE = "logicDelete";
 
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Long id;
 
     /**

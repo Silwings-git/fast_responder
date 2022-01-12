@@ -27,7 +27,7 @@ public class DbExceptionConvertAspect {
         try {
             return jp.proceed();
         } catch (Throwable throwable) {
-            throw new DbException(throwable);
+            throw new DbException(throwable.getMessage(), throwable);
         }
     }
 

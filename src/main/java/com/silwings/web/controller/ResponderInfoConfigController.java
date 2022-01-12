@@ -1,8 +1,11 @@
 package com.silwings.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.silwings.responder.utils.BeanCopyUtils;
 import com.silwings.web.bean.param.EnableResponderInfoParam;
+import com.silwings.web.bean.param.FormatJsonParam;
 import com.silwings.web.bean.param.QueryResponderInfoConfigParam;
 import com.silwings.web.bean.param.SaveResponderInfoConfigParam;
 import com.silwings.web.bean.result.FindResponderInfoConfigDetailResult;
@@ -46,22 +49,24 @@ public class ResponderInfoConfigController {
     private ResponderInfoConfigService responderInfoConfigService;
 
     @PostMapping("/insert")
-    public WebResult<Void> insert(@RequestBody SaveResponderInfoConfigParam param) {
+    public WebResult<Long> insert(@RequestBody SaveResponderInfoConfigParam param) {
 
         log.info("/responder/request/crud/insert param: {}", JSON.toJSONString(param));
+
+        param.validate();
 
         final ResponderInfoConfigDto insertInfo = new ResponderInfoConfigDto();
         insertInfo
                 .setName(param.getName())
                 .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
-                .setHttpMethod(param.getHttpMethod().toString())
+                .setHttpMethod(null == param.getHttpMethod() ? null : param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 
-        this.responderInfoConfigService.insert(insertInfo);
+        final Long id = this.responderInfoConfigService.insert(insertInfo);
 
-        return WebResult.ok();
+        return WebResult.ok(id);
     }
 
 
@@ -77,7 +82,6 @@ public class ResponderInfoConfigController {
         final List<QueryResponderInfoConfigResult> infoResultList = BeanCopyUtils.jsonCopyList(pageData.getList(), QueryResponderInfoConfigResult.class);
 
         return PageResult.ok(infoResultList, pageData.getTotal());
-
     }
 
     @GetMapping("/find/{id}")
@@ -91,12 +95,14 @@ public class ResponderInfoConfigController {
             throw new DbException("配置信息不存在");
         }
 
-        final FindResponderInfoConfigDetailResult detailResult = new FindResponderInfoConfigDetailResult();
-        detailResult.setId(infoDto.getId());
-        detailResult.setResponderInfoDetail(JSON.parseObject(infoDto.getDataJson(), ResponderInfoConfigResult.class));
+        final FindResponderInfoConfigDetailResult detailResult = JSON.parseObject(infoDto.getDataJson(), FindResponderInfoConfigDetailResult.class);
+        detailResult.setCategoryName(infoDto.getCategoryName());
+        detailResult.setFormatDetailJson(JSON.toJSONString(JSON.parseObject(infoDto.getDataJson(), ResponderInfoConfigResult.class),
+                SerializerFeature.PrettyFormat,
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteDateUseDateFormat));
 
         return WebResult.ok(detailResult);
-
     }
 
     @PutMapping("/update/{id}")
@@ -104,20 +110,21 @@ public class ResponderInfoConfigController {
 
         log.info("/responder/request/crud/updateById/{id} id: {}  param: {}", id, JSON.toJSONString(param));
 
+        param.validate();
+
         final ResponderInfoConfigDto updateInfo = new ResponderInfoConfigDto();
         updateInfo
                 .setId(id)
                 .setName(param.getName())
                 .setCategoryName(param.getCategoryName())
                 .setKeyUrl(param.getKeyUrl())
-                .setHttpMethod(param.getHttpMethod().toString())
+                .setHttpMethod(null == param.getHttpMethod() ? null : param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
                 .setEnableStatus(EnableStatus.DISABLED.number());
 
         this.responderInfoConfigService.updateById(updateInfo);
 
         return WebResult.ok();
-
     }
 
     @PutMapping("/enableConfig")
@@ -128,7 +135,6 @@ public class ResponderInfoConfigController {
         this.responderInfoConfigService.enableConfig(param.getId(), EnableStatus.valueOfCode(param.getEnableStatus()));
 
         return WebResult.ok();
-
     }
 
     @DeleteMapping("/delete/{id}")
@@ -139,7 +145,24 @@ public class ResponderInfoConfigController {
         this.responderInfoConfigService.deleteById(id);
 
         return WebResult.ok();
+    }
 
+    @PostMapping("/formatJson")
+    public WebResult<String> formatJson(@RequestBody FormatJsonParam param) {
+
+        final String formatStr;
+        try {
+            final JSONObject jsonObject = JSON.parseObject(param.getJsonStr());
+
+            formatStr = JSON.toJSONString(jsonObject,
+                    SerializerFeature.PrettyFormat,
+                    SerializerFeature.WriteMapNullValue,
+                    SerializerFeature.WriteDateUseDateFormat);
+        } catch (Exception e) {
+            return WebResult.ok(param.getJsonStr());
+        }
+
+        return WebResult.ok(formatStr);
     }
 
 }

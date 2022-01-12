@@ -14,7 +14,7 @@ import com.silwings.web.mysql.dto.ResponderInfoConfigDto;
  **/
 public interface ResponderInfoConfigService extends ResponderInfoRepository {
 
-    void insert(ResponderInfoConfigDto insertInfo);
+    Long insert(ResponderInfoConfigDto insertInfo);
 
     void updateById(ResponderInfoConfigDto updateInfo);
 

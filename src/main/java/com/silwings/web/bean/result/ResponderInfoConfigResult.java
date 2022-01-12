@@ -14,4 +14,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ResponderInfoConfigResult extends ResponderInfo {
+
+    /**
+     * 分类名称
+     */
+    private String categoryName;
+
 }

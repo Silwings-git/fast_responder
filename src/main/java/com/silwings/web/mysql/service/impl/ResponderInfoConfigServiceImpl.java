@@ -84,10 +84,10 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
     }
 
     @Override
-    public void insert(final ResponderInfoConfigDto insertInfo) {
+    public Long insert(final ResponderInfoConfigDto insertInfo) {
 
         if (null == insertInfo) {
-            return;
+            return -1L;
         }
 
         final ResponderInfoConfigEntity entity = BeanCopyUtils.jsonCopyBean(insertInfo, ResponderInfoConfigEntity.class);
@@ -96,6 +96,8 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         entity.setUpdateTime(null);
 
         this.responderInfoConfigMapper.insertSelective(entity);
+
+        return entity.getId();
     }
 
     @Override

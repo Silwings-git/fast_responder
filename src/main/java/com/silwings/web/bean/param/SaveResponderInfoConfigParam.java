@@ -1,8 +1,10 @@
 package com.silwings.web.bean.param;
 
 import com.silwings.responder.core.config.ResponderInfo;
+import com.silwings.web.execption.DbException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @ClassName SaveResponderInfoConfigParam
@@ -20,4 +22,11 @@ public class SaveResponderInfoConfigParam extends ResponderInfo {
      */
     private String categoryName;
 
+    public void validate() {
+
+        if (StringUtils.isBlank(this.getName())) {
+            throw new DbException("请输入name");
+        }
+
+    }
 }
