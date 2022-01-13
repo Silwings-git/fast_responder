@@ -43,7 +43,7 @@ public class QueryResponderInfoConfigResult extends PageParam{
     /**
      * 启用状态
      */
-    private Integer enableStatus;
+    private Boolean enableStatus;
 
     /**
      * 最后更新时间

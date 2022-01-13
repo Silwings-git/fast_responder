@@ -5,6 +5,7 @@ import com.silwings.web.execption.DbException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
 
 /**
  * @ClassName SaveResponderInfoConfigParam
@@ -29,4 +30,14 @@ public class SaveResponderInfoConfigParam extends ResponderInfo {
         }
 
     }
+
+    public void setHttpMethod(final String httpMethodStr) {
+
+        if (StringUtils.isBlank(httpMethodStr)) {
+            return;
+        }
+
+        this.setHttpMethod(HttpMethod.valueOf(httpMethodStr.toUpperCase()));
+    }
+
 }

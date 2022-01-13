@@ -39,6 +39,6 @@ public class QueryResponderInfoConfigParam extends PageParam{
     /**
      * 启用状态
      */
-    private Integer enableStatus;
+    private Boolean enableStatus;
 
 }

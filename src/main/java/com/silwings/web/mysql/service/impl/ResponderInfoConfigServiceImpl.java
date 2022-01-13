@@ -17,6 +17,7 @@ import com.silwings.web.mysql.service.ResponderInfoConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -49,7 +50,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         final ResponderInfoConfigEntity infoEntity = new ResponderInfoConfigEntity();
         infoEntity
                 .setKeyUrl(url)
-                .setEnableStatus(EnableStatus.ENABLE.number())
+                .setEnableStatus(EnableStatus.ENABLE.value())
                 .setLogicDelete(LogicDelete.NORMAL.number());
 
         final List<ResponderInfoConfigEntity> selectInfos = this.responderInfoConfigMapper.select(infoEntity);
@@ -67,7 +68,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         final ResponderInfoConfigEntity infoEntity = new ResponderInfoConfigEntity();
         infoEntity
                 .setHttpMethod(httpMethod.toString())
-                .setEnableStatus(EnableStatus.ENABLE.number())
+                .setEnableStatus(EnableStatus.ENABLE.value())
                 .setLogicDelete(LogicDelete.NORMAL.number());
 
         final List<ResponderInfoConfigEntity> selectInfos = this.responderInfoConfigMapper.select(infoEntity);
@@ -95,7 +96,11 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         entity.setCreateTime(null);
         entity.setUpdateTime(null);
 
-        this.responderInfoConfigMapper.insertSelective(entity);
+        try {
+            this.responderInfoConfigMapper.insertSelective(entity);
+        } catch (DuplicateKeyException e) {
+            throw new DbException("应答器地址和请求方式的组合重复,请检查并调整后重试");
+        }
 
         return entity.getId();
     }
@@ -117,7 +122,11 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         example.createCriteria()
                 .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(updateInfo.getId(), -1L));
 
-        this.responderInfoConfigMapper.updateByConditionSelective(entity, example);
+        try {
+            this.responderInfoConfigMapper.updateByConditionSelective(entity, example);
+        } catch (DuplicateKeyException e) {
+            throw new DbException("应答器地址和请求方式的组合重复,请检查并调整后重试");
+        }
     }
 
     @Override
@@ -197,7 +206,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         final ResponderInfoConfigDto enableParam = new ResponderInfoConfigDto();
         enableParam
                 .setId(id)
-                .setEnableStatus(EnableStatus.ENABLE.number());
+                .setEnableStatus(EnableStatus.ENABLE.value());
 
         this.updateById(enableParam);
     }
@@ -207,7 +216,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
         final ResponderInfoConfigDto enableParam = new ResponderInfoConfigDto();
         enableParam
                 .setId(id)
-                .setEnableStatus(EnableStatus.DISABLED.number());
+                .setEnableStatus(EnableStatus.DISABLED.value());
 
         this.updateById(enableParam);
     }

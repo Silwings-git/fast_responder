@@ -16,6 +16,6 @@ public class EnableResponderInfoParam {
 
     private Long id;
 
-    private Integer enableStatus;
+    private Boolean enableStatus;
 
 }

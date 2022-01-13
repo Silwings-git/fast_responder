@@ -44,7 +44,7 @@ public class ResponderInfoConfigDto extends PageParam {
     /**
      * 启用状态
      */
-    private Integer enableStatus;
+    private Boolean enableStatus;
 
     /**
      * 删除状态

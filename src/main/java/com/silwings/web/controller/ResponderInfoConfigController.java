@@ -62,7 +62,7 @@ public class ResponderInfoConfigController {
                 .setKeyUrl(param.getKeyUrl())
                 .setHttpMethod(null == param.getHttpMethod() ? null : param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
-                .setEnableStatus(EnableStatus.DISABLED.number());
+                .setEnableStatus(EnableStatus.DISABLED.value());
 
         final Long id = this.responderInfoConfigService.insert(insertInfo);
 
@@ -120,7 +120,7 @@ public class ResponderInfoConfigController {
                 .setKeyUrl(param.getKeyUrl())
                 .setHttpMethod(null == param.getHttpMethod() ? null : param.getHttpMethod().toString())
                 .setDataJson(JSON.toJSONString(param))
-                .setEnableStatus(EnableStatus.DISABLED.number());
+                .setEnableStatus(EnableStatus.DISABLED.value());
 
         this.responderInfoConfigService.updateById(updateInfo);
 

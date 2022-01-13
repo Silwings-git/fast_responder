@@ -64,7 +64,7 @@ public class ResponderInfoConfigEntity {
      * 启用状态
      */
     @Column(name = "enable_status")
-    private Integer enableStatus;
+    private Boolean enableStatus;
 
     /**
      * 删除状态
