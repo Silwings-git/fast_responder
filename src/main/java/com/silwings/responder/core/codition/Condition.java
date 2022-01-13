@@ -122,7 +122,7 @@ public class Condition {
 
             final String[] conditionArray = trimCondition.split(" ");
 
-            if (3 != conditionArray.length) {
+            if (conditionArray.length < 2) {
                 return Expression.INVALID_EXPRESSION;
             }
 
@@ -131,7 +131,7 @@ public class Condition {
                 return Expression.INVALID_EXPRESSION;
             }
 
-            final Expression expression = new Expression(conditionArray[0], conditionArray[2], conditionSymbol);
+            final Expression expression = new Expression(conditionArray[0], conditionArray.length > 2 ? conditionArray[2] : "", conditionSymbol);
             expression.originalExpression = conditionStr;
 
             return expression;
