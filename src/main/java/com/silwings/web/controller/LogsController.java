@@ -86,9 +86,12 @@ public class LogsController implements ResponderEventListener<String> {
     @Override
     public void doEvent(final ResponderEventPack<String> eventPack) {
 
+        // 简单返回内容
+        final String stringMessage = eventPack.getData().getData();
+
         for (SseEmitter nextEmitter : this.allLogSseEmitterList) {
             try {
-                nextEmitter.send(eventPack, MediaType.APPLICATION_JSON);
+                nextEmitter.send(stringMessage, MediaType.APPLICATION_JSON);
             } catch (IOException e) {
                 // 读写分离集合,可以在遍历过程中remove
                 this.closeSseEmitter(nextEmitter, allLogSseEmitterList);
@@ -96,12 +99,12 @@ public class LogsController implements ResponderEventListener<String> {
         }
 
         // http task的执行由 httpTaskScheduler 触发,结果由 SimpleAsyncTaskExecutor 处理
-        if (eventPack.getData().getData().contains("httpTaskScheduler")
-                || eventPack.getData().getData().contains("SimpleAsyncTaskExecutor")) {
+        if (stringMessage.contains("httpTaskScheduler")
+                || stringMessage.contains("SimpleAsyncTaskExecutor")) {
 
             for (SseEmitter sseEmitter : this.httpTaskLogSseEmitterList) {
                 try {
-                    sseEmitter.send(eventPack, MediaType.APPLICATION_JSON);
+                    sseEmitter.send(stringMessage, MediaType.APPLICATION_JSON);
                 } catch (IOException e) {
                     // 读写分离集合,可以在遍历过程中remove
                     this.closeSseEmitter(sseEmitter, httpTaskLogSseEmitterList);
@@ -118,7 +121,7 @@ public class LogsController implements ResponderEventListener<String> {
         }
 
         try {
-            sseEmitter.send(new ResponderEventPack<>(ResponderEventType.PROJECT_LOG, ResponderEventPack.simpleEventData("欢迎使用 Fast_Responder 快捷应答服务.")));
+            sseEmitter.send("欢迎使用 Fast_Responder 快捷应答服务.");
         } catch (IOException e) {
             log.info("欢迎语推送失败");
         }
