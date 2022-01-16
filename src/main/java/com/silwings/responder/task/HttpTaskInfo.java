@@ -56,7 +56,7 @@ public class HttpTaskInfo implements ContainCondition {
 
     @Setter
     @Getter
-    public class HttpTaskContent {
+    public static class HttpTaskContent {
 
         /**
          * 请求方式

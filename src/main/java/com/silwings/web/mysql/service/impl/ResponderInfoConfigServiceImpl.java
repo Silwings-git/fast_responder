@@ -91,16 +91,22 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
             return -1L;
         }
 
+        final ResponderInfoConfigEntity countCondition = new ResponderInfoConfigEntity()
+                .setKeyUrl(insertInfo.getKeyUrl())
+                .setHttpMethod(insertInfo.getHttpMethod())
+                .setLogicDelete(LogicDelete.NORMAL.number());
+        final int count = this.responderInfoConfigMapper.selectCount(countCondition);
+        if (count > 0) {
+            // 数据库是逻辑删，不方便使用唯一键
+            throw new DbException("应答器地址和请求方式的组合重复,请检查并调整后重试");
+        }
+
         final ResponderInfoConfigEntity entity = BeanCopyUtils.jsonCopyBean(insertInfo, ResponderInfoConfigEntity.class);
         entity.setId(null);
         entity.setCreateTime(null);
         entity.setUpdateTime(null);
 
-        try {
-            this.responderInfoConfigMapper.insertSelective(entity);
-        } catch (DuplicateKeyException e) {
-            throw new DbException("应答器地址和请求方式的组合重复,请检查并调整后重试");
-        }
+        this.responderInfoConfigMapper.insertSelective(entity);
 
         return entity.getId();
     }

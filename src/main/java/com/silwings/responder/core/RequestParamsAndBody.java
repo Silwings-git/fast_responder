@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -44,6 +45,10 @@ public class RequestParamsAndBody {
         this.body = body;
     }
 
+    public JSONObject getBody() {
+        return null == this.body ? new JSONObject() : this.body;
+    }
+
     /**
      * description: 从全部请求参数中获取参数信息
      * 该接口会依次尝试从url参数,rest参数,请求体中获取paramName对应的值.
@@ -61,7 +66,15 @@ public class RequestParamsAndBody {
         }
 
         if (this.getParams().containsKey(paramName)) {
-            return this.getParams().get(paramName);
+            // param需要特殊处理
+            final String[] paramArray = this.getParams().get(paramName);
+            if (ArrayUtils.isEmpty(paramArray)) {
+                return null;
+            }
+            if (paramArray.length == 1) {
+                return paramArray[0];
+            }
+            return paramArray;
         }
 
         if (this.getPathParams().containsKey(paramName)) {

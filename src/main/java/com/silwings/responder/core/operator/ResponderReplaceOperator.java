@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.silwings.responder.core.RequestParamsAndBody;
 import com.silwings.responder.utils.ConvertUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Array;
@@ -447,11 +448,16 @@ public enum ResponderReplaceOperator {
             final String timePattern = group.replace("-TSFNow(", "").replace(")-", "");
 
             String replaceValue;
-            try {
-                replaceValue = new SimpleDateFormat(timePattern).format(new Date());
-            } catch (Exception e) {
-                // 当format失败时使用错误的 timePattern 替换
-                replaceValue = timePattern;
+
+            if (StringUtils.isNotBlank(timePattern)) {
+                try {
+                    replaceValue = new SimpleDateFormat(timePattern).format(new Date());
+                } catch (Exception e) {
+                    // 当format失败时使用错误的 timePattern 替换
+                    replaceValue = timePattern;
+                }
+            }else {
+                replaceValue = String.valueOf(System.currentTimeMillis());
             }
 
             // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
@@ -467,4 +473,18 @@ public enum ResponderReplaceOperator {
         return input;
     }
 
+    public static Map<String, String> replaceStringMap(final Map<String, String> paramMap, final RequestParamsAndBody requestParamsAndBody) {
+
+        final Map<String, String> realHeader = new HashMap<>();
+
+        if (MapUtils.isNotEmpty(paramMap)) {
+            for (Map.Entry<String, String> headerKeyValue : paramMap.entrySet()) {
+                final String realHeaderKey = ResponderReplaceOperator.replace(headerKeyValue.getKey(), requestParamsAndBody).toString();
+                final String realHeaderValue = ResponderReplaceOperator.replace(headerKeyValue.getValue(), requestParamsAndBody).toString();
+                realHeader.put(realHeaderKey, realHeaderValue);
+            }
+        }
+
+        return realHeader;
+    }
 }

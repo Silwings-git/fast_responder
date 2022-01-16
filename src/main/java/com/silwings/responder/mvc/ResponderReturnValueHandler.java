@@ -11,6 +11,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @ClassName ResponderMappingInfo
@@ -46,6 +47,9 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
 
         try (ServletServerHttpResponse servletServerHttpResponse = new ServletServerHttpResponse(response);
              OutputStream outputStream = servletServerHttpResponse.getBody()) {
+
+            final Map<String, String> headers = result.getHeaders();
+            headers.forEach(response::addHeader);
 
             if (null != result.getBody()) {
                 response.addHeader("Content-Type", "application/json;charset=UTF-8");

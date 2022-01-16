@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName CheckResult
@@ -39,6 +40,11 @@ public class Result implements ContainCondition {
      * 条件
      */
     private List<String> conditions;
+
+    /**
+     * 响应头
+     */
+    private Map<String,String> headers;
 
     @Override
     public Condition findCondition() {

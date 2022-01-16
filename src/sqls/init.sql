@@ -11,5 +11,10 @@ CREATE TABLE `responder_info_config` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uidx_responderinfoconfig_keyurl_requestmethod` (`key_url`,`http_method`) USING BTREE COMMENT 'url与请求方式组合唯一'
+  KEY `idx_responderinfoconfig_keyurl` (`key_url`) USING BTREE,
+  KEY `idx_responderinfoconfig_httpmethod` (`http_method`) USING BTREE
 ) ENGINE=InnoDB COMMENT='应答器配置表';
+
+-- 示例应答器
+INSERT INTO `responder_info_config`(`name`, `key_url`, `http_method`, `category_name`,`data_json`) VALUES
+('Demo config', '/demo/url/{name}/{age}', 'GET', '示例配置', '{\"name\": \"Demo config\", \"tasks\": [{\"name\": \"My http task\", \"content\": {\"body\": {\"id\": \"-UUID()-\", \"name\": \"${name}\", \"timestemp\": \"-TSNow(ms)-\"}, \"params\": {\"keyA\": [\"key_Av1\", \"keyA_v2\"], \"keyB\": [\"keyB_v1\"]}, \"headers\": {\"authToken\": \"8888888888\"}, \"httpMethod\": \"POST\", \"requestUrl\": \"http://localhost:8088/hello/word\"}, \"delayTime\": 2000, \"conditions\": [\"1 == 1\", \"${age} >= 10\", \"name =IsNotBlank=\"]}], \"keyUrl\": \"/demo/url/{name}/{age}\", \"results\": [{\"msg\": \"Hello Word !\", \"headers\": {\"authToken\": \"-TSFNow(yyyy-MM-dd HH:mm:ss)-\"}, \"conditions\": [\"${age} == 18\"], \"resultName\": \"My Result A\"}, {\"body\": {\"fast\": \"responder\"}, \"headers\": {}, \"conditions\": [\"${age} == 15\"], \"resultName\": \"My Result B\"}], \"httpMethod\": \"GET\", \"categoryName\": \"示例配置\"}');

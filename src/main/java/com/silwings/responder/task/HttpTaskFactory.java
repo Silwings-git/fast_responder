@@ -48,6 +48,7 @@ public class HttpTaskFactory {
 
         for (Map.Entry<String, String[]> paramEntry : params.entrySet()) {
 
+            // key一定是简单字符串
             final String realParamName = ResponderReplaceOperator.replace(paramEntry.getKey(), requestParamsAndBody).toString();
 
             final String[] paramValueArray = paramEntry.getValue();
@@ -69,7 +70,7 @@ public class HttpTaskFactory {
 
             if (JSON.isValidObject((String) realBodyObj)) {
                 realBody = JSON.parseObject((String) realBodyObj);
-            }else {
+            } else {
                 log.error("HttpTask {} 的实际 Body 无法转换为JSON格式,已丢弃. 实际Body: {}", taskInfo.getName(), realBodyObj);
             }
         } else {
@@ -77,12 +78,15 @@ public class HttpTaskFactory {
             realBody = JSON.parseObject(JSON.toJSONString(realBodyObj));
         }
 
+        // 实际请求头
+        final Map<String, String> realHeader = ResponderReplaceOperator.replaceStringMap(taskContent.getHeaders(), requestParamsAndBody);
+
         final HttpTask task = new HttpTask();
         task
                 .setTaskName(taskInfo.getName())
                 .setRequestUrl(realRequestUrl)
                 .setHttpMethod(taskContent.getHttpMethod())
-                .setHeaders(taskContent.getHeaders())
+                .setHeaders(realHeader)
                 .setParams(realParams)
                 .setBody(realBody)
                 .setDelayTime(taskInfo.getDelayTime())

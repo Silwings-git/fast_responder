@@ -12,6 +12,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -147,6 +148,9 @@ public class ResponderFlowManager {
             // msg内容必然是一个string
             realResult.setMsg((String) ResponderReplaceOperator.replace(result.getMsg(), requestParamsAndBody));
         }
+
+        final Map<String, String> realHeader = ResponderReplaceOperator.replaceStringMap(result.getHeaders(),requestParamsAndBody);
+        realResult.setHeaders(realHeader);
 
         return realResult;
     }
