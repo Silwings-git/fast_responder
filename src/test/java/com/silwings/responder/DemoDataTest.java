@@ -25,6 +25,12 @@ import java.util.Map;
 @Slf4j
 public class DemoDataTest {
 
+    /**
+     * description: 打印一个示例json,用于复制
+     * version: 1.0
+     * date: 2022/1/22 1:06
+     * author: Silwings
+     */
     @Test
     public void printDemoJson() {
         final ResponderInfo responderInfo = new ResponderInfo();
@@ -34,7 +40,7 @@ public class DemoDataTest {
         final HttpTaskInfo taskInfo = new HttpTaskInfo();
         taskInfo.setName("My http task");
         taskInfo.setDelayTime(2000L);
-        taskInfo.setConditions(Arrays.asList("1 == 1","${age} >= 10","name =IsNotBlank="));
+        taskInfo.setConditions(Arrays.asList("1 == 1", "${age} >= 10", "name =IsNotBlank="));
         final HttpTaskInfo.HttpTaskContent taskContent = new HttpTaskInfo.HttpTaskContent();
         taskContent.setHttpMethod(HttpMethod.GET);
         taskContent.setRequestUrl("http://localhost:8088/hello/word");
@@ -46,9 +52,9 @@ public class DemoDataTest {
         params.put("keyB", new String[]{"keyB_v1"});
         taskContent.setParams(params);
         final JSONObject body = new JSONObject();
-        body.put("name","${name}");
-        body.put("id","-UUID()-");
-        body.put("timestemp","-TSNow(ms)-");
+        body.put("name", "${name}");
+        body.put("id", "-UUID()-");
+        body.put("timestemp", "-TSNow(ms)-");
         taskContent.setBody(body);
         taskInfo.setContent(taskContent);
         responderInfo.setTasks(Collections.singletonList(taskInfo));
@@ -68,7 +74,7 @@ public class DemoDataTest {
         final JSONObject resultBBody = new JSONObject();
         resultBBody.put("fast", "responder");
         resultB.setBody(resultBBody);
-        responderInfo.setResults(Arrays.asList(resultA,resultB));
+        responderInfo.setResults(Arrays.asList(resultA, resultB));
 
         log.info(JSON.toJSONString(responderInfo, SerializerFeature.WriteMapNullValue));
     }

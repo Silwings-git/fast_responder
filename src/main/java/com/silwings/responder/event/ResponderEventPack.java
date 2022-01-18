@@ -1,9 +1,6 @@
 package com.silwings.responder.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,30 +12,18 @@ import javax.validation.constraints.NotNull;
  * @Version V1.0
  **/
 @Getter
-public class ResponderEventPack<T> {
+public class ResponderEventPack {
 
     private ResponderEventType event;
 
-    private EventData<T> data;
+    private String msg;
 
     private long timeStamp;
 
-    public ResponderEventPack(@NotNull ResponderEventType event, @NotNull EventData<T> data) {
+    public ResponderEventPack(@NotNull ResponderEventType event, final String msg) {
         this.event = event;
-        this.data = data;
+        this.msg = msg;
         this.timeStamp = System.currentTimeMillis();
     }
 
-    public static  <T> EventData<T> simpleEventData(final T t) {
-        return new EventData<>(t);
-    }
-
-    // 用于扩展
-    @Setter
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class EventData<T>{
-        private T data;
-    }
 }

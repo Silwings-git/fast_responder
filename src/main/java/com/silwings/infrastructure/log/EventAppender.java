@@ -33,8 +33,9 @@ public class EventAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         }
 
         final ResponderEventManager eventManager = SpringUtils.getBean(ResponderEventManager.class);
+        // spring容器启动完成前该方法就会被调用
         if (null != eventManager) {
-            eventManager.notify(new ResponderEventPack<>(ResponderEventType.PROJECT_LOG, ResponderEventPack.simpleEventData(this.layout.doLayout(event))));
+            eventManager.notify(new ResponderEventPack(ResponderEventType.PROJECT_LOG, this.layout.doLayout(event)));
         }
     }
 }

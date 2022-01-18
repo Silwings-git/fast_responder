@@ -25,8 +25,8 @@ public class ResponderEventManager implements ApplicationContextAware {
     private EnumMap<ResponderEventType, List<ResponderEventListener>> eventListeners = new EnumMap<>(ResponderEventType.class);
 
     @Async
-    public void notify(final ResponderEventPack<?> responderEventPack) {
-        if (null == responderEventPack || null == responderEventPack.getEvent() || null == responderEventPack.getData()) {
+    public void notify(final ResponderEventPack responderEventPack) {
+        if (null == responderEventPack || null == responderEventPack.getEvent() || null == responderEventPack.getMsg()) {
             return;
         }
 

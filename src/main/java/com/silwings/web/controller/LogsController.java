@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,13 +29,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @CrossOrigin
 @RestController
 @RequestMapping("/responder/logs")
-public class LogsController implements ResponderEventListener<String> {
+public class LogsController implements ResponderEventListener {
 
     @Value("${web.httptask.querylogs.max-connect-number:10}")
     private Integer maxConnectNumber;
 
-    private final CopyOnWriteArrayList<SseEmitter> allLogSseEmitterList = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<SseEmitter> httpTaskLogSseEmitterList = new CopyOnWriteArrayList<>();
+    private final List<SseEmitter> allLogSseEmitterList = new CopyOnWriteArrayList<>();
+    private final List<SseEmitter> httpTaskLogSseEmitterList = new CopyOnWriteArrayList<>();
 
     @GetMapping(value = "/all")
     public SseEmitter queryLogs() {
@@ -84,35 +85,46 @@ public class LogsController implements ResponderEventListener<String> {
     }
 
     @Override
-    public void doEvent(final ResponderEventPack<String> eventPack) {
+    public void doEvent(final ResponderEventPack eventPack) {
 
-        // 简单返回内容
-        final String stringMessage = eventPack.getData().getData();
+        this.doAllLogsEvent(eventPack);
+
+        this.doHttpTaskLogsEvent(eventPack);
+    }
+
+    private void doAllLogsEvent(final ResponderEventPack eventPack) {
+
+        final List<SseEmitter> waitCloseEmitterList = new ArrayList<>();
 
         for (SseEmitter nextEmitter : this.allLogSseEmitterList) {
             try {
-                nextEmitter.send(stringMessage, MediaType.APPLICATION_JSON);
-            } catch (IOException e) {
-                // 读写分离集合,可以在遍历过程中remove
-                this.closeSseEmitter(nextEmitter, allLogSseEmitterList);
+                nextEmitter.send(eventPack.getMsg(), MediaType.APPLICATION_JSON);
+            } catch (Exception e) {
+                waitCloseEmitterList.add(nextEmitter);
             }
         }
 
+        waitCloseEmitterList.forEach(sseEmitter -> this.closeSseEmitter(sseEmitter, this.allLogSseEmitterList));
+    }
+
+    private void doHttpTaskLogsEvent(final ResponderEventPack eventPack) {
+        final List<SseEmitter> waitCloseEmitterList = new ArrayList<>();
+
         // http task的执行由 httpTaskScheduler 触发,结果由 SimpleAsyncTaskExecutor 处理
-        if (stringMessage.contains("httpTaskScheduler")
-                || stringMessage.contains("SimpleAsyncTaskExecutor")) {
+        if (eventPack.getMsg().contains("httpTaskScheduler")
+                || eventPack.getMsg().contains("SimpleAsyncTaskExecutor")) {
 
             for (SseEmitter sseEmitter : this.httpTaskLogSseEmitterList) {
                 try {
-                    sseEmitter.send(stringMessage, MediaType.APPLICATION_JSON);
-                } catch (IOException e) {
-                    // 读写分离集合,可以在遍历过程中remove
-                    this.closeSseEmitter(sseEmitter, httpTaskLogSseEmitterList);
+                    sseEmitter.send(eventPack.getMsg(), MediaType.APPLICATION_JSON);
+                } catch (Exception e) {
+                    waitCloseEmitterList.add(sseEmitter);
                 }
             }
         }
-    }
 
+        waitCloseEmitterList.forEach(sseEmitter -> this.closeSseEmitter(sseEmitter, this.httpTaskLogSseEmitterList));
+    }
 
     private void sendWelcomeStatement(final SseEmitter sseEmitter) {
 
