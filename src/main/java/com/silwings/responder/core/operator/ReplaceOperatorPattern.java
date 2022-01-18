@@ -18,6 +18,6 @@ class ReplaceOperatorPattern {
     static final Pattern RANDOM_DOUBLE_PATTERN = Pattern.compile("(((-RDDouble\\()[1-9][0-9]*(\\.?[0-9]+)?(\\)-)|(-RDDouble\\()(-?[1-9][0-9]*(\\.?[0-9]+)?)(,)([1-9][0-9]*(\\.?[0-9]+)?)(\\)-))|(-RDDouble\\(\\)-))");
     static final Pattern UUID_PATTERN = Pattern.compile("((-UUID\\()([1-9][0-9]{0,18})(\\)-)|(-UUID\\(\\)-))");
     static final Pattern TIMESTAMP_NOW_PATTERN = Pattern.compile("(-TSNow\\()(s|ms)(\\)-)");
-    static final Pattern TIMESTAMP_FORMAT_NOW_PATTERN = Pattern.compile("(-TSFNow\\()(.)+?(\\)-)");
+    static final Pattern TIMESTAMP_FORMAT_NOW_PATTERN = Pattern.compile("(-TSFNow\\()(.)*?(\\)-)");
 
 }
