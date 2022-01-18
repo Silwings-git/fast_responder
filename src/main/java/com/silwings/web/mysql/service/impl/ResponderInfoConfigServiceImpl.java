@@ -156,7 +156,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
                 .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
                 .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 
-        example.orderBy(ResponderInfoConfigEntity.C_UPDATE_TIME).desc();
+        example.orderBy(ResponderInfoConfigEntity.C_CREATE_TIME).desc();
 
         final int count = this.responderInfoConfigMapper.selectCountByCondition(example);
         if (0 == count) {
