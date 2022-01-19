@@ -75,6 +75,7 @@ public class DemoDataTest {
         resultBBody.put("fast", "responder");
         resultB.setBody(resultBBody);
         responderInfo.setResults(Arrays.asList(resultA, resultB));
+        responderInfo.setDelayTime(1000L);
 
         log.info(JSON.toJSONString(responderInfo, SerializerFeature.WriteMapNullValue));
     }
