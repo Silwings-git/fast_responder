@@ -61,13 +61,13 @@ public class DemoDataTest {
         final Result resultA = new Result();
         resultA.setResultName("My Result A");
         resultA.setMsg("Hello Word !");
-        resultA.setConditions(Arrays.asList("${age} == 18"));
+        resultA.setConditions(Collections.singletonList("${age} == 18"));
         final Map<String, String> responseHeader = new HashMap<>();
         responseHeader.put("authToken", "-RDInt(10，100)-");
         resultA.setHeaders(responseHeader);
         final Result resultB = new Result();
         resultB.setResultName("My Result B");
-        resultB.setConditions(Arrays.asList("${age} == 15"));
+        resultB.setConditions(Collections.singletonList("${age} == 15"));
         final Map<String, String> responseHeaderB = new HashMap<>();
         responseHeader.put("authToken", "-TSFNow(yyyy-MM-dd HH:mm:ss)-");
         resultB.setHeaders(responseHeaderB);
