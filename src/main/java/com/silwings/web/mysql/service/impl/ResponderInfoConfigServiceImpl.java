@@ -126,7 +126,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
 
         final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(updateInfo.getId(), -1L));
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.getOrDefault(updateInfo.getId(), -1L));
 
         try {
             this.responderInfoConfigMapper.updateByConditionSelective(entity, example);
@@ -148,12 +148,12 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
 
         final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(queryInfo.getId()))
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.getOrDefault(queryInfo.getId()))
                 .andLike(ResponderInfoConfigEntity.C_CATEGORY_NAME, queryCategoryName)
                 .andLike(ResponderInfoConfigEntity.C_NAME, queryName)
                 .andLike(ResponderInfoConfigEntity.C_KEY_URL, queryKeyUrl)
                 .andEqualTo(ResponderInfoConfigEntity.C_HTTP_METHOD, ConvertUtils.toString(queryInfo.getHttpMethod()))
-                .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.toObj(queryInfo.getEnableStatus()))
+                .andEqualTo(ResponderInfoConfigEntity.C_ENABLE_STATUS, ConvertUtils.getOrDefault(queryInfo.getEnableStatus()))
                 .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 
         example.orderBy(ResponderInfoConfigEntity.C_CREATE_TIME).desc();
@@ -236,7 +236,7 @@ public class ResponderInfoConfigServiceImpl implements ResponderInfoConfigServic
 
         final Example example = new Example(ResponderInfoConfigEntity.class);
         example.createCriteria()
-                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.toObj(id, -1L))
+                .andEqualTo(ResponderInfoConfigEntity.C_ID, ConvertUtils.getOrDefault(id, -1L))
                 .andEqualTo(ResponderInfoConfigEntity.C_LOGIC_DELETE, LogicDelete.NORMAL.number());
 
         final ResponderInfoConfigEntity delete = new ResponderInfoConfigEntity();

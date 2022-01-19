@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName ResponderFlowManager
@@ -42,7 +43,7 @@ public class ResponderFlowManager {
      * @param responderContext 请求上下文
      * @return com.silwings.responder.core.ResponderContext 请求上下文
      */
-    public ResponderContext handle(final ResponderContext responderContext) {
+    public ResponderContext handle(final ResponderContext responderContext) throws InterruptedException {
 
         this.performTask(responderContext.getTasks(), responderContext.getRequestParamsAndBody());
 
@@ -51,6 +52,12 @@ public class ResponderFlowManager {
         result = this.replaceOperatorResult(result, responderContext.getRequestParamsAndBody());
 
         responderContext.setResult(result);
+
+        // 指定延迟时间return
+        final long waitTime = responderContext.getDelayReturnTime() - responderContext.getExecutionTime();
+        if (waitTime > 0) {
+            TimeUnit.MILLISECONDS.sleep(waitTime);
+        }
 
         return responderContext;
     }

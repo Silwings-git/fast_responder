@@ -84,11 +84,11 @@ public class HttpTaskInfo implements ContainCondition {
         private JSONObject body;
 
         public Map<String, String[]> getParams() {
-            return ConvertUtils.toObj(this.params, Collections.emptyMap());
+            return ConvertUtils.getOrDefault(this.params, Collections.emptyMap());
         }
 
         public JSONObject getBody() {
-            return ConvertUtils.toObj(this.body, new JSONObject());
+            return ConvertUtils.getOrDefault(this.body, new JSONObject());
         }
 
     }

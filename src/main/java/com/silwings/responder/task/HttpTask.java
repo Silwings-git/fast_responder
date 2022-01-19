@@ -77,15 +77,15 @@ public class HttpTask implements Delayed {
     }
 
     Map<String, String> getHeaders() {
-        return ConvertUtils.toObj(this.headers, Collections.emptyMap());
+        return ConvertUtils.getOrDefault(this.headers, Collections.emptyMap());
     }
 
     Map<String, String[]> getParams() {
-        return ConvertUtils.toObj(this.params, Collections.emptyMap());
+        return ConvertUtils.getOrDefault(this.params, Collections.emptyMap());
     }
 
     public JSONObject getBody() {
-        return ConvertUtils.toObj(this.body, new JSONObject());
+        return ConvertUtils.getOrDefault(this.body, new JSONObject());
     }
 
 }

@@ -34,6 +34,11 @@ public class ResponderInfo {
     private String keyUrl;
 
     /**
+     * 延迟时间时间.最少延迟多久返回.单位毫秒
+     */
+    private Long delayTime = 0L;
+
+    /**
      * 请求方式
      */
     private HttpMethod httpMethod;

@@ -23,12 +23,12 @@ public class ConvertUtils {
         return StringUtils.isBlank(source) ? defaultValue : source;
     }
 
-    public static <T> T toObj(final T obj) {
+    public static <T> T getOrDefault(final T obj) {
 
-        return ConvertUtils.toObj(obj, null);
+        return ConvertUtils.getOrDefault(obj, null);
     }
 
-    public static <T> T toObj(final T obj, final T defaultValue) {
+    public static <T> T getOrDefault(final T obj, final T defaultValue) {
         return null == obj ? defaultValue : obj;
     }
 

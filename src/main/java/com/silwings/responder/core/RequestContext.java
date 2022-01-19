@@ -27,7 +27,7 @@ class RequestContext {
     private ResponderInfo responderInfo;
 
     RequestContext(final RequestParamsAndBody requestParamsAndBody, final ResponderInfo responderInfo) {
-        this.requestParamsAndBody = ConvertUtils.toObj(requestParamsAndBody, RequestParamsAndBody.EMPTY_OBJ);
+        this.requestParamsAndBody = ConvertUtils.getOrDefault(requestParamsAndBody, RequestParamsAndBody.EMPTY_OBJ);
         this.responderInfo = responderInfo;
     }
 

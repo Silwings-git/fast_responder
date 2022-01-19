@@ -23,6 +23,11 @@ public class ResponderContext {
 
     private Result result;
 
+    /**
+     * 开始执行时间,对象被构建时算起
+     */
+    private long startExecutionTime = System.currentTimeMillis();
+
     ResponderContext(RequestContext requestContext) {
         this.requestContext = requestContext;
     }
@@ -39,6 +44,10 @@ public class ResponderContext {
         return this.requestContext.getRequestParamsAndBody();
     }
 
+    long getDelayReturnTime() {
+        return this.requestContext.getResponderInfo().getDelayTime();
+    }
+
     List<Result> getResults() {
         return this.requestContext.getResponderInfo().getResults();
     }
@@ -47,4 +56,7 @@ public class ResponderContext {
         this.result = result;
     }
 
+    public long getExecutionTime() {
+        return this.startExecutionTime - System.currentTimeMillis();
+    }
 }

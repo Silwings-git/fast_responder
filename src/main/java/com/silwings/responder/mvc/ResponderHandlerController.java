@@ -22,7 +22,7 @@ public class ResponderHandlerController {
     }
 
     @ResponderMapping
-    public ResponderContext handle(final ResponderContext responderContext) {
+    public ResponderContext handle(final ResponderContext responderContext) throws Exception {
         return this.responderFlowManager.handle(responderContext);
     }
 
