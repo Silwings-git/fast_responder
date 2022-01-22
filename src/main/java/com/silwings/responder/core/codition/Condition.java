@@ -58,7 +58,7 @@ public class Condition {
                 log.info("条件表达式: {} 不满足条件. 表达式状态: {} .实际比对信息: {}", expression.originalExpression, expression.valid ? "正常" : "异常", expression.realExpression());
                 return false;
             }
-            log.info("条件表达式: {} 结算结果: true .实际比对信息: {}", expression.originalExpression, expression.realExpression());
+            log.info("条件表达式: {} 计算结果: true .实际比对信息: {}", expression.originalExpression, expression.realExpression());
         }
 
         return true;
