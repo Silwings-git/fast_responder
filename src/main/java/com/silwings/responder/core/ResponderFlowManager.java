@@ -53,11 +53,8 @@ public class ResponderFlowManager {
 
         responderContext.setResult(result);
 
-        // 指定延迟时间return
-        final long waitTime = responderContext.getDelayReturnTime() - responderContext.getExecutionTime();
-        if (waitTime > 0) {
-            TimeUnit.MILLISECONDS.sleep(waitTime);
-        }
+        // 最快响应延迟时间，sleep允许参数小于0，小于0时不执行
+        TimeUnit.MILLISECONDS.sleep(responderContext.getDelayReturnTime() - responderContext.getExecutionTime());
 
         return responderContext;
     }
@@ -156,7 +153,7 @@ public class ResponderFlowManager {
             realResult.setMsg((String) ResponderReplaceOperator.replace(result.getMsg(), requestParamsAndBody));
         }
 
-        final Map<String, String> realHeader = ResponderReplaceOperator.replaceStringMap(result.getHeaders(),requestParamsAndBody);
+        final Map<String, String> realHeader = ResponderReplaceOperator.replaceStringMap(result.getHeaders(), requestParamsAndBody);
         realResult.setHeaders(realHeader);
 
         return realResult;
