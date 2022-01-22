@@ -1,5 +1,6 @@
 package com.silwings.responder.core;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -66,6 +68,7 @@ public class RequestParamsAndBody {
     public Object getParam(final String paramName) {
 
         if (StringUtils.isBlank(paramName)) {
+            log.info("查找 {} ,未发现匹配值.", paramName);
             return null;
         }
 
@@ -76,18 +79,25 @@ public class RequestParamsAndBody {
                 return null;
             }
             if (paramArray.length == 1) {
+                log.info("查找 {} ,匹配到length为1的数组,返回0角标值: {}", paramName, paramArray[0]);
                 return paramArray[0];
             }
+
+            log.info("查找 {} ,匹配到length大于1的数组,返回整个数组对象: {}", paramName, Arrays.toString(paramArray));
             return paramArray;
         }
 
         if (this.getPathParams().containsKey(paramName)) {
+            log.info("查找 {} ,匹配到 Path Param 中元素: {}", paramName, this.getPathParams().get(paramName));
             return this.getPathParams().get(paramName);
         }
 
         // 尝试从请求体中获取参数
         final Object simpleJsonPathResult = this.simpleJsonPathEval(this.getBody(), paramName);
+        log.info("查找 {} ,简单 Json Path匹配结果: {}", paramName, null == simpleJsonPathResult ? null : JSON.toJSONString(simpleJsonPathResult));
+
         final Object evalResult = JSONPath.eval(this.getBody(), paramName);
+        log.info("查找 {} ,FastJson 标准 Json Path匹配结果: {}", paramName, null == evalResult ? null : JSON.toJSONString(evalResult));
 
         // 简单path和标准path同时查找,如果标准path有值,优先返回标准path结果
         return null == evalResult ? simpleJsonPathResult : evalResult;

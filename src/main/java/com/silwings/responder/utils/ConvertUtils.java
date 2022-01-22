@@ -19,6 +19,7 @@ public class ConvertUtils {
     public static String toString(final String source) {
         return ConvertUtils.toString(source,null);
     }
+
     public static String toString(final String source, final String defaultValue) {
         return StringUtils.isBlank(source) ? defaultValue : source;
     }

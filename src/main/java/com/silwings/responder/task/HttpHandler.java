@@ -42,7 +42,6 @@ public class HttpHandler {
         if (null != task) {
             this.request(task);
         }
-
     }
 
     private void request(final HttpTask httpTask) {

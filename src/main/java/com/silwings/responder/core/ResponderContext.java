@@ -59,4 +59,8 @@ public class ResponderContext {
     public long getExecutionTime() {
         return this.startExecutionTime - System.currentTimeMillis();
     }
+
+    public String getResponderName() {
+        return this.requestContext.getResponderInfo().getName();
+    }
 }

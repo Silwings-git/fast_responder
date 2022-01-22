@@ -63,6 +63,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
 
             ResponderContextUtils.setBody(request, responderContext);
 
+            log.info("接收到 {}:{} 请求,匹配到应答器: {}", httpMethod, requestUrl, responderInfo.getName());
         }
 
         // 前置判断以及请求体解析执行完成，交给父类的获取处理器方法逻辑执行查找匹配逻辑

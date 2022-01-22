@@ -2,6 +2,7 @@ package com.silwings.responder.mvc;
 
 import com.silwings.responder.core.ResponderContext;
 import com.silwings.responder.core.result.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.server.ServletServerHttpResponse;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @Date 2022/1/3 18:55
  * @Version V1.0
  **/
+@Slf4j
 public class ResponderReturnValueHandler implements HandlerMethodReturnValueHandler {
 
     // 是否支持该返回值
@@ -37,6 +39,7 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
         final ResponderContext body = (ResponderContext) returnValue;
         final Result result = body.getResult();
         if (null == result || (null == result.getBody() && StringUtils.isBlank(result.getMsg()))) {
+            log.info("无有效返回值.应答器 {} 主流程处理完成.",body.getResponderName());
             return;
         }
 
@@ -58,5 +61,7 @@ public class ResponderReturnValueHandler implements HandlerMethodReturnValueHand
                 outputStream.write(result.getMsg().getBytes());
             }
         }
+
+        log.info("应答器 {} 主流程处理完成.",body.getResponderName());
     }
 }

@@ -5,6 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * @ClassName ResponderExceptionConvertAspect
+ * @Description 响应异常
+ * @Author Silwings
+ * @Date 2022/1/8 21:20
+ * @Version V1.0
+ **/
 @Slf4j
 @ControllerAdvice
 public class ResponderExceptionAdvice {

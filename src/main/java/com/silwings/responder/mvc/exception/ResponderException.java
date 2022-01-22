@@ -8,6 +8,7 @@ package com.silwings.responder.mvc.exception;
  * @Version V1.0
  **/
 public class ResponderException extends RuntimeException {
+
     public ResponderException() {
     }
 
