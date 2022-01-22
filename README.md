@@ -344,7 +344,7 @@ v1.0.0-2022.01.17
 
 2. 启动用于回调的测试服务,其中包含如下web接口
 
-   ![1642609105185](images/1642609105185.png)
+   ![1642609105185](https://github.com/Silwings-git/fast_responder/blob/master/src/docs/images/1642609105185.png)
 
 3. Postman测试
 
