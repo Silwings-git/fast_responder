@@ -1,8 +1,10 @@
 package com.silwings.responder.core;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.silwings.responder.core.config.ResponderInfo;
+import com.silwings.responder.core.operator.ResponderReplaceOperator;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
 
@@ -48,6 +50,22 @@ public class RequestContextFactory {
         final JSONObject requestBody = (JSONObject) this.jsonbHttpMessageConverter.read(JSONObject.class, new ServletServerHttpRequest(request));
 
         final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, pathParams, requestBody);
+
+        // 公共参数
+        JSONObject publicParam = responderInfo.getCustomizeParam();
+        if (null != publicParam) {
+            final Object replace = ResponderReplaceOperator.replace(publicParam.toString(), paramsAndBody);
+            // replace要么是一个可以转换为json格式的java对象
+            if (replace instanceof String ) {
+                if (JSON.isValidObject((String) replace)) {
+                    publicParam = JSON.parseObject((String) replace);
+                }
+            } else {
+                publicParam = JSON.parseObject(JSON.toJSONString(replace));
+            }
+        }
+
+        paramsAndBody.setCustomizeParam(publicParam);
 
         return new RequestContext(paramsAndBody, responderInfo);
     }

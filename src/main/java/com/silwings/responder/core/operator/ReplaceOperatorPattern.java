@@ -19,5 +19,7 @@ class ReplaceOperatorPattern {
     static final Pattern UUID_PATTERN = Pattern.compile("((-UUID\\()([1-9][0-9]{0,18})(\\)-)|(-UUID\\(\\)-))");
     static final Pattern TIMESTAMP_NOW_PATTERN = Pattern.compile("(-TSNow\\()(s|ms)(\\)-)");
     static final Pattern TIMESTAMP_FORMAT_NOW_PATTERN = Pattern.compile("(-TSFNow\\()(.)*?(\\)-)");
+    static final Pattern PUBLIC_PARAM_SEARCH_REPLACE_PATTERN = Pattern.compile("\\$C\\{[\\S]+?}");
+
 
 }

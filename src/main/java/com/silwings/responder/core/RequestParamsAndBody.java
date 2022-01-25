@@ -45,6 +45,11 @@ public class RequestParamsAndBody {
      */
     private JSONObject body;
 
+    /**
+     * 自定义
+     */
+    private JSONObject customizeParam;
+
     RequestParamsAndBody(final Map<String, String[]> params, final Map<String, String> pathParams, final JSONObject body) {
         this.params = params;
         this.pathParams = pathParams;
@@ -162,4 +167,15 @@ public class RequestParamsAndBody {
         return matcher.matches();
     }
 
+    public Object getCustomizeParam(final String paramName) {
+        // 尝试从请求体中获取参数
+        final Object simpleJsonPathResult = this.simpleJsonPathEval(this.getCustomizeParam(), paramName);
+        log.info("查找 {} ,简单 Json Path匹配结果: {}", paramName, null == simpleJsonPathResult ? null : JSON.toJSONString(simpleJsonPathResult));
+
+        final Object evalResult = JSONPath.eval(this.getCustomizeParam(), paramName);
+        log.info("查找 {} ,FastJson 标准 Json Path匹配结果: {}", paramName, null == evalResult ? null : JSON.toJSONString(evalResult));
+
+        // 简单path和标准path同时查找,如果标准path有值,优先返回标准path结果
+        return null == evalResult ? simpleJsonPathResult : evalResult;
+    }
 }

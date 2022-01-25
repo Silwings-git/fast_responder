@@ -1,6 +1,7 @@
 package com.silwings.responder.core.config;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.silwings.responder.core.result.Result;
 import com.silwings.responder.task.HttpTaskInfo;
 import lombok.Getter;
@@ -42,6 +43,11 @@ public class ResponderInfo {
      * 请求方式
      */
     private HttpMethod httpMethod;
+
+    /**
+     * 自定义参数
+     */
+    private JSONObject customizeParam;
 
     /**
      * 请求的任务集
