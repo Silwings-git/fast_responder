@@ -76,6 +76,12 @@ public enum ResponderReplaceOperator {
             ResponderReplaceOperator::timestampFormat),
 
     /**
+     * 从公共参数查询替换.从请求参数中寻找并替换标准处的字符串
+     */
+    PUBLIC_PARAM_SEARCH_REPLACE("$C{}", arg -> ReplaceOperatorPattern.PUBLIC_PARAM_SEARCH_REPLACE_PATTERN.matcher(arg).find(),
+            ResponderReplaceOperator::searchCustomizeReplaceHandle),
+
+    /**
      * 什么都不做.返回入参(该操作符意在筛选不到任何操作符时默认返回,这样不需要进行空判)
      */
     DO_NOTHING("", s -> true, (str, paramsAndBody) -> str),
@@ -170,8 +176,51 @@ public enum ResponderReplaceOperator {
 
             return input;
         }
-
     }
+
+
+    private static Object searchCustomizeReplaceHandle(final String arg, final RequestParamsAndBody paramsAndBody) {
+        String input = arg;
+
+        final HashMap<Object, Object> hashMap = new HashMap<>();
+
+        // 如果input可以转换为一个json,按照对象的类型进行处理
+        if (JSON.isValidObject(input)) {
+            final Map<String, Object> map = JSON.parseObject(input, new TypeReference<Map<String, Object>>() {
+            });
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                final String key = entry.getKey();
+                final Object realKey = searchCustomizeReplaceHandle(key, paramsAndBody);
+
+                final Object value = entry.getValue();
+                final Object realValue = searchCustomizeReplaceHandle(value.toString(), paramsAndBody);
+
+                hashMap.put(realKey, realValue);
+            }
+
+            return hashMap;
+
+        } else {
+            Matcher matcher = ReplaceOperatorPattern.PUBLIC_PARAM_SEARCH_REPLACE_PATTERN.matcher(input);
+
+            while (matcher.find()) {
+                final String group = matcher.group();
+                final Object param = paramsAndBody.getCustomizeParam(group.substring(3, group.length() - 1));
+
+                // 如果原始字符串长度比获取到的group长,需要部分替换.否则就是完整替换,完整替换不用执行替换,直接使用新值返回
+                if (input.length() > group.length()) {
+                    input = input.replace(group, getReplacement(param));
+                } else {
+                    return param;
+                }
+
+                matcher = ReplaceOperatorPattern.PUBLIC_PARAM_SEARCH_REPLACE_PATTERN.matcher(input);
+            }
+
+            return input;
+        }
+    }
+
 
     private static String getReplacement(Object param) {
         if (null == param) {
