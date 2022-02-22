@@ -88,7 +88,7 @@ public class ResponderFlowManager {
 
 
     /**
-     * description: 过滤返回值集,筛选出合适的返回值.如果按照条件全部匹配失败将查询default返回值
+     * description: 过滤返回值集,筛选出合适的返回值.如果按照条件全部匹配失败将返回null
      * version: 1.0
      * date: 2022/1/6 22:37
      * author: Silwings

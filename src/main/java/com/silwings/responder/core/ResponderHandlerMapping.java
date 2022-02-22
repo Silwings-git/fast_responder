@@ -121,7 +121,7 @@ public class ResponderHandlerMapping extends AbstractHandlerMethodMapping<Respon
      */
     @Override
     protected boolean isHandler(final Class<?> beanType) {
-        boolean isHandler = AnnotatedElementUtils.hasAnnotation(beanType, ResponderHandler.class);
+        final boolean isHandler = AnnotatedElementUtils.hasAnnotation(beanType, ResponderHandler.class);
         if (isHandler) {
             log.info("Responder processor initialization success: {}", beanType.getName());
         }

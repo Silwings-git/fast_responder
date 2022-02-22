@@ -48,7 +48,7 @@ public class ResponderMappingArgumentResolver implements HandlerMethodArgumentRe
             return responderContext;
         }
 
-        // 如果方法的入参并不是MyMvcBody,可以尝试使用方法上定义的参数名从MyMvcBody实例中获取值
+        // 如果方法的入参并不是ResponderContext,可以尝试使用方法上定义的参数名从ResponderContext实例中获取值
         return this.getParameter(parameter.getParameterName(), responderContext);
     }
 
