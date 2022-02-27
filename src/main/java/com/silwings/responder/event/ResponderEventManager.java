@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 public class ResponderEventManager implements ApplicationContextAware {
 
-    private EnumMap<ResponderEventType, List<ResponderEventListener>> eventListeners = new EnumMap<>(ResponderEventType.class);
+    private final EnumMap<ResponderEventType, List<ResponderEventListener>> eventListeners = new EnumMap<>(ResponderEventType.class);
 
     @Async
     public void notify(final ResponderEventPack responderEventPack) {

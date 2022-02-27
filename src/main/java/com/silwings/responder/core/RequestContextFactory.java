@@ -24,8 +24,8 @@ public class RequestContextFactory {
 
     private static final String QUESTION_MARK = "\\?";
 
-    private AntPathMatcher antPathMatcher;
-    private FastJsonHttpMessageConverter jsonbHttpMessageConverter;
+    private final AntPathMatcher antPathMatcher;
+    private final FastJsonHttpMessageConverter jsonbHttpMessageConverter;
 
     public RequestContextFactory(final AntPathMatcher antPathMatcher) {
         this.antPathMatcher = antPathMatcher;
@@ -39,7 +39,7 @@ public class RequestContextFactory {
         // url参数
         final Map<String, String[]> params = request.getParameterMap();
 
-        // rest参数
+        // path参数
         Map<String, String> pathParams = Collections.emptyMap();
         if (this.antPathMatcher.match(responderInfo.getKeyUrl(), urlArray[0])) {
             // 必须使用经过?分割后的url数据,否者可能将?后的参数错误解析到path参数中
@@ -52,20 +52,20 @@ public class RequestContextFactory {
         final RequestParamsAndBody paramsAndBody = new RequestParamsAndBody(params, pathParams, requestBody);
 
         // 公共参数
-        JSONObject publicParam = responderInfo.getCustomizeParam();
-        if (null != publicParam) {
-            final Object replace = ResponderReplaceOperator.replace(publicParam.toString(), paramsAndBody);
+        JSONObject customizeParam = responderInfo.getCustomizeParam();
+        if (null != customizeParam) {
+            final Object replace = ResponderReplaceOperator.replace(customizeParam.toString(), paramsAndBody);
             // replace要么是一个可以转换为json格式的java对象
             if (replace instanceof String ) {
                 if (JSON.isValidObject((String) replace)) {
-                    publicParam = JSON.parseObject((String) replace);
+                    customizeParam = JSON.parseObject((String) replace);
                 }
             } else {
-                publicParam = JSON.parseObject(JSON.toJSONString(replace));
+                customizeParam = JSON.parseObject(JSON.toJSONString(replace));
             }
         }
 
-        paramsAndBody.setCustomizeParam(publicParam);
+        paramsAndBody.setCustomizeParam(customizeParam);
 
         return new RequestContext(paramsAndBody, responderInfo);
     }
