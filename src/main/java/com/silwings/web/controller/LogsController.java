@@ -34,6 +34,9 @@ public class LogsController implements ResponderEventListener {
     @Value("${web.httptask.querylogs.max-connect-number:10}")
     private Integer maxConnectNumber;
 
+    @Value("${web.httptask.querylogs.sse-timeout:900000}")
+    private Long sseTimeout;
+
     private final List<SseEmitter> allLogSseEmitterList = new CopyOnWriteArrayList<>();
     private final List<SseEmitter> httpTaskLogSseEmitterList = new CopyOnWriteArrayList<>();
 
@@ -43,7 +46,7 @@ public class LogsController implements ResponderEventListener {
             this.closeSseEmitter(this.allLogSseEmitterList.get(0), this.allLogSseEmitterList);
         }
 
-        final SseEmitter sseEmitter = new Utf8SseEmitter(900_000L);
+        final SseEmitter sseEmitter = new Utf8SseEmitter(this.sseTimeout);
         this.allLogSseEmitterList.add(sseEmitter);
 
         this.sendWelcomeStatement(sseEmitter);
@@ -57,7 +60,7 @@ public class LogsController implements ResponderEventListener {
             this.closeSseEmitter(this.httpTaskLogSseEmitterList.get(0), this.httpTaskLogSseEmitterList);
         }
 
-        final SseEmitter sseEmitter = new Utf8SseEmitter(900_000L);
+        final SseEmitter sseEmitter = new Utf8SseEmitter(this.sseTimeout);
         this.httpTaskLogSseEmitterList.add(sseEmitter);
 
         this.sendWelcomeStatement(sseEmitter);
