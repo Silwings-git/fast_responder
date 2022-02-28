@@ -43,7 +43,7 @@ public class LogsController implements ResponderEventListener {
             this.closeSseEmitter(this.allLogSseEmitterList.get(0), this.allLogSseEmitterList);
         }
 
-        final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
+        final SseEmitter sseEmitter = new Utf8SseEmitter(900_000L);
         this.allLogSseEmitterList.add(sseEmitter);
 
         this.sendWelcomeStatement(sseEmitter);
@@ -57,7 +57,7 @@ public class LogsController implements ResponderEventListener {
             this.closeSseEmitter(this.httpTaskLogSseEmitterList.get(0), this.httpTaskLogSseEmitterList);
         }
 
-        final SseEmitter sseEmitter = new Utf8SseEmitter(0L);
+        final SseEmitter sseEmitter = new Utf8SseEmitter(900_000L);
         this.httpTaskLogSseEmitterList.add(sseEmitter);
 
         this.sendWelcomeStatement(sseEmitter);
