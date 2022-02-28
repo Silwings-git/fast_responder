@@ -34,7 +34,7 @@ public class LogsController implements ResponderEventListener {
     @Value("${web.httptask.querylogs.max-connect-number:10}")
     private Integer maxConnectNumber;
 
-    @Value("${web.httptask.querylogs.sse-timeout:900000}")
+    @Value("${web.httptask.querylogs.sse-timeout:0}")
     private Long sseTimeout;
 
     private final List<SseEmitter> allLogSseEmitterList = new CopyOnWriteArrayList<>();
