@@ -2,7 +2,7 @@ package com.silwings.responder.core.result;
 
 import com.alibaba.fastjson.JSONObject;
 import com.silwings.responder.core.codition.Condition;
-import com.silwings.responder.core.codition.ContainCondition;
+import com.silwings.responder.core.codition.Conditional;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,7 +19,7 @@ import java.util.Map;
  **/
 @Setter
 @Getter
-public class Result implements ContainCondition {
+public class Result implements Conditional {
 
     /**
      * 返回值名称

@@ -59,12 +59,12 @@ public class HttpTask implements Delayed {
     /**
      * 执行时间(ms)
      */
-    private Long runTime;
+    private long runTime;
 
     /**
      * 延迟时间(ms)
      */
-    private Long delayTime;
+    private long delayTime;
 
     @Override
     public long getDelay(final TimeUnit unit) {

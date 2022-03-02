@@ -7,7 +7,7 @@ package com.silwings.responder.core.codition;
  * @Date 2022/1/3 18:45
  * @Version V1.0
  **/
-public interface ContainCondition {
+public interface Conditional {
 
     Condition findCondition();
 

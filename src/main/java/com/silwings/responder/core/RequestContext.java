@@ -22,7 +22,7 @@ class RequestContext {
     private RequestParamsAndBody requestParamsAndBody;
 
     /**
-     * 请求配置信息
+     * 应答器配置信息
      */
     private ResponderInfo responderInfo;
 

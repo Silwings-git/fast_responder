@@ -19,14 +19,14 @@ import java.util.List;
 @Getter
 public class ResponderContext {
 
-    private RequestContext requestContext;
+    private final RequestContext requestContext;
 
     private Result result;
 
     /**
      * 开始执行时间,对象被构建时算起
      */
-    private long startExecutionTime = System.currentTimeMillis();
+    private final long startExecutionTime = System.currentTimeMillis();
 
     ResponderContext(RequestContext requestContext) {
         this.requestContext = requestContext;

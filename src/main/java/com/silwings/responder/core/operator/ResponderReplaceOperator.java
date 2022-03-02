@@ -88,9 +88,9 @@ public enum ResponderReplaceOperator {
     ;
 
 
-    private String operator;
-    private Predicate<String> applyFunction;
-    private BiFunction<String, RequestParamsAndBody, Object> handleFunction;
+    private final String operator;
+    private final Predicate<String> applyFunction;
+    private final BiFunction<String, RequestParamsAndBody, Object> handleFunction;
 
     ResponderReplaceOperator(final String operator, final Predicate<String> applyFunction, final BiFunction<String, RequestParamsAndBody, Object> handleFunction) {
         this.operator = operator;
@@ -225,6 +225,10 @@ public enum ResponderReplaceOperator {
     private static String getReplacement(Object param) {
         if (null == param) {
             return "";
+        }
+
+        if (param instanceof String) {
+            return (String) param;
         }
 
         if (param instanceof String[]) {
@@ -385,7 +389,7 @@ public enum ResponderReplaceOperator {
     private static double formatDouble(String str) {
         try {
 
-            return Double.valueOf(str);
+            return Double.parseDouble(str);
         } catch (NumberFormatException e) {
 
             return Double.MAX_VALUE;
@@ -396,7 +400,7 @@ public enum ResponderReplaceOperator {
     private static long formatLong(String str) {
         try {
 
-            return Long.valueOf(str);
+            return Long.parseLong(str);
         } catch (NumberFormatException e) {
 
             return Long.MAX_VALUE;
@@ -406,7 +410,7 @@ public enum ResponderReplaceOperator {
     private static int formatInt(final String str) {
         try {
 
-            return Integer.valueOf(str);
+            return Integer.parseInt(str);
         } catch (NumberFormatException e) {
 
             return Integer.MAX_VALUE;
@@ -428,7 +432,7 @@ public enum ResponderReplaceOperator {
             final String uuidLengthStr = group.replace("-UUID(", "").replace(")-", "");
             int uuidLength = 32;
             try {
-                uuidLength = Integer.valueOf(uuidLengthStr);
+                uuidLength = Integer.parseInt(uuidLengthStr);
             } catch (NumberFormatException e) {
                 // no codes
             }
