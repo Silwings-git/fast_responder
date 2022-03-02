@@ -9,7 +9,6 @@ v1.0.1
 你可以在这里获取该项目的服务端和客户端源码(客户端不是非必须的,但是建议使用)
 
 1. github: https://github.com/Silwings-git
-2. gitee: https://gitee.com/silwings
 
 如有建议或疑问，欢迎给我发送邮件说明，感谢您的意见.
 
