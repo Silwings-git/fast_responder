@@ -227,6 +227,10 @@ public enum ResponderReplaceOperator {
             return "";
         }
 
+        if (param instanceof String) {
+            return (String) param;
+        }
+
         if (param instanceof String[]) {
             int length = Array.getLength(param);
 
